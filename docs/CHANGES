@@ -33,6 +33,16 @@ Version 1.5.current:
     * We switched to Mercurial SCM, see here for more infos:
       http://moinmoin.wikiwikiweb.de/MoinDev/MercurialGuide
 
+  Bugfixes:
+    * fix MonthCalendar macro for non-ASCII pagenames (thanks to Jonas Smedegaard)
+    * remove 'search' and 'google' from bot user agent list and add some more
+      specific terms
+    * Fix the forgotten password email login URL and also properly encode the
+      email body. Thanks to Robin Dunn for the patch.
+    * Applied a patch by Matthew Gilbert for increased compatiblity with
+      latest docutils.
+
+
 Version 1.5.3:
   New Features:
     * Added CSS classes for TableOfContents macro.
