@@ -43,6 +43,7 @@ Version 1.6.current:
     * moved wikimacro.py stuff to MoinMoin/macro/__init__.py
     * moved wikirpc.py stuff to MoinMoin/xmlrpc/__init__.py
     * moved wikitest.py stuff to action/test.py (only used from there)
+    * moved formatter/base.py to formatter/__init__.py (FormatterBase)
     * killed "processors" (finally), formatter method changed to:
       formatter.parser(parsername, lines)
     * moved / splitted request.py into MoinMoin/request/*
@@ -55,6 +56,10 @@ Version 1.6.current:
       WSGI not
       FCGI not
       TWISTED not
+    * added wikiutil.MimeType class (works internally with sanitized mime
+      types because the official ones suck)
+    * renamed parsers to module names representing sane mimetypes, e.g.:
+      parser.wiki -> parser.text_moin_wiki
 
   New Features:
 
@@ -66,6 +71,8 @@ Version 1.6.current:
       revisions (but you just can delete the current page to get an empty rev.)
     * fix vanishing strike markup after gui editor usage
     * fix deletion of empty Interwiki links ([wiki:MoinMaster: mm entry page])
+    * fix mod_python attachment upload bug (thanks to Nick Phillips)
+    * fix show_version to show it in the same way as SystemInfo
 
 Version 1.5.current:
   Developer notes:

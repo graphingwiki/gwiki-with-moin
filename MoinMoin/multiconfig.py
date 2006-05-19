@@ -2,7 +2,7 @@
 """
     MoinMoin - Multiple configuration handler and Configuration defaults class
 
-    @copyright: 2000-2004 by Jürgen Hermann <jh@web.de>
+    @copyright: 2000-2004 by Jrgen Hermann <jh@web.de>
     @license: GNU GPL, see COPYING for details.
 """
 
@@ -270,7 +270,7 @@ reStructuredText Quick Reference
     mail_login = None # or "user pwd" if you need to use SMTP AUTH
     mail_sendmail = None # "/usr/sbin/sendmail -t -i" to not use SMTP, but sendmail
     mail_smarthost = None
-    mail_from = None # u'Jürgen Wiki <noreply@jhwiki.org>'
+    mail_from = None # u'Jrgen Wiki <noreply@jhwiki.org>'
     
     navi_bar = [u'RecentChanges', u'FindPage', u'HelpContents', ]
     nonexist_qm = 0
@@ -312,7 +312,7 @@ reStructuredText Quick Reference
         'unsubscribe': ("%(q_page_name)s?action=subscribe", _("UnSubscribe"), "unsubscribe"),
         'subscribe':   ("%(q_page_name)s?action=subscribe", _("Subscribe"), "subscribe"),
         'raw':         ("%(q_page_name)s?action=raw", _("Raw"), "raw"),
-        'xml':         ("%(q_page_name)s?action=format&amp;mimetype=text/xml", _("XML"), "xml"),
+        'xml':         ("%(q_page_name)s?action=show&amp;mimetype=text/xml", _("XML"), "xml"),
         'print':       ("%(q_page_name)s?action=print", _("Print"), "print"),
         'view':        ("%(q_page_name)s", _("View"), "view"),
         'up':          ("%(q_page_parent_page)s", _("Up"), "up"),
