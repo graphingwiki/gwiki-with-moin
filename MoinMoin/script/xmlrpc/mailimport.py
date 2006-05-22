@@ -11,7 +11,7 @@
 import sys
 import xmlrpclib
 
-from MoinMoin.script._util import MoinScript, fatal
+from MoinMoin.script import MoinScript, fatal
 
 input = sys.stdin
 

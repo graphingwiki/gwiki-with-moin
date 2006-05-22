@@ -57,7 +57,7 @@ def getUserId(request, searchName):
     except AttributeError:
         arena = 'user'
         key = 'name2id'
-        cache = caching.CacheEntry(request, arena, key)
+        cache = caching.CacheEntry(request, arena, key, scope='wiki')
         try:
             _name2id = pickle.loads(cache.content())
         except (pickle.UnpicklingError, IOError, EOFError, ValueError):
@@ -71,7 +71,7 @@ def getUserId(request, searchName):
         cfg._name2id = _name2id
         arena = 'user'
         key = 'name2id'
-        cache = caching.CacheEntry(request, arena, key)
+        cache = caching.CacheEntry(request, arena, key, scope='wiki')
         cache.update(pickle.dumps(_name2id, PICKLE_PROTOCOL))
         id = _name2id.get(searchName, None)
     return id
@@ -289,7 +289,7 @@ class User:
             from security import Default
             self.may = Default(self)
         
-        from MoinMoin.i18n.meta import languages
+        from MoinMoin.i18n import languages
         if self.language and not languages.has_key(self.language):
             self.language = 'en'
 
