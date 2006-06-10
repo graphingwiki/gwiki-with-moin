@@ -496,6 +496,13 @@ class XmlRpcBase:
         from MoinMoin import version
         return (version.project, version.release, version.revision)
 
+
+    # XXX BEGIN WARNING XXX
+    # All xmlrpc_*Attachment* functions have to be considered as UNSTABLE API -
+    # they are neither standard nor are they what we need when we have switched
+    # attachments (1.5 style) to mimetype items (hopefully in 1.6).
+    # They are likely to get removed again when we remove AttachFile module.
+    # So use them on your own risk.
     def xmlrpc_listAttachments(self, pagename):
         """ Get all attachments associated with pagename
         
@@ -510,7 +517,7 @@ class XmlRpcBase:
         
         result = AttachFile._get_files(self.request, pagename)
         return result
-        
+
     def xmlrpc_getAttachment(self, pagename, attachname):
         """ Get attachname associated with pagename
         
@@ -523,13 +530,13 @@ class XmlRpcBase:
         # User may read page?
         if not self.request.user.may.read(pagename):
             return self.notAllowedFault()
-        
-        filename = wikiutil.taintfilename(filename)
-        filename = AttachFile.getFilename(self.request, pagename, attachname)
+
+        filename = wikiutil.taintfilename(self._instr(attachname))
+        filename = AttachFile.getFilename(self.request, pagename, filename)
         if not os.path.isfile(filename):
             return self.noSuchPageFault()
         return self._outlob(open(filename, 'rb').read())
-        
+
     def xmlrpc_putAttachment(self, pagename, attachname, data):
         """ Set attachname associated with pagename to data
         
@@ -560,6 +567,8 @@ class XmlRpcBase:
         os.chmod(filename, 0666 & config.umask)
         AttachFile._addLogEntry(self.request, 'ATTNEW', pagename, filename)
         return xmlrpclib.Boolean(1)
+    
+    # XXX END WARNING XXX
 
 
 class XmlRpc1(XmlRpcBase):

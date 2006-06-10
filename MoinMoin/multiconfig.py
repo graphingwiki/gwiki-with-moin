@@ -2,7 +2,7 @@
 """
     MoinMoin - Multiple configuration handler and Configuration defaults class
 
-    @copyright: 2000-2004 by Jrgen Hermann <jh@web.de>
+    @copyright: 2000-2004 by Jürgen Hermann <jh@web.de>
     @license: GNU GPL, see COPYING for details.
 """
 
@@ -173,7 +173,7 @@ class DefaultConfig:
     actions_excluded = [] # ['DeletePage', 'AttachFile', 'RenamePage', 'test', ]
     allow_xslt = 0
     attachments = None # {'dir': path, 'url': url-prefix}
-    auth = [authmodule.moin_cookie]
+    auth = [authmodule.moin_login, authmodule.moin_session,]
     
     backup_compression = 'gz'
     backup_users = []
@@ -198,9 +198,11 @@ class DefaultConfig:
     chart_options = None
     
     config_check_enabled = 0
+
     cookie_domain = None # use '.domain.tld" for a farm with hosts in that domain
     cookie_path = None   # use '/wikifarm" for a farm with pathes below that path
     cookie_lifetime = 12 # 12 hours from now
+    cookie_secret = '1234' # secret value for crypting session cookie - you should change this :)
     
     data_dir = './data/'
     data_underlay_dir = './underlay/'

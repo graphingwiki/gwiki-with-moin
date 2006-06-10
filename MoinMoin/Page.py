@@ -2,7 +2,7 @@
 """
     MoinMoin - Page class
 
-    @copyright: 2000-2004 by Jürgen Hermann <jh@web.de>
+    @copyright: 2000-2004 by Jrgen Hermann <jh@web.de>
     @license: GNU GPL, see COPYING for details.
 """
 
@@ -1603,10 +1603,9 @@ class Page:
         Return cached ACL or invoke parseACL and update the cache.
 
         @param request: the request object
-        @rtype: MoinMoin.wikiacl.AccessControlList
+        @rtype: MoinMoin.security.AccessControlList
         @return: ACL of this page
         """
-        import wikiacl
         request.clock.start('getACL')
         # Try the cache or parse acl and update the cache
         currentRevision = self.current_rev()
@@ -1628,16 +1627,16 @@ class Page:
         The effective ACL is always from the last revision, even if
         you access an older revision.
         """
-        import wikiacl
+        from MoinMoin import security
         if self.exists() and self.rev == 0:
-            return wikiacl.parseACL(self.request, self.get_raw_body())
+            return security.parseACL(self.request, self.get_raw_body())
         try:
             lastRevision = self.getRevList()[0]
         except IndexError:
-            return wikiacl.AccessControlList(self.request)
+            return security.AccessControlList(self.request)
         body = Page(self.request, self.page_name,
                     rev=lastRevision).get_raw_body()
-        return wikiacl.parseACL(self.request, body)
+        return security.parseACL(self.request, body)
 
     def clean_acl_cache(self):
         """

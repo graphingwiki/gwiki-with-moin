@@ -137,6 +137,7 @@ class build_scripts_create(build_scripts):
                 'python': os.path.normpath(sys.executable),
                 'package': self.package_name,
                 'module': module,
+                'package_location': '/usr/lib/python/site-packages', # FIXME
             }
 
             self.announce("creating %s" % outfile)
@@ -149,9 +150,12 @@ class build_scripts_create(build_scripts):
                         'if     "%%_4ver%%" == "" %(python)s -c "from %(package)s.script.%(module)s import run; run()" %%*\n'
                         % script_vars)
                 else:
-                    file.write('#! %(python)s\n'
-                        'from %(package)s.script.%(module)s import run\n'
-                        'run()\n'
+                    file.write("#! %(python)s\n"
+                        "#Fix and uncomment those 2 lines if your moin command doesn't find the MoinMoin package:\n"
+                        "#import sys\n"
+                        "#sys.path.insert(0, '%(package_location)s')\n"
+                        "from %(package)s.script.%(module)s import run\n"
+                        "run()\n"
                         % script_vars)
             finally:
                 file.close()
@@ -218,6 +222,7 @@ only requiring a Python installation.
         'MoinMoin.script.old',
         'MoinMoin.script.old.migration',
         'MoinMoin.script.old.xmlrpc-tools',
+        'MoinMoin.security',
         'MoinMoin.server',
         'MoinMoin.stats',
         'MoinMoin.support',
@@ -233,6 +238,15 @@ only requiring a Python installation.
         # if we get *massive* amounts of test, this should probably be left out
         'MoinMoin._tests',
     ],
+
+    # TODO package_dir and package_data only works for python >= 2.4
+    # in case we don't require python >= 2.4 for 1.6 release, we need to find
+    # a solution for python 2.3.x
+    'package_dir': { 'MoinMoin.i18n': 'MoinMoin/i18n', },
+    'package_data': { 'MoinMoin.i18n': ['README', 'Makefile', 'MoinMoin.pot', 'POTFILES.in',
+                                        '*.po',
+                                        'mo/*',
+                                        'tools/*',], },
 
     # Override certain command classes with our own ones
     'cmdclass': {

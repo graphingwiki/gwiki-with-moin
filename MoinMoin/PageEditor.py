@@ -2,7 +2,7 @@
 """
     MoinMoin - PageEditor class
 
-    @copyright: 2000-2004 by Jürgen Hermann <jh@web.de>
+    @copyright: 2000-2004 by Jrgen Hermann <jh@web.de>
     @license: GNU GPL, see COPYING for details.
 """
 
@@ -15,7 +15,7 @@ from MoinMoin.widget.dialog import Status
 from MoinMoin.logfile import editlog, eventlog
 from MoinMoin.util import filesys, timefuncs
 import MoinMoin.util.web
-import MoinMoin.util.mail
+from MoinMoin.mail import sendmail
 
 
 #############################################################################
@@ -587,7 +587,7 @@ Try a different name.""") % (newpagename,)
             else:
                 mailBody = mailBody + _("No differences found!\n", formatted=False)
         
-        return util.mail.sendmail(self.request, emails,
+        return sendmail.sendmail(self.request, emails,
             _('[%(sitename)s] %(trivial)sUpdate of "%(pagename)s" by %(username)s', formatted=False) % {
                 'trivial' : (trivial and _("Trivial ", formatted=False)) or "",
                 'sitename': self.cfg.sitename or "Wiki",
@@ -935,7 +935,7 @@ Please review the page and save then. Do not save this page as it is!""")
             msg = _('You did not change the page content, not saved!')
             raise self.Unchanged, msg
         else:
-            from wikiacl import parseACL
+            from MoinMoin.security import parseACL
             # Get current ACL and compare to new ACL from newtext. If
             # they are not the sames, the user must have admin
             # rights. This is a good place to update acl cache - instead
