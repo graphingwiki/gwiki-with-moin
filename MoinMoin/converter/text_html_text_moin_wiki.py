@@ -396,13 +396,13 @@ def pagename_from_url(url_frag):
     """ url is a fragment of an URL we extract the pagename from by URL-unqouting
         and possible adding quotes around the pagename if we detect blanks in it.
     """
-    pagename = wikiutil.url_unquote(url_frag)
+    pagename = qpagename = wikiutil.url_unquote(url_frag)
     if " " in pagename:
         if not '"' in pagename:
-            pagename = '"%s"' % pagename
+            qpagename = '"%s"' % pagename
         elif not "'" in pagename:
-            pagename = "'%s'" % pagename
-    return pagename
+            qpagename = "'%s'" % pagename
+    return pagename, qpagename
 
 class ConvertError(error.FatalError):
     """ Raise when html to wiki conversion fails """
@@ -1100,15 +1100,15 @@ class convert_tree(visitor):
                 wikitag, wikiurl, wikitail, err = wikiutil.resolve_wiki(
                     self.request, title + ":")
                 if not err and href.startswith(wikiurl):
-                    pagename = pagename_from_url(href[len(wikiurl):].lstrip('/'))
-                    interwikiname = "%s:%s" % (wikitag, pagename)
+                    pagename, qpagename = pagename_from_url(href[len(wikiurl):].lstrip('/'))
+                    interwikiname = "%s:%s" % (wikitag, qpagename)
                 else: 
                     raise ConvertError("Invalid InterWiki link: '%s'" % href)
             elif class_ == "badinterwiki" and title:
                 if href == "/": # we used this as replacement for empty href
                     href = ""
-                pagename = pagename_from_url(href)
-                interwikiname = "%s:%s" % (title, pagename)
+                pagename, qpagename = pagename_from_url(href)
+                interwikiname = "%s:%s" % (title, qpagename)
             if interwikiname and pagename == text: 
                 self.text.append("%s" % interwikiname)
                 return
@@ -1127,11 +1127,11 @@ class convert_tree(visitor):
 
             # Attachments
             if title and title.startswith("attachment:"):
-                url = wikiutil.url_unquote(title[len("attachment:"):])
-                if url != text:
-                    self.text.append('[attachment:"%s" %s]' % (url, text))
+                attname, qattname = pagename_from_url(title[len("attachment:"):])
+                if attname != text:
+                    self.text.append('[attachment:%s %s]' % (qattname, text))
                 else:
-                    self.text.extend([self.white_space, 'attachment:"%s"' % url, self.white_space])
+                    self.text.extend([self.white_space, 'attachment:%s' % qattname, self.white_space])
             # wiki link
             elif href.startswith(scriptname):
                 pagename = href[len(scriptname):]

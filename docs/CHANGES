@@ -101,6 +101,7 @@ Version 1.6.current:
       parser.wiki -> parser.text_moin_wiki
     * Added thread_monitor. It can be activated using:
       from MoinMoin.util import thread_monitor; thread_monitor.activate_hook()
+      or by requesting URL ...?action=thread_monitor
     * Introduced scope parameter to CacheEntry() - if you specify 'farm', it
       will cache into a common directory for all wikis in the same farm, if you
       specify 'wiki', it will use a cache directory per wiki and if you specify
@@ -146,6 +147,7 @@ Version 1.6.current:
     * fixed smiley caching bug (smileys didn't change theme)
     * fixed backtrace when user removed css_url entry from user_form_fields
     * Fixed the output of macro and "attachment:" usages of the rst parser.
+    * Removed Twisted request object reverse DNS lookup
 
   Other changes:
     * we use (again) the same browser compatibility check as FCKeditor uses
