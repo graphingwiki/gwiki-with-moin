@@ -276,6 +276,7 @@ reStructuredText Quick Reference
                                     # instead of just IPs
 
     xapian_search = False # disabled until xapian is finished
+    xapian_index_dir = None
 
     mail_login = None # or "user pwd" if you need to use SMTP AUTH
     mail_sendmail = None # "/usr/sbin/sendmail -t -i" to not use SMTP, but sendmail
@@ -481,7 +482,7 @@ reStructuredText Quick Reference
             name = dirname + '_dir'
             if not getattr(self, name, None):
                 setattr(self, name, os.path.join(data_dir, dirname))
-            
+
         # Try to decode certain names which allow unicode
         self._decode()
 

@@ -15,9 +15,12 @@ from sets import Set
 from MoinMoin import wikiutil, config
 from MoinMoin.Page import Page
 
-import Xapian
-from xapian import Query
-from Xapian import UnicodeQuery
+try:
+    import Xapian
+    from Xapian import Query, UnicodeQuery
+    use_stemming = Xapian.use_stemming
+except ImportError:
+    use_stemming = False
 
 #############################################################################
 ### query objects
@@ -90,15 +93,7 @@ class BaseExpression:
                 self.pattern = pattern
         else:
             pattern = re.escape(pattern)
-            if stemmed:
-                # XXX: works, but pretty CPU-intensive (obviously...)
-                self.search_re = re.compile(r'(?=^|[\s]+|[^%s]+)%s[%s]*' %
-                        (config.chars_lower, case and pattern or
-                            ''.join(['[%s%s]' % (ch.upper(), ch.lower())
-                                for ch in pattern]),
-                         config.chars_lower), re.U)
-            else:
-                self.search_re = re.compile(pattern, flags)
+            self.search_re = re.compile(pattern, flags)
             self.pattern = pattern
 
 
@@ -280,7 +275,23 @@ class TextSearch(BaseExpression):
         # Search in page body
         body = page.get_raw_body()
         for match in self.search_re.finditer(body):
-            matches.append(TextMatch(re_match=match))
+            if use_stemming:
+                # somewhere in regular word
+                if body[match.start()] not in config.chars_upper and \
+                        body[match.start()-1] in config.chars_lower:
+                    continue
+
+                post = 0
+                for c in body[match.end():]:
+                    if c in config.chars_lower:
+                        post += 1
+                    else:
+                        break
+
+                matches.append(TextMatch(start=match.start(),
+                        end=match.end()+post))
+            else:
+                matches.append(TextMatch(re_match=match))
 
         # Decide what to do with the results.
         if ((self.negated and matches) or
@@ -306,7 +317,7 @@ class TextSearch(BaseExpression):
             queries = []
             stemmed = []
             for t in terms:
-                if Xapian.use_stemming:
+                if use_stemming:
                     # stemmed OR not stemmed
                     tmp = []
                     for i in analyzer.tokenize(t, flat_stemming=False):
@@ -368,7 +379,23 @@ class TitleSearch(BaseExpression):
         # Get matches in page name
         matches = []
         for match in self.search_re.finditer(page.page_name):
-            matches.append(TitleMatch(re_match=match))
+            if use_stemming:
+                # somewhere in regular word
+                if page.page_name[match.start()] not in config.chars_upper and \
+                        page.page_name[match.start()-1] in config.chars_lower:
+                    continue
+
+                post = 0
+                for c in page.page_name[match.end():]:
+                    if c in config.chars_lower:
+                        post += 1
+                    else:
+                        break
+
+                matches.append(TitleMatch(start=match.start(),
+                        end=match.end()+post))
+            else:
+                matches.append(TitleMatch(re_match=match))
         
         if ((self.negated and matches) or
             (not self.negated and not matches)):
@@ -394,7 +421,7 @@ class TitleSearch(BaseExpression):
             queries = []
             stemmed = []
             for t in terms:
-                if Xapian.use_stemming:
+                if use_stemming:
                     # stemmed OR not stemmed
                     tmp = []
                     for i in analyzer.tokenize(t, flat_stemming=False):
@@ -1341,8 +1368,11 @@ class Search:
         return moin search in those pages.
         """
         pages = None
-        index = Xapian.Index(self.request)
-        if index.exists() and self.query.xapian_wanted():
+        try:
+            index = Xapian.Index(self.request)
+        except NameError:
+            index = None
+        if index and index.exists() and self.query.xapian_wanted():
             self.request.clock.start('_xapianSearch')
             try:
                 from MoinMoin.support import xapwrap
