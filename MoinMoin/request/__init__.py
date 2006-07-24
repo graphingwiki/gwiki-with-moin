@@ -141,11 +141,13 @@ class RequestBase(object):
             #    # no extra path after script name
             #    rootname = u""
 
-            self.args = {}
-            self.form = {}
-
-            if not self.query_string.startswith('action=xmlrpc'):
+            if self.query_string.startswith('action=xmlrpc'):
+                self.args = {}
+                self.form = {}
+                self.action = 'xmlrpc'
+            else:
                 self.args = self.form = self.setup_args()
+                self.action = self.form.get('action', ['show'])[0]
 
             rootname = u''
             self.rootpage = Page(self, rootname, is_rootpage=1)
@@ -156,7 +158,7 @@ class RequestBase(object):
 
             self.user = self.get_user_from_form()
 
-            if not self.query_string.startswith('action=xmlrpc'):
+            if self.action != 'xmlrpc':
                 if not self.forbidden and self.isForbidden():
                     self.makeForbidden403()
                 if not self.forbidden and self.surge_protect():
@@ -181,7 +183,7 @@ class RequestBase(object):
         current_id = validuser and self.user.name or self.remote_addr
         if not validuser and current_id.startswith('127.'): # localnet
             return False
-        current_action = self.form.get('action', ['show'])[0]
+        current_action = self.action
 
         limits = self.cfg.surge_action_limits
         default_limit = self.cfg.surge_action_limits.get('default', (30, 60))
@@ -263,7 +265,7 @@ class RequestBase(object):
     def _load_multi_cfg(self):
         # protect against calling multiple times
         if not hasattr(self, 'cfg'):
-            from MoinMoin import multiconfig
+            from MoinMoin.config import multiconfig
             self.cfg = multiconfig.getConfig(self.url)
 
     def setAcceptedCharsets(self, accept_charset):
@@ -544,7 +546,6 @@ class RequestBase(object):
         # during the rendering of a page by lang macros
         self.current_lang = self.cfg.language_default
 
-        self._all_pages = None
         # caches unique ids
         self._page_ids = {}
         # keeps track of pagename/heading combinations
@@ -863,11 +864,12 @@ class RequestBase(object):
         forbidden = 0
         # we do not have a parsed query string here, so we can just do simple matching
         qs = self.query_string
+        action = self.action
         if ((qs != '' or self.request_method != 'GET') and
-            not 'action=rss_rc' in qs and
+            action != 'rss_rc' and
             # allow spiders to get attachments and do 'show'
-            not ('action=AttachFile' in qs and 'do=get' in qs) and
-            not 'action=show' in qs
+            not (action == 'AttachFile' and 'do=get' in qs) and
+            action != 'show'
             ):
             forbidden = self.isSpiderAgent
 
@@ -884,40 +886,33 @@ class RequestBase(object):
                     break
         return forbidden
 
-    def setup_args(self, form=None):
+    def setup_args(self):
         """ Return args dict 
         First, we parse the query string (usually this is used in GET methods,
         but TwikiDraw uses ?action=AttachFile&do=savedrawing plus posted stuff).
         Second, we update what we got in first step by the stuff we get from
         the form (or by a POST). We invoke _setup_args_from_cgi_form to handle
         possible file uploads.
-        
-        Warning: calling with a form might fail, depending on the type of the
-        request! Only the request knows which kind of form it can handle.
-        
-        TODO: The form argument should be removed in 1.5.
         """
         args = cgi.parse_qs(self.query_string, keep_blank_values=1)
         args = self.decodeArgs(args)
-        # if we have form data (e.g. in a POST), those override the stuff we already have:
-        if form is not None or self.request_method == 'POST':
-            postargs = self._setup_args_from_cgi_form(form)
+        # if we have form data (in a POST), those override the stuff we already have:
+        if self.request_method == 'POST':
+            postargs = self._setup_args_from_cgi_form()
             args.update(postargs)
         return args
 
     def _setup_args_from_cgi_form(self, form=None):
         """ Return args dict from a FieldStorage
-        
-        Create the args from a standard cgi.FieldStorage or from given form.
-        Each key contain a list of values.
+
+        Create the args from a given form. Each key contain a list of values.
+        This method usually gets overridden in classes derived from this - it
+        is their task to call this method with an appropriate form parameter.
 
         @param form: a cgi.FieldStorage
         @rtype: dict
         @return: dict with form keys, each contains a list of values
         """
-        if form is None:
-            form = cgi.FieldStorage()
-
         args = {}
         for key in form:
             values = form[key]
@@ -1028,21 +1023,18 @@ class RequestBase(object):
         self.html_formatter = Formatter(self)
         self.formatter = self.html_formatter
 
-        if self.query_string == 'action=xmlrpc':
+        action_name = self.action
+        if action_name == 'xmlrpc':
             from MoinMoin import xmlrpc
-            xmlrpc.xmlrpc(self)
-            return self.finish()
-
-        if self.query_string == 'action=xmlrpc2':
-            from MoinMoin import xmlrpc
-            xmlrpc.xmlrpc2(self)
+            if self.query_string == 'action=xmlrpc':
+                xmlrpc.xmlrpc(self)
+            elif self.query_string == 'action=xmlrpc2':
+                xmlrpc.xmlrpc2(self)
             return self.finish()
 
         # parse request data
         try:
             self.initTheme()
-
-            action_name = self.form.get('action', ['show'])[0]
 
             # The last component in path_info is the page name, if any
             path = self.getPathinfo()
@@ -1098,18 +1090,21 @@ space between words. Group page name is not allowed.""") % self.user.name
                 else:
                     self.page = Page(self, pagename)
 
+                msg = None
                 # Complain about unknown actions
                 if not action_name in self.getKnownActions():
-                    self.http_headers()
-                    self.write(u'<html><body><h1>Unknown action %s</h1></body>' % wikiutil.escape(action_name))
+                    msg = _("Unknown action %(action_name)s.") % {
+                            'action_name': wikiutil.escape(action_name), }
 
                 # Disallow non available actions
                 elif action_name[0].isupper() and not action_name in self.getAvailableActions(self.page):
-                    # Send page with error
-                    msg = _("You are not allowed to do %s on this page.") % wikiutil.escape(action_name)
+                    msg = _("You are not allowed to do %(action_name)s on this page.") % {
+                            'action_name': wikiutil.escape(action_name), }
                     if not self.user.valid:
                         # Suggest non valid user to login
                         msg += " " + _("Login and try again.", formatted=0)
+
+                if msg:
                     self.page.send_page(self, msg=msg)
 
                 # Try action
