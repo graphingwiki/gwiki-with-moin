@@ -59,7 +59,7 @@ class XmlRpcBase:
         @rtype: str
         @return: string in config.charset
         """
-        raise "NotImplementedError"
+        raise NotImplementedError("please implement _instr in derived class")
 
     def _outstr(self, text):
         """ Convert outbound string to utf-8.
@@ -68,7 +68,7 @@ class XmlRpcBase:
         @rtype: str
         @return: string in utf-8
         """
-        raise "NotImplementedError"
+        raise NotImplementedError("please implement _outstr in derived class")
 
     def _inlob(self, text):
         """ Convert inbound base64-encoded utf-8 to Large OBject.
@@ -131,8 +131,8 @@ class XmlRpcBase:
             # serialize it
             response = xmlrpclib.dumps(response, methodresponse=1)
 
-        self.request.http_headers([
-            "Content-Type: text/xml;charset=utf-8",
+        self.request.emit_http_headers([
+            "Content-Type: text/xml; charset=utf-8",
             "Content-Length: %d" % len(response),
         ])
         self.request.write(response)
