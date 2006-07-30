@@ -1139,8 +1139,9 @@ space between words. Group page name is not allowed.""") % self.user.name
 
             @param more_headers: list of additional header strings
         """
-        headers = more_headers + getattr(self, 'user_headers', [])
+        user_headers = getattr(self, 'user_headers', [])
         self.user_headers = []
+        all_headers = more_headers + user_headers
 
         # Send headers only once
         sent_headers = getattr(self, 'sent_headers', 0)
@@ -1148,13 +1149,13 @@ space between words. Group page name is not allowed.""") % self.user.name
         if sent_headers:
             raise HeadersAlreadySentException("emit_http_headers called multiple (%d) times! Headers: %r" % (sent_headers, headers))
         #else:
-        #    self.log("Notice: emit_http_headers called first time. Headers: %r" % headers)
+        #    self.log("Notice: emit_http_headers called first time. Headers: %r" % all_headers)
 
         content_type = None
         status = None
         headers = []
         # assemble complete list of http headers
-        for header in headers:
+        for header in all_headers:
             if isinstance(header, unicode):
                 header = header.encode('ascii')
             key, value = header.split(':', 1)
