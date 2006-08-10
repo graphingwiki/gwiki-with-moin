@@ -9,6 +9,12 @@
 
 import os, re, time, sys, cgi, StringIO
 import copy
+
+try:
+    set
+except:
+    from sets import Set as set
+
 from MoinMoin import config, wikiutil, user, caching, error
 from MoinMoin.util import IsWin9x
 
@@ -66,7 +72,7 @@ class Clock:
         elif state is None:
             result = "- (%s)" % state
         else:
-            print "Got state %r" % state
+            #print "Got state %r" % state
             result = "%.3fs (still running)" % (time.time() - self.timings[timer])
         return result
 
