@@ -213,19 +213,23 @@ class ThemeBase:
         """
         _ = self.request.getText
         content = []
-        if d['title_link']: # having a link means we have a (linked) pagename ONLY as title, not a message title
-                            # XXX this method is rather ugly and should be improved
+        if d['title_text'] == d['page_name']: # just showing a page, no action
             curpage = ''
             segments = d['page_name'].split('/') # was: title_text
             for s in segments[:-1]:
                 curpage += s
                 content.append("<li>%s</li>" % Page(self.request, curpage).link_to(self.request, s))
                 curpage += '/'
-            content.append(('<li><a class="backlink" title="%(title)s" rel="nofollow" href="%(href)s">%(text)s</a></li>') % {
-                'title': _('Click to do a full-text search for this title'),
-                'href': d['title_link'],
-                'text': wikiutil.escape(segments[-1]),
-                })
+            link_text = segments[-1]
+            link_title = _('Click to do a full-text search for this title')
+            link_query = {
+                'action': 'fullsearch',
+                'value': 'linkto:"%s"' % d['page_name'],
+                'context': '180',
+            }
+            # we dont use d['title_link'] any more, but make it ourselves:
+            link = d['page'].link_to(self.request, link_text, querystr=link_query, title=link_title, css_class='backlink', rel='nofollow')
+            content.append(('<li>%s</li>') % link)
         else:
             content.append('<li>%s</li>' % wikiutil.escape(d['title_text']))
 
@@ -322,7 +326,9 @@ class ThemeBase:
         for scheme in self.linkSchemas:
             if pagename.startswith(scheme):
                 title = wikiutil.escape(title)
-                link = '<a href="%s">%s</a>' % (pagename, title)
+                link = self.request.formatter.url(1, pagename) + \
+                       self.request.formatter.text(title) +\
+                       self.request.formatter.url(0)
                 return pagename, link
 
         # remove wiki: url prefix
@@ -841,8 +847,10 @@ function actionsMenuInit(title) {
         @rtype: unicode
         @return: rss href
         """
-        return (u'%s/RecentChanges?action=rss_rc&amp;ddiffs=1&amp;unique=1'
-                % self.request.getScriptname())
+        request = self.request
+        url = Page(request, 'RecentChanges').url(request, querystr={
+                'action':'rss_rc', 'ddiffs': '1', 'unique': '1', }, escape=0, relative=False)
+        return url
 
     def rsslink(self):
         """ Create rss link in head, used by FireFox
@@ -1341,9 +1349,9 @@ var gui_editor_link_text = "%(text)s";
         if self.shouldUseRSS():
             link = [
                 u'<div class="rcrss">',
-                u'<a href="%s">' % self.rsshref(),
-                self.make_icon("rss"),
-                u'</a>',
+                self.request.formatter.url(1, self.rsshref()),
+                self.request.formatter.rawHTML(self.make_icon("rss")),
+                self.request.formatter.url(0),
                 u'</div>',
                 ]
             html += ''.join(link)
@@ -1421,7 +1429,6 @@ var gui_editor_link_text = "%(text)s";
         current page being rendered.
         
         @param text: the title text
-        @keyword link: URL for the title
         @keyword msg: additional message (after saving)
         @keyword pagename: 'PageName'
         @keyword page: the page instance that called us.
@@ -1596,7 +1603,7 @@ var gui_editor_link_text = "%(text)s";
 
         # If in print mode, start page div and emit the title
         if keywords.get('print_mode', 0):
-            d = {'title_text': text, 'title_link': None, 'page': page, }
+            d = {'title_text': text, 'page': page, }
             request.themedict = d
             output.append(self.startPage())
             output.append(self.interwiki(d))
@@ -1609,7 +1616,6 @@ var gui_editor_link_text = "%(text)s";
                 'theme': self.name,
                 'script_name': scriptname,
                 'title_text': text,
-                'title_link': keywords.get('link', ''),
                 'logo_string': request.cfg.logo_string,
                 'site_name': request.cfg.sitename,
                 'page': page,
