@@ -287,6 +287,9 @@ Version 1.6.current:
       * if a page does not exist any more (because it was deleted or renamed),
         we link the deleted icon to the diff showing what was deleted (for the
         delete action). For the rename action, we just show the deleted icon.
+    * the login page gives now the possibility to recover a lost password, thanks to 
+      Oliver Siemoneit. This is especially useful for wikis where access to user 
+      preferences is restricted by acl.
 
   Bugfixes:
     * on action "info" page, "revert" link will not be displayed for empty page
