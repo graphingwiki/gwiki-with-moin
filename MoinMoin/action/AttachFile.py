@@ -165,6 +165,9 @@ def info(pagename, request):
 
 def add_attachment(request, pagename, target, filecontent, overwrite=0):
     # replace illegal chars
+
+    _ = request.getText
+
     target = wikiutil.taintfilename(target)
 
     # set mimetype from extension, or from given mimetype
