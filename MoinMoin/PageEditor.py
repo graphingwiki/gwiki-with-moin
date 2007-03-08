@@ -1016,6 +1016,12 @@ Try a different name.""") % (newpagename,)
             f.write(revstr+'\n')
             f.close()
 
+            # we need to update request.rev here to get the right revision used for
+            # action links rendered by the final send_page() call (#preview display)
+            # XXX this is not the right place to do this as you could use this function
+            # to save any other page than the currently displayed one
+            #request.rev = rev
+
             if not deleted:
                 # save to page file
                 pagefile = os.path.join(revdir, revstr)
@@ -1133,7 +1139,6 @@ Please review the page and save then. Do not save this page as it is!""")
         # save only if no error occurred (msg is empty)
         if not msg:
             # set success msg
-            request.rev += 1
             msg = _("Thank you for your changes. Your attention to detail is appreciated.")
 
             # determine action for edit log 
