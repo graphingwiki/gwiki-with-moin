@@ -328,7 +328,6 @@ reStructuredText Quick Reference
     ]
 
     mimetypes_embed = [
-        'application/x-shockwave-flash',
         'application/x-dvi',
         'application/postscript',
         'application/pdf',
