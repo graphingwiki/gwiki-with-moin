@@ -2,7 +2,7 @@
 """
     MoinMoin - Action macro for page creation from file or attach file to current page
 
-    @copyright: 2007 Reimar Bauer 
+    @copyright: 2007 MoinMoin:ReimarBauer 
     @license: GNU GPL, see COPYING for details.
 """
 import os
@@ -66,14 +66,15 @@ class Load(ActionBase):
                          'target': target, 'filename': filename}
                 return status, msg
 
-            if exists and self.request.user.may.delete(self.pagename):
-                try:
-                    os.remove(fpath)
-                except:
-                    pass
-            else:
-                msg = _("You are not allowed to delete attachments on this page.")
-                return status, msg
+            if exists and overwrite:
+                if self.request.user.may.delete(self.pagename):
+                    try:
+                        os.remove(fpath)
+                    except:
+                        pass
+                else:
+                    msg = _("You are not allowed to delete attachments on this page.")
+                    return status, msg
 
             AttachFile.add_attachment(self.request, self.pagename, target, filecontent)
             bytes = len(filecontent)
