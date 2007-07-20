@@ -15,6 +15,9 @@ import time
 from MoinMoin import config, error, util, wikiutil
 import MoinMoin.auth as authmodule
 import MoinMoin.events as events
+from MoinMoin.events import PageChangedEvent, PageRenamedEvent
+from MoinMoin.events import PageDeletedEvent, PageCopiedEvent
+from MoinMoin.events import PageRevertedEvent, FileAttachedEvent
 from MoinMoin import session
 from MoinMoin.packages import packLine
 from MoinMoin.security import AccessControlList
@@ -204,9 +207,6 @@ class CacheClass:
 
 class DefaultConfig:
     """ default config values """
-
-    # internal dict for plugin `modules' lists
-    _site_plugin_lists = {}
 
     # setting DesktopEdition = True gives all local users special powers - ONLY use for MMDE style usage!
     DesktopEdition = False
@@ -497,7 +497,15 @@ reStructuredText Quick Reference
     stylesheets = [] # list of tuples (media, csshref) to insert after theme css, before user css
     _subscribable_events = None # A list of event types that user can subscribe to
     subscribed_pages_default = [] # preload user subscribed pages with this page list
-    subscribed_events_default = [] # preload user subscribed events with this list
+    email_subscribed_events_default = [
+        PageChangedEvent.__name__,
+        PageRenamedEvent.__name__,
+        PageDeletedEvent.__name__,
+        PageCopiedEvent.__name__,
+        PageRevertedEvent.__name__,
+        FileAttachedEvent.__name__,
+    ]
+    jabber_subscribed_events_default = []
     superuser = [] # list of unicode user names that have super powers :)
     supplementation_page = False
     supplementation_page_name = u'Discussion'
@@ -597,11 +605,10 @@ reStructuredText Quick Reference
                               'show_fancy_diff':     1,
                               'wikiname_add_spaces': 0,
                               'remember_me':         1,
-                              'want_trivial':        0,
                              }
 
     # don't let the user change those
-    # user_checkbox_disable = ['disabled', 'want_trivial']
+    # user_checkbox_disable = ['disabled']
     user_checkbox_disable = []
 
     # remove those checkboxes:
@@ -715,6 +722,10 @@ reStructuredText Quick Reference
                 self.chart_options = None
 
         # post process
+
+        # internal dict for plugin `modules' lists
+        self._site_plugin_lists = {}
+
         # we replace any string placeholders with config values
         # e.g u'%(page_front_page)s' % self
         self.navi_bar = [elem % self for elem in self.navi_bar]
