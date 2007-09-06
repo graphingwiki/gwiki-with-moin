@@ -18,6 +18,7 @@ from MoinMoin.Page import Page
 from MoinMoin.parser.text_moin_wiki import Parser as WikiParser
 from MoinMoin.formatter.text_html import Formatter as HtmlFormatter
 
+PAGENAME = u'ThisPageDoesNotExistsAndWillNeverBeReally'
 
 class ParserTestCase(object):
     """ Helper class that provide a parsing method """
@@ -30,7 +31,7 @@ class ParserTestCase(object):
         request = self.request
         assert body is not None
         request.reset()
-        page = Page(request, 'ThisPageDoesNotExistsAndWillNeverBeReally')
+        page = Page(request, PAGENAME)
         page.hilite_re = None
         page.set_raw_body(body)
         formatter = HtmlFormatter(request)
@@ -72,7 +73,7 @@ class TestParagraphs(ParserTestCase):
             '=== heading 3 ===\n',
             '==== heading 4 ====\n',
             '===== heading 5 =====\n',
-            # '[[en]]\n', XXX crashes
+            # '<<en>>\n', XXX crashes
             )
         for item in markup:
             text = item + 'Paragraph'
@@ -130,12 +131,12 @@ class TestTOC(ParserTestCase):
         around heading text does not matter.
         """
         standard = """
-[[TableOfContents]]
+<<TableOfContents>>
 = heading =
 Text
 """
         withWhitespace = """
-[[TableOfContents]]
+<<TableOfContents>>
 =   heading   =
 Text
 """
@@ -166,11 +167,11 @@ class TestDateTimeMacro(ParserTestCase):
     needle = re.compile(text % r'(.+)')
     _tests = (
         # test                                   expected
-        (u'[[DateTime(259200)]]',                '1970-01-04 00:00:00'),
-        (u'[[DateTime(2003-03-03T03:03:03)]]',   '2003-03-03 03:03:03'),
-        (u'[[DateTime(2000-01-01T00:00:00Z)]]',  '2000-01-01 00:00:00'), # works for Europe/Vilnius
-        (u'[[Date(2002-02-02T01:02:03Z)]]',      '2002-02-02'),
-        (u'[[DateTime(1970-01-06T00:00:00)]]',   '1970-01-06 00:00:00'), # fails e.g. for Europe/Vilnius
+        (u'<<DateTime(259200)>>',                '1970-01-04 00:00:00'),
+        (u'<<DateTime(2003-03-03T03:03:03)>>',   '2003-03-03 03:03:03'),
+        (u'<<DateTime(2000-01-01T00:00:00Z)>>',  '2000-01-01 00:00:00'), # works for Europe/Vilnius
+        (u'<<Date(2002-02-02T01:02:03Z)>>',      '2002-02-02'),
+        (u'<<DateTime(1970-01-06T00:00:00)>>',   '1970-01-06 00:00:00'), # fails e.g. for Europe/Vilnius
         )
 
     def class_setup(self):
@@ -292,7 +293,7 @@ class TestEscapeHTML(ParserTestCase):
 
     def testEscapeInGetTextMacro(self):
         """ parser.wiki: escape html markup in GetText macro """
-        test = "text [[GetText(<escape-me>)]] text"
+        test = "text <<GetText(<escape-me>)>> text"
         self._test(test)
 
     def testEscapeInGetTextFormatted(self):
@@ -302,7 +303,7 @@ class TestEscapeHTML(ParserTestCase):
 
     def testEscapeInGetTextFormatedLink(self):
         """ parser.wiki: escape html markup in getText formatted call with link """
-        test = self.request.getText('["<escape-me>"]', formatted=1)
+        test = self.request.getText('[[<escape-me>]]', formatted=1)
         self._test(test)
 
     def testEscapeInGetTextUnFormatted(self):
@@ -527,38 +528,65 @@ Test {{{brackets}}} and test {{{brackets}}}
         assert expected in output
 
 class TestLinkingMarkup(ParserTestCase):
-    """ Test wiki markup """
+    """ Test wiki link markup """
 
     text = 'AAA %s AAA'
     needle = re.compile(text % r'(.+)')
-    _tests = (
-        # test,                       expected
-        ('["something"]',             '<a class="nonexistent" href="./something">something</a>'),
-        ("['something']",             "['something']"),
-        ('MoinMoin:"something"',      '<a class="interwiki" href="http://moinmoin.wikiwikiweb.de/something" title="MoinMoin">something</a>'),
-        ('MoinMoin:"with space"',     '<a class="interwiki" href="http://moinmoin.wikiwikiweb.de/with%20space" title="MoinMoin">with space</a>'),
-        ('RFC:"1 2 3"',               '<a class="interwiki" href="http://www.ietf.org/rfc/rfc1%202%203" title="RFC">1 2 3</a>'),
-        ("RFC:'something else'",      "RFC:'something else'"),
-        ('["with "" quote"]',         '<a class="nonexistent" href="./with%20%22%20quote">with " quote</a>'),
-        ('MoinMoin:"with "" quote"',  '<a class="interwiki" href="http://moinmoin.wikiwikiweb.de/with%20%22%20quote" title="MoinMoin">with " quote</a>'),
-        )
+    _tests = [
+        # test,           expected
+        ('SomeNonExistentPage', '<a class="nonexistent" href="./SomeNonExistentPage">SomeNonExistentPage</a>'),
+        ('SomeNonExistentPage#anchor', '<a class="nonexistent" href="./SomeNonExistentPage#anchor">SomeNonExistentPage#anchor</a>'),
+        ('[[something]]', '<a class="nonexistent" href="./something">something</a>'),
+        ('[[some thing]]', '<a class="nonexistent" href="./some%20thing">some thing</a>'),
+        ('[[something|some text]]', '<a class="nonexistent" href="./something">some text</a>'),
+        ('[[../something]]', '<a class="nonexistent" href="./something">../something</a>'),
+        ('[[/something]]', '<a class="nonexistent" href="./%s/something">/something</a>' % PAGENAME),
+        ('[[something#anchor]]', '<a class="nonexistent" href="./something#anchor">something#anchor</a>'),
+        ('MoinMoin:something', '<a class="interwiki" href="http://moinmoin.wikiwikiweb.de/something" title="MoinMoin">something</a>'),
+        ('[[MoinMoin:something|some text]]', '<a class="interwiki" href="http://moinmoin.wikiwikiweb.de/something" title="MoinMoin">some text</a>'),
+        ('[[MoinMoin:with space]]', '<a class="interwiki" href="http://moinmoin.wikiwikiweb.de/with%20space" title="MoinMoin">with space</a>'),
+        ('[[MoinMoin:with space|some text]]', '<a class="interwiki" href="http://moinmoin.wikiwikiweb.de/with%20space" title="MoinMoin">some text</a>'),
+        ('[[http://google.com/|google]]', '<a class="http" href="http://google.com/">google</a>'),
+        ]
 
-    def testTextFormating(self):
-        """ parser.wiki: text formating """
-        together_test = []
-        together_expected = []
+    def testLinkFormating(self):
+        """ parser.wiki: link formating """
         for test, expected in self._tests:
             html = self.parse(self.text % test)
             result = self.needle.search(html).group(1)
             assert result == expected
-            together_test.append(test)
-            together_expected.append(expected)
 
-        # now test all together to make sure one quoting doesn't
-        # "leak" into the next
-        for joint in ('', 'lala " lala ', 'lala "" lala '):
-            test = joint.join(together_test)
-            expected = joint.join(together_expected)
+    def testLinkAttachment(self):
+        html = self.parse("[[attachment:some file.txt]]")
+        assert '<a ' in html
+        assert 'href="' in html
+        assert 'class="attachment nonexistent"' in html
+        assert 'action=AttachFile' in html
+        assert 'some+file.txt' in html
+
+    def testLinkAttachmentImage(self):
+        html = self.parse("[[attachment:some file.png]]")
+        assert '<a ' in html # must create a link
+        assert 'href="' in html
+        assert 'class="attachment nonexistent"' in html
+        assert 'action=AttachFile' in html
+        assert 'some+file.png' in html
+
+
+class TestTransclusionMarkup(ParserTestCase):
+    """ Test wiki markup """
+
+    text = 'AAA %s AAA'
+    needle = re.compile(text % r'(.+)')
+    _tests = [
+        # test,           expected
+        ('{{http://moinmo.in/wiki/common/moinmoin.png}}', '<img alt="http://moinmo.in/wiki/common/moinmoin.png" class="external_image" src="http://moinmo.in/wiki/common/moinmoin.png" title="http://moinmo.in/wiki/common/moinmoin.png" />'),
+        ('{{http://moinmo.in/wiki/common/moinmoin.png|moin logo}}', '<img alt="moin logo" class="external_image" src="http://moinmo.in/wiki/common/moinmoin.png" title="moin logo" />'),
+        ]
+
+    def testTransclusionFormating(self):
+        """ parser.wiki: transclusion formating """
+        for test, expected in self._tests:
             html = self.parse(self.text % test)
             result = self.needle.search(html).group(1)
             assert result == expected

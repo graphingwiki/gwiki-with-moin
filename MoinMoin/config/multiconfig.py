@@ -219,7 +219,7 @@ class DefaultConfig:
     acl_rights_valid = ['read', 'write', 'delete', 'revert', 'admin']
     acl_hierarchic = False
 
-    actions_excluded = [] # ['DeletePage', 'AttachFile', 'RenamePage', 'test', ]
+    actions_excluded = ['xmlrpc'] # ['DeletePage', 'AttachFile', 'RenamePage', 'test', ]
     allow_xslt = False
     antispam_master_url = "http://moinmaster.wikiwikiweb.de:8000/?action=xmlrpc2"
     attachments = None # {'dir': path, 'url': url-prefix}
@@ -273,10 +273,10 @@ class DefaultConfig:
     editor_force = False
     editor_quickhelp = {# editor markup hints quickhelp
         'wiki': _("""\
- Emphasis:: [[Verbatim('')]]''italics''[[Verbatim('')]]; [[Verbatim(''')]]'''bold'''[[Verbatim(''')]]; [[Verbatim(''''')]]'''''bold italics'''''[[Verbatim(''''')]]; [[Verbatim('')]]''mixed ''[[Verbatim(''')]]'''''bold'''[[Verbatim(''')]] and italics''[[Verbatim('')]]; [[Verbatim(----)]] horizontal rule.
- Headings:: [[Verbatim(=)]] Title 1 [[Verbatim(=)]]; [[Verbatim(==)]] Title 2 [[Verbatim(==)]]; [[Verbatim(===)]] Title 3 [[Verbatim(===)]];   [[Verbatim(====)]] Title 4 [[Verbatim(====)]]; [[Verbatim(=====)]] Title 5 [[Verbatim(=====)]].
+ Emphasis:: <<Verbatim('')>>''italics''<<Verbatim('')>>; <<Verbatim(''')>>'''bold'''<<Verbatim(''')>>; <<Verbatim(''''')>>'''''bold italics'''''<<Verbatim(''''')>>; <<Verbatim('')>>''mixed ''<<Verbatim(''')>>'''''bold'''<<Verbatim(''')>> and italics''<<Verbatim('')>>; <<Verbatim(----)>> horizontal rule.
+ Headings:: <<Verbatim(=)>> Title 1 <<Verbatim(=)>>; <<Verbatim(==)>> Title 2 <<Verbatim(==)>>; <<Verbatim(===)>> Title 3 <<Verbatim(===)>>;   <<Verbatim(====)>> Title 4 <<Verbatim(====)>>; <<Verbatim(=====)>> Title 5 <<Verbatim(=====)>>.
  Lists:: space and one of: * bullets; 1., a., A., i., I. numbered items; 1.#n start numbering at n; space alone indents.
- Links:: [[Verbatim(JoinCapitalizedWords)]]; [[Verbatim(["brackets and double quotes"])]]; url; [url]; [url label].
+ Links:: <<Verbatim(JoinCapitalizedWords)>>; <<Verbatim([[target|linktext]])>>.
  Tables:: || cell text |||| cell text spanning 2 columns ||;    no trailing white space allowed after tables or titles.
 
 (!) For more help, see HelpOnEditing or SyntaxReference.
@@ -346,7 +346,7 @@ reStructuredText Quick Reference
     mail_import_subpage_template = u"$from-$date-$subject" # used for mail import
     mail_import_pagename_search = ['subject', 'to', ] # where to look for target pagename (and in which order)
     mail_import_pagename_envelope = u"%s" # use u"+ %s/" to add "+ " and "/" automatically
-    mail_import_pagename_regex = r'\["([^"]*)"\]' # how to find/extract the pagename from the subject
+    mail_import_pagename_regex = r'\[\[([^\]]*)\]\]' # how to find/extract the pagename from the subject
     mail_import_wiki_addrs = [] # the e-mail addresses for e-mails that should go into the wiki
     mail_import_secret = ""
 
@@ -657,9 +657,6 @@ reStructuredText Quick Reference
     unzip_single_file_size = 2.0 * 1000 ** 2
     unzip_attachments_space = 200.0 * 1000 ** 2
     unzip_attachments_count = 101 # 1 zip file + 100 files contained in it
-
-    xmlrpc_putpage_enabled = False # if False, putpage will write to a test page only
-    xmlrpc_putpage_trusted_only = True # if True, you will need to be http auth authenticated
 
     SecurityPolicy = None
 

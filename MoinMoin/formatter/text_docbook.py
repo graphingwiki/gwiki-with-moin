@@ -367,7 +367,7 @@ class Formatter(FormatterBase):
         if not on:
             return self.url(on, kw)
 
-        wikitag, wikiurl, wikitail, wikitag_bad = wikiutil.resolve_wiki(self.request, '%s:"%s"' % (interwiki, pagename))
+        wikitag, wikiurl, wikitail, wikitag_bad = wikiutil.resolve_interwiki(self.request, interwiki, pagename)
         wikiurl = wikiutil.mapURL(self.request, wikiurl)
         href = wikiutil.join_wiki(wikiurl, wikitail)
 
@@ -565,7 +565,7 @@ class Formatter(FormatterBase):
         else:
             return ""
 
-    def macro(self, macro_obj, name, args):
+    def macro(self, macro_obj, name, args, markup=None):
         if name == "TableOfContents":
             # Table of content can be inserted in docbook transformation
             return u""
@@ -573,7 +573,7 @@ class Formatter(FormatterBase):
         # At the begining text mode contain some string which is later
         # exchange for real value. There is problem that data inserted
         # as text mode are encoded to xml, e.g. < is encoded in the output as &lt;
-        text = FormatterBase.macro(self, macro_obj, name, args)
+        text = FormatterBase.macro(self, macro_obj, name, args, markup)
         if len(text) > 0:
             # prepare identificator
             sKey = "EXCHANGESTRINGMACRO-" + str(len(self.exchangeKeys)) + "-EXCHANGESTRINGMACRO"

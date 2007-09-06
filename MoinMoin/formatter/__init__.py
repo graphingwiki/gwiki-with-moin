@@ -11,6 +11,7 @@ import re
 
 from MoinMoin.util import pysupport
 from MoinMoin import wikiutil
+from MoinMoin.support.python_compatibility import rsplit
 
 modules = pysupport.getPackageModules(__file__)
 
@@ -99,10 +100,10 @@ class FormatterBase:
             IMPORTANT: on and off must be called with same parameters, see
                        also the text_html formatter.
         """
-        wikitag, wikiurl, wikitail, wikitag_bad = wikiutil.resolve_wiki(self.request, '%s:"%s"' % (interwiki, pagename))
+        wikitag, wikiurl, wikitail, wikitag_bad = wikiutil.resolve_interwiki(self.request, interwiki, pagename)
         if wikitag == 'Self' or wikitag == self.request.cfg.interwikiname:
             if '#' in wikitail:
-                wikitail, kw['anchor'] = wikitail.split('#', 1)
+                wikitail, kw['anchor'] = rsplit(wikitail, '#', 1)
                 wikitail = wikiutil.url_unquote(wikitail)
             return self.pagelink(on, wikitail, **kw)
         return ''
@@ -303,10 +304,19 @@ class FormatterBase:
 
     # Dynamic stuff / Plugins ############################################
 
-    def macro(self, macro_obj, name, args):
+    def macro(self, macro_obj, name, args, markup=None):
         # call the macro
-        return macro_obj.execute(name, args)
-
+        try:
+            return macro_obj.execute(name, args)
+        except ImportError, err:
+            errmsg = unicode(err)
+            if markup:
+                errmsg = wikiutil.escape(errmsg)
+                return (self.span(1, title=errmsg) +
+                        self.text(markup) +
+                        self.span(0))
+            else:
+                return self.text(errmsg)
     def _get_bang_args(self, line):
         if line.startswith('#!'):
             try:

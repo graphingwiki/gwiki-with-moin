@@ -11,7 +11,7 @@ from MoinMoin.formatter import FormatterBase
 from MoinMoin import wikiutil, i18n
 from MoinMoin.Page import Page
 from MoinMoin.action import AttachFile
-from MoinMoin.support.python_compatibility import set
+from MoinMoin.support.python_compatibility import set, rsplit
 
 # insert IDs into output wherever they occur
 # warning: breaks toggle line numbers javascript
@@ -481,12 +481,11 @@ class Formatter(FormatterBase):
         """
         @keyword title: override using the interwiki wikiname as title
         """
-        quoted = '%s:%s' % (interwiki, wikiutil.quoteName(pagename))
-        wikitag, wikiurl, wikitail, wikitag_bad = wikiutil.resolve_wiki(self.request, quoted)
+        wikitag, wikiurl, wikitail, wikitag_bad = wikiutil.resolve_interwiki(self.request, interwiki, pagename)
         wikiurl = wikiutil.mapURL(self.request, wikiurl)
         if wikitag == 'Self': # for own wiki, do simple links
             if '#' in wikitail:
-                wikitail, kw['anchor'] = wikitail.split('#', 1)
+                wikitail, kw['anchor'] = rsplit(wikitail, '#', 1)
             wikitail = wikiutil.url_unquote(wikitail)
             try: # XXX this is the only place where we access self.page - do we need it? Crashes silently on actions!
                 pagename = wikiutil.AbsPageName(self.page.page_name, wikitail)
@@ -615,7 +614,7 @@ class Formatter(FormatterBase):
             #self.request.log("attachment_link: url %s pagename %s filename %s" % (url, pagename, filename))
             fname = wikiutil.taintfilename(filename)
             if AttachFile.exists(self.request, pagename, fname):
-                target = AttachFile.getAttachUrl(pagename, fname, self.request)
+                target = AttachFile.getAttachUrl(pagename, fname, self.request, do='view')
                 title = "attachment:%s" % url
                 css = 'attachment'
             else:
@@ -638,10 +637,13 @@ class Formatter(FormatterBase):
                  (wikiutil.quoteWikinameURL(pagename),
                   wikiutil.url_quote_plus(fname))),
                 linktext % {'filename': self.text(fname)})
+        if not 'title' in kw:
+            kw['title'] = _('Inlined image: %(url)s') % {'url': self.text(url)}
+        # alt is required for images:
         if not 'alt' in kw:
-            kw['alt'] = _('Inlined image: %(url)s') % {'url': self.text(url)}
+            kw['alt'] = kw['title']
         return self.image(
-            title="attachment:%s" % url,
+            title=kw['title'],
             alt=kw['alt'],
             src=AttachFile.getAttachUrl(pagename, filename, self.request, addts=1),
             css="attachment")

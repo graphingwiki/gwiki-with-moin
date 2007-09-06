@@ -45,7 +45,7 @@ def getNames(cfg):
 
 
 #############################################################################
-### Macros - Handlers for [[macroname]] markup
+### Macros - Handlers for <<macroname>> markup
 #############################################################################
 
 class Macro:
@@ -101,7 +101,7 @@ class Macro:
 
     def format_error(self, err):
         """ format an error object for output instead of normal macro output """
-        return self.formatter.text(u'[[%s: %s]]' % (self.name, err.args[0]))
+        return self.formatter.text(u'<<%s: %s>>' % (self.name, err.args[0]))
 
     def execute(self, macro_name, args):
         """ Get and execute a macro
@@ -392,6 +392,8 @@ class Macro:
 
     def macro_GetVal(self, page=None, key=None):
         page = wikiutil.get_unicode(self.request, page, 'page')
+        if not self.request.user.may.read(page):
+            raise ValueError("You don't have enough rights on this page")
         key = wikiutil.get_unicode(self.request, key, 'key')
         if page is None or key is None:
             raise ValueError("You need to give: pagename, key")

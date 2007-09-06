@@ -20,6 +20,7 @@ from MoinMoin.parser.text_moin_wiki import Parser as WikiParser
 from MoinMoin.Page import Page
 from MoinMoin.action import AttachFile
 from MoinMoin import wikiutil
+from MoinMoin.support.python_compatibility import rsplit
 
 Dependencies = [] # this parser just depends on the raw text
 
@@ -131,7 +132,7 @@ class MoinWriter(html4css1.Writer):
         self.nodes.append(node)
         return True
 
-    wiki_resolver.priority = 001
+    wiki_resolver.priority = 1
 
     def __init__(self, formatter, request):
         html4css1.Writer.__init__(self)
@@ -325,7 +326,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
             link scheme is used for, so for now it is handled here.
 
             Also included here is a hack to allow MoinMoin macros. This routine
-            checks for a link which starts with "[[". This link is passed to the
+            checks for a link which starts with "<<". This link is passed to the
             MoinMoin formatter and the resulting markup is inserted into the
             document in the place of the original link reference.
         """
@@ -337,9 +338,8 @@ class MoinTranslator(html4css1.HTMLTranslator):
                 prefix, link = refuri.lstrip().split(':', 1)
 
             # First see if MoinMoin should handle completely. Exits through add_wiki_markup.
-            if ((refuri.startswith('[[') and refuri.endswith(']]')) or
-                    (prefix == 'drawing') or
-                    (prefix == 'inline')):
+            if ((refuri.startswith('<<') and refuri.endswith('>>')) or
+                    (prefix == 'drawing')):
                 self.process_wiki_text(refuri)
                 self.wiki_text = self.fixup_wiki_formatting(self.wiki_text)
                 self.add_wiki_markup()
@@ -358,7 +358,8 @@ class MoinTranslator(html4css1.HTMLTranslator):
                 if not [i for i in node.children if i.__class__ == docutils.nodes.image]:
                     node['classes'].append(prefix)
             elif prefix == 'wiki':
-                wikitag, wikiurl, wikitail, err = wikiutil.resolve_wiki(self.request, link)
+                wiki_name, page_name = wikiutil.split_interwiki(link)
+                wikitag, wikiurl, wikitail, err = wikiutil.resolve_interwiki(self.request, wiki_name, page_name)
                 wikiurl = wikiutil.mapURL(self.request, wikiurl)
                 node['refuri'] = wikiutil.join_wiki(wikiurl, wikitail)
                 # Only add additional class information if the reference does
@@ -378,9 +379,9 @@ class MoinTranslator(html4css1.HTMLTranslator):
                 pagename = refuri
                 anchor = ''
                 if '#' in refuri:
-                    pagename, anchor = refuri.split('#', 1)
+                    pagename, anchor = rsplit(refuri, '#', 1)
                 page = Page(self.request, wikiutil.AbsPageName(self.formatter.page.page_name, pagename))
-                node['refuri'] = page.url(self.request, anchor=anchor)
+                node['refuri'] = page.url(self.request, anchor=anchor, relative=False)
                 if not page.exists():
                     node['classes'].append('nonexistent')
         html4css1.HTMLTranslator.visit_reference(self, node)
@@ -582,7 +583,7 @@ class MoinDirectives:
     # Add additional macro directive.
     # This allows MoinMoin macros to be used either by using the directive
     # directly or by using the substitution syntax. Much cleaner than using the
-    # reference hack (`[[SomeMacro]]`_). This however simply adds a node to the
+    # reference hack (`<<SomeMacro>>`_). This however simply adds a node to the
     # document tree which is a reference, but through a much better user
     # interface.
     def macro(self, name, arguments, options, content, lineno,
@@ -590,10 +591,10 @@ class MoinDirectives:
         # content contains macro to be called
         if len(content):
             # Allow either with or without brackets
-            if content[0].startswith('[['):
+            if content[0].startswith('<<'):
                 macro = content[0]
             else:
-                macro = '[[%s]]' % content[0]
+                macro = '<<%s>>' % content[0]
             ref = reference(macro, refuri=macro)
             ref['name'] = macro
             return [ref]
