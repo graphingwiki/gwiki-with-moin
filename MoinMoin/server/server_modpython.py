@@ -9,12 +9,12 @@
     Minimal usage:
 
         from MoinMoin.server.server_modpython import CgiConfig, run
-        
+
         class Config(CgiConfig):
             pass
 
         run(Config)
-        
+
     See more options in CgiConfig class.
 
     @copyright: 2006 MoinMoin:ThomasWaldmann

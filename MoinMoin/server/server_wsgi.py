@@ -5,7 +5,7 @@
 
     import logging
     from MoinMoin.server.server_wsgi import WsgiConfig, moinmoinApp
-    
+
     class Config(WsgiConfig):
         logPath = 'moin.log' # define your log file here
         #loglevel_file = logging.INFO # if you do not like the default
