@@ -93,6 +93,11 @@
                       - 'username': username entry field
                       - 'password': password entry field
                       - 'openid_identifier': OpenID entry field
+                      - 'special_no_input': manual login is required
+                            but no form fields need to be filled in
+                            (for example openid with forced provider)
+                            in this case the theme may provide a short-
+                            cut omitting the login form
      * logout_possible: boolean indicating whether this auth methods
                         supports logging out
      * name: name of the auth method, must be the same as given as the
@@ -146,8 +151,11 @@ def get_multistage_continuation_url(request, auth_name, extra_fields={}):
               'login': '1',
               'stage': auth_name}
     fields.update(extra_fields)
-    qstr = wikiutil.makeQueryString(fields)
-    return ''.join([request.getBaseURL(), '?', qstr])
+    if request.page:
+        return request.page.url(request, querystr=fields, relative=False)
+    else:
+        qstr = wikiutil.makeQueryString(fields)
+        return ''.join([request.getBaseURL(), '?', qstr])
 
 
 class LoginReturn(object):
