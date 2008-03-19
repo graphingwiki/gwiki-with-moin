@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 """
-    MoinMoin - UserPreferences Form and User Browser
+    MoinMoin - Preferences Form
 
     @copyright: 2001-2004 Juergen Hermann <jh@web.de>,
                 2003-2007 MoinMoin:ThomasWaldmann
@@ -14,7 +14,7 @@ from MoinMoin.userprefs import UserPrefBase
 
 
 #################################################################
-# This is a mess.
+# This is still a mess.
 #
 # The plan for refactoring would be:
 # split the plugin into multiple preferences pages:
@@ -61,7 +61,8 @@ class Settings(UserPrefBase):
         form = self.request.form
 
         if self.request.request_method != 'POST':
-            return _("Use UserPreferences to change your settings or create an account.", wiki=True)
+            return
+
         theuser = self.request.user
         if not theuser:
             return

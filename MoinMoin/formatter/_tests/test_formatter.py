@@ -14,7 +14,6 @@ from MoinMoin import wikiutil
 
 class TestFormatter:
     def testSyntaxReferenceDomXml(self):
-        py.test.skip("dom_xml formatter is known to be broken")
         f_name = 'dom_xml'
         try:
             formatter = wikiutil.importPlugin(self.request.cfg, "formatter", f_name, "Formatter")
@@ -26,6 +25,7 @@ class TestFormatter:
             print "Done."
 
     def testSyntaxReferenceDocBook(self):
+        py.test.skip("docbook is broken")
         try:
             from xml.dom import getDOMImplementation
             dom = getDOMImplementation("4DOM")
@@ -40,7 +40,7 @@ class TestFormatter:
                 pass
             else:
                 print "Formatting using %r" % formatter
-                self.formatPage("SyntaxReference", formatter)
+                self.formatPage("HelpOnMoinWikiSyntax", formatter)
                 print "Done."
 
     def testSyntaxReferenceOthers(self):
@@ -127,7 +127,7 @@ coverage_modules = ['MoinMoin.formatter',
                     'MoinMoin.formatter.text_xml',
                     'MoinMoin.formatter.text_docbook',
                     'MoinMoin.formatter.text_plain',
-                    #'MoinMoin.formatter.dom_xml',
+                    'MoinMoin.formatter.dom_xml',
                     'MoinMoin.formatter.text_python',
                     'MoinMoin.formatter.pagelinks',
                    ]
