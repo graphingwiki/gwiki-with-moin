@@ -104,30 +104,31 @@ def execute(pagename, request):
         # read in the complete log of this page
         log = editlog.EditLog(request, rootpagename=pagename)
         count = 0
+        pgactioncount = 0
         for line in log.reverse():
             rev = int(line.rev)
             actions = []
             if line.action in ('SAVE', 'SAVENEW', 'SAVE/REVERT', 'SAVE/RENAME', ):
                 size = page.size(rev=rev)
-                if count == 0: # latest page
-                    actions.append(render_action(_('view'), {'action': 'show'}))
-                else:
-                    actions.append(render_action(_('view'), {'action': 'recall', 'rev': '%d' % rev}))
-                if count == 0:
+                actions.append(render_action(_('view'), {'action': 'recall', 'rev': '%d' % rev}))
+                if pgactioncount == 0:
                     rchecked = ' checked="checked"'
                     lchecked = ''
-                elif count == 1:
+                elif pgactioncount == 1:
                     lchecked = ' checked="checked"'
                     rchecked = ''
                 else:
                     lchecked = rchecked = ''
                 diff = '<input type="radio" name="rev1" value="%d"%s><input type="radio" name="rev2" value="%d"%s>' % (rev, lchecked, rev, rchecked)
+                if rev > 1:
+                    diff += render_action(' ' + _('to previous'), {'action': 'diff', 'rev1': rev-1, 'rev2': rev})
                 comment = line.comment
                 if not comment:
                     if '/REVERT' in line.action:
                         comment = _("Revert to revision %(rev)d.") % {'rev': int(line.extra)}
                     elif '/RENAME' in line.action:
                         comment = _("Renamed from '%(oldpagename)s'.") % {'oldpagename': line.extra}
+                pgactioncount += 1
             else: # ATT*
                 rev = '-'
                 diff = '-'
