@@ -4,30 +4,29 @@
 ##master-date:None
 #acl MoinPagesEditorGroup:read,write,delete,revert All:read
 #format gettext
-#language pl
+#language lt
 
 #
-# MoinMoin pl system text translation
+# MoinMoin lt system text translation
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.6\n"
+"Project-Id-Version: MoinMoin 1.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-30 00:25+0100\n"
-"PO-Revision-Date: 2006-02-09 11:25+0100\n"
-"Last-Translator: Radomir Dopieralski <mondev@sheep.art.pl>\n"
-"Language-Team: Polish <sergiusz-keyword-moinmoin.69c762@pawlowicz.name>\n"
+"PO-Revision-Date: 2007-12-01 00:00+0200\n"
+"Last-Translator: Aurelijus Sudzius <ruledbyfate@gmail.com>\n"
+"Language-Team: Lithuanian <ruledbyfate@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language-Team-Homepage: http://moinmo.in/MoinDev/Translation/PolishTeam\n"
-"X-Language: Polski\n"
-"X-Language-in-English: Polish\n"
+"X-Language: Lietuvių\n"
+"X-Language-in-English: Lithuanian\n"
 "X-HasWikiMarkup: True\n"
 "X-Direction: ltr\n"
 
 msgid "<unknown>"
-msgstr "<nieznany>"
+msgstr "<nežinomas>"
 
 #, fuzzy, python-format
 msgid ""
@@ -37,11 +36,11 @@ msgid ""
 "\n"
 "Login URL: %s/?action=login\n"
 msgstr ""
-"Identyfikator czytelnika: %s\n"
+"Prisijungimo vardas: %s\n"
 "\n"
-"Hasło czytelnika: %s\n"
+"Prisijungimo slaptažodis: %s\n"
 "\n"
-"URL logowania: %s/%s\n"
+"Prisijungimo URL: %s/%s?action=login\n"
 
 msgid ""
 "Somebody has requested to submit your account data to this email address.\n"
@@ -53,83 +52,89 @@ msgid ""
 "After successfully logging in, it is of course a good idea to set a new and "
 "known password.\n"
 msgstr ""
-"Ktoś zlecił wysłanie Twoich danych czytelnika na ten adres e-mail.\n"
+"Kažkas pareikalavo pateikti jūsų duomenis šiuo el. pašto adresu.\n"
 "\n"
-"Jeśli zapomniałeś swego hasła, użyj tych danych wpisując w pole hasła\n"
-"na stronie logowania DOKŁADNIE TO CO PONIŻEJ (skopiuj i wklej).\n"
+"Jeigu jūs praradote savo slaptažodį, prašome naudoti duomenis žemiau ir "
+"tiesiog įvesti\n"
+"slaptažodį KAIP PARODYTA į wiki slaptažodžio formos laukelį (naudokite "
+"kopijuoti ir įklijuoti\n"
+"šiam tikslui).\n"
 "\n"
-"Wskazane jest, aby po zalogowaniu się ustawić inne, nowe hasło.\n"
+"Kai sėkmingai prisijungsite, būtų protinga nustatyti naują ir žinomą "
+"slaptažodį.\n"
 
 #, python-format
 msgid "[%(sitename)s] Your wiki account data"
-msgstr "[%(sitename)s] Twoje dane czytelnika"
+msgstr "[%(sitename)s] Jūsų wiki vartotojo duomenys"
 
 msgid "You are not allowed to edit this page."
-msgstr "Nie możesz zmieniać zawartości tej strony."
+msgstr "Jums neleidžiama redaguoti šio puslapio"
 
 msgid "Page is immutable!"
-msgstr "Strona statyczna!"
+msgstr "Puslapis nekeičiamas!"
 
 msgid "Cannot edit old revisions!"
-msgstr "Nie można zmieniać starych wersji!"
+msgstr "Negalima redaguoti senesnių versijų!"
 
 msgid "The lock you held timed out. Be prepared for editing conflicts!"
 msgstr ""
-"Blokada tej strony wygasła, bądź przygotowany na ewentualne konflikty edycji!"
+"Užrakinimas, kuris jums buvo suteiktas, jau baigėsi. Pasiruoškite galimiems "
+"redagavimo konfliktams!"
 
 #, python-format
 msgid "Draft of \"%(pagename)s\""
-msgstr "Brudnopis strony \"%(pagename)s\""
+msgstr "Juodraštis puslapio \"%(pagename)s\""
 
 #, python-format
 msgid "Edit \"%(pagename)s\""
-msgstr "Modyfikuj \"%(pagename)s\""
+msgstr "Redaguoti \"%(pagename)s\""
 
 #, python-format
 msgid "Preview of \"%(pagename)s\""
-msgstr "Podgląd \"%(pagename)s\""
+msgstr "Peržiūra puslapio \"%(pagename)s\""
 
 #, python-format
 msgid "Your edit lock on %(lock_page)s has expired!"
-msgstr "Blokada strony %(lock_page)s wygasła!"
+msgstr "Jūsų redagavimo užrakinimas puslapio %(lock_page)s jau baigėsi!"
 
 #, python-format
 msgid "Your edit lock on %(lock_page)s will expire in # minutes."
-msgstr "Blokada strony %(lock_page)s wygaśnie w ciągu # minut."
+msgstr ""
+"Jūsų redagavimo užrakinimas puslapio %(lock_page)s baigsis po # minučių."
 
 #, python-format
 msgid "Your edit lock on %(lock_page)s will expire in # seconds."
-msgstr "Blokada strony %(lock_page)s wygaśnie w ciągu # sekund."
+msgstr ""
+"Jūsų redagavimo užrakinimas puslapio %(lock_page)s baigsis po # sekundžių."
 
 msgid "Someone else deleted this page while you were editing!"
-msgstr "Ktoś inny skasował tę stronę w czasie, kiedy ją modyfikowałeś!"
+msgstr "Kažkas jau ištrynė šį puslapį, kol jūs redagavote!"
 
 msgid "Someone else changed this page while you were editing!"
-msgstr ""
-"Ktoś inny zmienił zawartość tej strony w czasie, kiedy ją modyfikowałeś!"
+msgstr "Kažkas pakeitė šį puslapį, kol jūs redagavote!"
 
 msgid ""
 "Someone else saved this page while you were editing!\n"
 "Please review the page and save then. Do not save this page as it is!"
 msgstr ""
-"Ktoś inny zapisał tę stronę w czasie, kiedy ją modyfikowałeś!\n"
-"Przejrzyj tę stronę i wtedy zapisz. Nie zapisuj jej takiej jaka jest!\n"
-"Obejrzyj %(difflink)s aby stwierdzić, co zostało zmienione."
+"Kažkas jau išsaugojo puslapį, kol jūs redagavote!\n"
+"Prašome peržiūrėti puslapį ir tada jį išsaugoti. Neišsaugokite šio puslapio "
+"tokio, koks jis yra dabar!"
 
 msgid "[Content loaded from draft]"
-msgstr "[Zawartość nowej strony zaczerpnięta z brudnopisu]"
+msgstr "[Turinys įkrautas iš juodraščio]"
 
 #, python-format
 msgid "[Content of new page loaded from %s]"
-msgstr "[Zawartość nowej strony zaczerpnięta z %s]"
+msgstr "[Naujo puslapio turinys įkrautas iš %s]"
 
 #, python-format
 msgid "[Template %s not found]"
-msgstr "[Szablon %s nie znaleziony]"
+msgstr "[Šablonas %s nerastas]"
 
 #, python-format
 msgid "[You may not read %s]"
-msgstr "[Nie można czytać %s]"
+msgstr "[Jūs neturėtumėte skaityti %s]"
 
 #, python-format
 msgid ""
@@ -139,25 +144,25 @@ msgid ""
 "somehow without saving it.''' A draft gets saved for you when you do a "
 "preview, cancel an edit or unsuccessfully save."
 msgstr ""
-"'''<<BR>>Twój brudnopis oparty na wersji %(draft_rev)d (saved %"
-"(draft_timestamp_str)s) może być wczytany zamiast aktualnej wersji %"
-"(page_rev)d przez wciśnięcie przycisku load draft - na wypadek, gdybyś "
-"utracił swoje ostatnie zmiany bez ich zapisu.''' Brudnopisy są zapisywane "
-"automatycznie, gdy używasz podglądu, anlujuesz zmiany, albo zapis się nie "
-"powiedzie."
+"'''<<BR>>Jūsų juodraštis sukurtas pagrindu %(draft_rev)d (išsaugota %"
+"(draft_timestamp_str)s) jau gali būti įkrautas vietoje einamosios versijos %"
+"(page_rev)d naudojant juodraščio įkrovimo mygtuką - tuo atveju jeigu jūs "
+"praradote savo paskutinį redagavimą jo neišsaugoję.''' Juodraštis yra "
+"automatiškai išsaugojamas kai jūs peržiūrite, atsakote arba redaguojate "
+"nesėkmingą išsaugojimą."
 
 #, python-format
 msgid "Describe %s here."
-msgstr "Opisz %s tutaj."
+msgstr "Čia apibūdinkite %s."
 
 msgid "Check Spelling"
-msgstr "Sprawdź pisownię"
+msgstr "Patikrinti rašybą"
 
 msgid "Save Changes"
-msgstr "Zachowaj zmiany"
+msgstr "Išsaugoti pakeitimus"
 
 msgid "Cancel"
-msgstr "Anuluj"
+msgstr "Atsisakyti"
 
 #, python-format
 msgid ""
@@ -166,115 +171,117 @@ msgid ""
 "If you don't want that, hit '''%(cancel_button_text)s''' to cancel your "
 "changes."
 msgstr ""
-"Klikając w '''%(save_button_text)s''' umieszczasz swoje zmiany pod %"
+"Paspaudę '''%(save_button_text)s''' jūs pridedate savo pakeitimus pagal %"
 "(license_link)s.\n"
-"Jeżeli tego nie chcesz, kliknij '''%(cancel_button_text)s''' aby zrezygnować "
-"z wprowadzenia zmian."
+"Jeigu jūs to nenorite, spauskite '''%(cancel_button_text)s''', kad "
+"atsakytumėte savo pakeitimus."
 
 msgid "Preview"
-msgstr "Podgląd"
+msgstr "Peržiūrėti"
 
 msgid "Text mode"
-msgstr "Tryb tekstowy"
+msgstr "Tekstinė veiksena"
 
 msgid "Load Draft"
-msgstr "Wczytaj Brudnopis"
+msgstr "Įkrauti juodraštį"
 
 msgid "Trivial change"
-msgstr "Drobna zmiana"
+msgstr "Paprastas pakeitimas"
 
 msgid "Comment:"
-msgstr "Komentarz:"
+msgstr "Komentaras:"
 
 msgid "<No addition>"
-msgstr "<Bez dodania>"
+msgstr "<Be pridėjimo>"
 
 #, python-format
 msgid "Add to: %(category)s"
-msgstr "Dodaj do: %(category)s"
+msgstr "Pridėti į: %(category)s"
 
 msgid "Remove trailing whitespace from each line"
-msgstr "Usuń znaki spacji z końca każdej linii"
+msgstr "Ištrinti pasibaigiantį tarpą iš kiekvienos eilutės"
 
 #, python-format
 msgid "Argument \"%s\" must be a boolean value, not \"%s\""
-msgstr "Argument \"%s\" musi być wartością logiczną, a nie \"%s\""
+msgstr ""
+"Argumentas \"%s\" privalo būti teigiamos/neigiamos reikšmės, o ne \"%s\""
 
 #, python-format
 msgid "Argument must be a boolean value, not \"%s\""
-msgstr "Argument musi być wartością logiczną, a nie \"%s\""
+msgstr "Argumentas privalo būti teigiamos/neigiamos reikšmės, o ne \"%s\""
 
 #, python-format
 msgid "Argument \"%s\" must be an integer value, not \"%s\""
-msgstr "Argument \"%s\" musi być liczbą całkowitą, a nie \"%s\""
+msgstr "Argumentas \"%s\" privalo būti skaitinės reikšmės, o ne \"%s\""
 
 #, python-format
 msgid "Argument must be an integer value, not \"%s\""
-msgstr "Argument musi być liczbą całkowitą, a nie \"%s\""
+msgstr "Argumentas privalo būti skaitinės reikšmės, o ne \"%s\""
 
 #, python-format
 msgid "Argument \"%s\" must be a floating point value, not \"%s\""
-msgstr "Argument \"%s\" musi być liczbą zmiennoprzecinkową, a nie \"%s\""
+msgstr ""
+"Argumentas \"%s\" privalo būti slankiojo kablelio reikšmės, o ne \"%s\""
 
 #, python-format
 msgid "Argument must be a floating point value, not \"%s\""
-msgstr "Argument musi być liczbą zmiennoprzecinkową, a nie \"%s\""
+msgstr "Argumentas privalo būti slankiojo kablelio reikšmės, o ne \"%s\""
 
 #, python-format
 msgid "Argument \"%s\" must be a complex value, not \"%s\""
-msgstr "Argument \"%s\" musi być wartością złożoną, a nie \"%s\""
+msgstr "Argumentas \"%s\" privalo būti kompleksinės reikšmės, o ne \"%s\""
 
 #, python-format
 msgid "Argument must be a complex value, not \"%s\""
-msgstr "Argument musi być wartością złożoną, a nie \"%s\""
+msgstr "Argumentas privalo būti kompleksinės reikšmės, o ne \"%s\""
 
 #, python-format
 msgid "Argument \"%s\" must be one of \"%s\", not \"%s\""
-msgstr "Argument \"%s\" musi być jednym z \"%s\", a nie \"%s\""
+msgstr "Argumentas \"%s\" privalo būti arba \"%s\", arba \"%s\""
 
 #, python-format
 msgid "Argument must be one of \"%s\", not \"%s\""
-msgstr "Argument musi być jednym z \"%s\", a nie \"%s\""
+msgstr "Argumentas privalo būti arba \"%s\", arba \"%s\""
 
 msgid "Too many arguments"
-msgstr "Za dużo argumentów"
+msgstr "Per daug argumentų"
 
 msgid "Cannot have arguments without name following named arguments"
-msgstr "Niedopuszczalne są argumenty bez poprzedzającej nazwy"
+msgstr "Negalimi argumentai be toliau išvardintų įvardintų argumentų"
 
 #, python-format
 msgid "Argument \"%s\" is required"
-msgstr "Argument \"%s\" jest wymagany."
+msgstr "Argumentas \"%s\" yra būtinas"
 
 #, python-format
 msgid "No argument named \"%s\""
-msgstr "Nie istnieje argument o nazwie \"%s\"!"
+msgstr "Nėra argumentų pavadintų \"%s\""
 
 #, python-format
 msgid "Expected \"=\" to follow \"%(token)s\""
-msgstr "Za \"%(token)s\" powinno być \"=\""
+msgstr "Tikimasi \"=\" sekant \"%(token)s\""
 
 #, python-format
 msgid "Expected a value for key \"%(token)s\""
-msgstr "Spodziewana wartość dla klucza \"%(token)s\""
+msgstr "Tikimasi reikšmės raktui \"%(token)s\""
 
 msgid "Your changes are not saved!"
-msgstr "Nic nie zapisano!"
+msgstr "Jūsų nustatymai nebuvo išaugoti!"
 
 msgid "Page name is too long, try shorter name."
-msgstr "Nazwa strony jest zbyt długa, spróbuj krótszej."
+msgstr "Puslapio vardas yra per ilgas, išbandykite trumpesnį vardą."
 
 msgid "GUI Mode"
-msgstr "Tryb GUI"
+msgstr "GUI veiksena"
 
 msgid "Edit was cancelled."
-msgstr "Zmiany zostały anulowane."
+msgstr "Redagavimas buvo atšauktas."
 
 msgid "You can't copy to an empty pagename."
-msgstr "Nie możesz kopiować do strony o pustej nazwie."
+msgstr "Jūs negalite kopijuoti tuščio puslapio vardo."
 
 msgid "You are not allowed to copy this page!"
-msgstr "Nie możesz kopiować zawartości tej strony!"
+msgstr "Jums neleidžiama kopijuoti šio puslapio!"
 
 #, python-format
 msgid ""
@@ -282,78 +289,77 @@ msgid ""
 "\n"
 "Try a different name."
 msgstr ""
-"'''Strona o nazwie {{{'%s'}}} już istnieje.'''\n"
+"'''Puslapis pavadinimu {{{'%s'}}} jau egzistuoja.'''\n"
 "\n"
-"Spróbuj innej nazwy."
+"Pabandykite kitą vardą."
 
 #, python-format
 msgid "Could not copy page because of file system error: %s."
-msgstr "Nie mogę skopiować strony ze względu na błąd systemu plików: %s."
+msgstr "Negalėjau nukopijuoti puslapio dėl sisteminės klaidos: %s."
 
 msgid "You are not allowed to rename this page!"
-msgstr "Nie możesz zmieniać nazwy tej strony!"
+msgstr "Jums neleidžiama pervadinti šio puslapio!"
 
 msgid "You can't rename to an empty pagename."
-msgstr "Nazwa strony nie może być pusta."
+msgstr "Jūs negalite pervadinti į tuščią puslapio vardą."
 
 #, python-format
 msgid "Could not rename page because of file system error: %s."
-msgstr "Nie mogę zmienić nazwy strony ze względu na błąd systemu plików: %s."
+msgstr "Negalėjau pervadinti puslapio dėl sisteminės klaidos: %s."
 
 msgid "You are not allowed to delete this page!"
-msgstr "Nie możesz kasować niniejszej strony."
+msgstr "Jūs negalite pašalinti šio puslapio!"
 
 msgid "Thank you for your changes. Your attention to detail is appreciated."
-msgstr ""
-"Dziękujemy za Twe zmiany. Twoja troska poświęcona detalom jest nieoceniona."
+msgstr "Ačiū už jūsų pakeitimus. Jūsų detalių pastebėjimas yra vertinamas."
 
 #, python-format
 msgid "Page \"%s\" was successfully deleted!"
-msgstr "Strona \"%s\" została pomyślnie skasowana!"
+msgstr "Puslapis \"%s\" buvo sėkmingai pašalintas!"
 
 #, python-format
 msgid "Page could not get locked. Unexpected error (errno=%d)."
-msgstr "Strony nie można było zablokować. Niespodziewany błąd (errno=%d)."
+msgstr "Puslapis negalėjo būti užrakintas. Netikėta klaida (errno=%d)."
 
 msgid "Page could not get locked. Missing 'current' file?"
-msgstr "Strony nie można było zablokować. Brakuje pliku 'current'?"
+msgstr "Puslapis negalėjo būti užrakintas. Trūkstamas 'current' failas?"
 
 #, python-format
 msgid ""
 "Unable to determine current page revision from the 'current' file. The page %"
 "s is damaged and cannot be edited right now."
 msgstr ""
-"Nie można ustalić aktualnej wersji strony dla aktualnego pliku. Strona %s "
-"jest uszkodzona i nie może być teraz edytowana."
+"Negalėjau nustatyti einamosios puslapio versijos iš 'current' failo. "
+"Puslapis %s yra pažeistas arba negali būti redaguojamas šiuo metu."
 
 #, python-format
 msgid "Cannot save page %s, no storage space left."
-msgstr "Nie można zapisać strony %s, brak wolnego miejsca."
+msgstr "Negalėjau išsaugoti puslapio %s, neliko vietos."
 
 #, python-format
 msgid "An I/O error occurred while saving page %s (errno=%d)"
-msgstr ""
-"Błąd wejścia/wyjścia wystąpił w czasie zapisywania strony %s (errno=%d)"
+msgstr "Įvyko I/O klaida išsaugant puslapį %s (errno=%d)"
 
 msgid "You are not allowed to edit this page!"
-msgstr "Nie możesz zmieniać zawartości tej strony!"
+msgstr "Jums neleidžiama redaguoti šio puslapio!"
 
 msgid "You cannot save empty pages."
-msgstr "Nie możesz zapisywać pustych stron."
+msgstr "Jūs negalite išsaugoti tuščių puslapių."
 
 msgid "You already saved this page!"
-msgstr "Już zapisałeś tę stronę!"
+msgstr "Jūs jau išsaugojote šį puslapį!"
 
 msgid "You already edited this page! Please do not use the back button."
-msgstr "Już edytowałeś tę stronę! Proszę, nie używaj przycisku wstecz."
+msgstr "Jūs jau redagavote šį puslapį! Prašome nenaudoti mygtuko atgal."
 
 msgid "You did not change the page content, not saved!"
-msgstr "Nie zmieniono zawartości strony, nic nie zapisano!"
+msgstr "Jūs nekeitėte puslapio turinio, neišsaugota!"
 
 msgid ""
 "You can't change ACLs on this page since you have no admin rights on it!"
 msgstr ""
-"Nie możesz zmieniać ACL tej strony, ponieważ nie masz praw administratora!"
+"Jūs negalite keisti ACL'ų šiame puslapyje, kadangi jūs neturite tam "
+"administracinių teisių!"
 
 msgid "Notifications sent to:"
 msgstr ""
@@ -363,31 +369,34 @@ msgid ""
 "The lock of %(owner)s timed out %(mins_ago)d minute(s) ago, and you were "
 "granted the lock for this page."
 msgstr ""
-"Blokada założona przez %(owner)s wygasła %(mins_ago)d minut temu, i już "
-"możesz śmiało edytować tę stronę."
+"Užrakinimas %(owner)s pasibaigė prieš %(mins_ago)d minute(s), ir jums buvo "
+"suteiktas užrakinimas šiam puslapiui."
 
 #, python-format
 msgid ""
 "Other users will be ''blocked'' from editing this page until %(bumptime)s."
-msgstr "Inni czytelnicy nie mogą zmieniać tej strony do %(bumptime)s."
+msgstr ""
+"Kiti vartotojai bus ''užblokuoti'' nuo šio puslapio redagavimo iki %"
+"(bumptime)s."
 
 #, python-format
 msgid ""
 "Other users will be ''warned'' until %(bumptime)s that you are editing this "
 "page."
 msgstr ""
-"Inni czytelnicy będą ostrzeżeni że edytujesz tę stronę do %(bumptime)s ."
+"Kiti vartotojai bus ''perspėti'' iki %(bumptime)s, kad jūs redaguojate šį "
+"puslapį."
 
 msgid "Use the Preview button to extend the locking period."
-msgstr "Użyj przycisku podglądu aby przedłużyć czas blokady."
+msgstr "Naudokite peržiūros mygtuką, kad pratęstumėte užrakinimo periodą."
 
 #, python-format
 msgid ""
 "This page is currently ''locked'' for editing by %(owner)s until %(timestamp)"
 "s, i.e. for %(mins_valid)d minute(s)."
 msgstr ""
-"Ta strona jest obecnie ''zablokowana'' w celu edycji przez %(owner)s do %"
-"(timestamp)s, to jest przez %(mins_valid)d minut."
+"Šis puslapis šiuo metu yra ''užrakintas'' redagavimams %(owner)s iki %"
+"(timestamp)s, t.y. %(mins_valid)d minutėms."
 
 #, python-format
 msgid ""
@@ -398,64 +407,62 @@ msgid ""
 "to avoid editing conflicts.'''<<BR>>\n"
 "To leave the editor, press the Cancel button."
 msgstr ""
-"Ta strona została otwarta do edycji albo ostatnio podglądana %(timestamp)s "
-"przez %(owner)s.<<BR>>\n"
-"'''Powinieneś się ''powstrzymać od edycji'' tej strony przez minimum "
-"następne %(mins_valid)d minut,\n"
-"aby uniknąć konfliktów.'''<<BR>>\n"
-"Aby opuścić edytor, kliknij w przycisk \"Anuluj\"."
+"Šis puslapis buvo atidarytas redagavimui arba paskutinį kartą peržiūrėtas %"
+"(timestamp)s vartotojo %(owner)s.<<BR>>\n"
+"'''Jūs turėtumėte ''susilaikyti nuo redagavimo'' šio puslapio bent "
+"sekančioms %(mins_valid)d minutėms,\n"
+"kad išvengtumėte redagavimo konfliktų.'''<<BR>>\n"
+"Kad palikti redagavimą, spauskite mygtuką Atsisakyti."
 
 msgid "The wiki is currently not reachable."
-msgstr "Strona wiki jest obecnie nieosiągalna."
+msgstr "Wiki šiuo metu nepasiekiamas."
 
 msgid "Invalid username or password."
-msgstr "Niepoprawna nazwa czytelnika lub hasło"
+msgstr "Klaidingas vartotojo vardas arba slaptažodis."
 
 #, python-format
 msgid ""
 "The remote wiki uses a different InterWiki name (%(remotename)s) internally "
 "than you specified (%(localname)s)."
 msgstr ""
-"Zdalne wiki używa wewnętrznie innej nazwy InterWiki (%(remotename)s) niżta, "
-"którą podałeś (%(localname)s).Zdalne wiki używa wewnętrznie innej nazwy "
-"InterWiki (%(remotename)s) niż ta wpisana przez ciebie (%(localname)s)."
+"Nuotolinis wiki naudoja skirtingą vidinį InterWiki vardą (%(remotename)s) "
+"negu jūs nurodėte (%(localname)s)."
 
 #, python-format
 msgid "The package needs a newer version of MoinMoin (at least %s)."
-msgstr "Pakiet wymaga serwera z nowszą wersją MoinMoin (przynajmniej %s)."
+msgstr "Paketui reikia naujesnės MoinMoin versijos (bent %s)."
 
 msgid "The theme name is not set."
-msgstr "Nie wybrano żadnego wystroju"
+msgstr "Tema nenustatyta."
 
 msgid "Installing theme files is only supported for standalone type servers."
-msgstr ""
-"Instalacja plików wystroju jest wspierana tylko dla serwerów typu standalone."
+msgstr "Temos failų instaliavimas palaikomas tik savarankiškų tipų serveriams."
 
 #, python-format
 msgid "Installation of '%(filename)s' failed."
-msgstr "Nie udało się zainstalować '%(filename)s'."
+msgstr "Instaliavimas '%(filename)s' nesėkmingas."
 
 #, python-format
 msgid "The file %s is not a MoinMoin package file."
-msgstr "Plik %s nie jest pakietem MoinMoin."
+msgstr "Failas %s nėra MoinMoin paketo failas."
 
 #, python-format
 msgid "The page %s does not exist."
-msgstr "Strona %s nie istnieje."
+msgstr "Puslapis %s neegzistuoja."
 
 msgid "Invalid package file header."
-msgstr "Niepoprawny nagłówek pliku pakietu."
+msgstr "Klaidinga paketo failo antraštė."
 
 msgid "Package file format unsupported."
-msgstr "Format pakietu niewspierany."
+msgstr "Paketo failo formatas nepalaikomas."
 
 #, python-format
 msgid "Unknown function %(func)s in line %(lineno)i."
-msgstr "Nieznana funkcja %(func)s w linii %(lineno)i."
+msgstr "Nežinoma funkcija %(func)s eilutėje %(lineno)i."
 
 #, python-format
 msgid "The file %s was not found in the package."
-msgstr "Plik %s nie został znaleziony w pakiecie MoinMoin."
+msgstr "Failas %s nebuvo rastas pakete."
 
 #, python-format
 msgid "Invalid highlighting regular expression \"%(regex)s\": %(error)s"
@@ -465,130 +472,130 @@ msgid ""
 "The backed up content of this page is deprecated and will not be included in "
 "search results!"
 msgstr ""
-"Kopia zapasowa zawartości tej strony jest nieważna i nie będzie włączona do "
-"rezultatów przeszukiwania"
+"Šio puslapio atsarginė kopija yra uždrausta ir nebus įtraukta į paieškos "
+"rezultatus!"
 
 #, python-format
 msgid "Revision %(rev)d as of %(date)s"
-msgstr "Wersja %(rev)d z %(date)s"
+msgstr "Versija %(rev)d nuo %(date)s"
 
 #, python-format
 msgid "Redirected from page \"%(page)s\""
-msgstr "Przekazano ze strony \"%(page)s\""
+msgstr "Nukreipiama iš puslapio \"%(page)s\""
 
 #, python-format
 msgid "This page redirects to page \"%(page)s\""
-msgstr "Ta strona przekazuje na stronę \"%(page)s\""
+msgstr "Šis puslapis nukreipia į puslapį \"%(page)s\""
 
 msgid "Create New Page"
-msgstr "Utwórz nową stronę"
+msgstr "Sukurti naują puslapį"
 
 msgid "You are not allowed to view this page."
-msgstr "Nie możesz oglądać tej strony."
+msgstr "Jums neleidžiama peržiūrėti šį puslapį."
 
 msgid "[all]"
-msgstr "[wszystkie]"
+msgstr "[visi]"
 
 msgid "[not empty]"
-msgstr "[niepuste]"
+msgstr "[ne tušti]"
 
 msgid "[empty]"
-msgstr "[puste]"
+msgstr "[tušti]"
 
 msgid "filter"
-msgstr "filtr"
+msgstr "filtras"
 
 #, python-format
 msgid ""
 "Results %(bs)s%(hitsFrom)d - %(hitsTo)d%(be)s of %(aboutHits)s %(bs)s%(hits)d"
 "%(be)s results out of about %(pages)d pages."
 msgstr ""
-"Wyniki %(bs)s%(hitsFrom)d - %(hitsTo)d%(be)s z %(aboutHits)s %(bs)s%(hits)d%"
-"(be)s wyników z około %(pages)d stron."
+"Rezultatai %(bs)s%(hitsFrom)d - %(hitsTo)d%(be)s iš %(aboutHits)s %(bs)s%"
+"(hits)d%(be)s rezultatai sudaro apie %(pages)d puslapių."
 
 msgid "seconds"
-msgstr "sekund"
+msgstr "sekundžių"
 
 msgid "Previous"
-msgstr "Poprzedni"
+msgstr "Ankstesnis"
 
 msgid "Next"
-msgstr "Następny"
+msgstr "Paskesnis"
 
 msgid "rev"
-msgstr "przywróć"
+msgstr "ver"
 
 msgid "current"
-msgstr "aktualny(a)"
+msgstr "einamoji"
 
 #, python-format
 msgid "last modified: %s"
-msgstr "ostatnio modyfikowane %s"
+msgstr "paskutinį kartą modifikuota: %s"
 
 msgid "match"
-msgstr "porównanie"
+msgstr "sutpti"
 
 msgid "matches"
-msgstr "porównania"
+msgstr "sutampa"
 
 msgid "Line"
-msgstr "Linia"
+msgstr "Eilutė"
 
 msgid "No differences found!"
-msgstr "Nie znaleziono różnic!"
+msgstr "Pakeitimų nerasta!"
 
 msgid "Deletions are marked like this."
-msgstr "Usunięcia zostały oznaczone w ten sposób."
+msgstr "Pašalinimai yra pažymėti taip."
 
 msgid "Additions are marked like this."
-msgstr "Dodatki zostały oznaczone w ten sposób."
+msgstr "Pridėjimai yra pažymėti taip."
 
 msgid "Name"
-msgstr "Nazwa"
+msgstr "Vardas"
 
 msgid "Password"
-msgstr "Hasło"
+msgstr "Slaptažodis"
 
 msgid "OpenID"
 msgstr ""
 
 msgid "Login"
-msgstr "Login"
+msgstr "Prisijungti"
 
 #, fuzzy
 msgid "Username"
-msgstr "Czytelnik"
+msgstr "Vartotojas"
 
 msgid "ACL Groups"
 msgstr ""
 
 msgid "Email"
-msgstr "E-mail"
+msgstr "El. paštas"
 
 msgid "Jabber"
 msgstr ""
 
 msgid "Action"
-msgstr "Akcja"
+msgstr "Veiksmas"
 
 msgid "Enable user"
-msgstr "Włącz czytelnika"
+msgstr "Įgalinti vartotoją"
 
 msgid "disabled"
-msgstr "wyłączone"
+msgstr "neįgalus"
 
 msgid "Disable user"
-msgstr "Wyłącz czytelnika"
+msgstr "Apriboti vartotojo veiksnumą"
 
 msgid "Mail account data"
-msgstr "Dane konta email"
+msgstr "Pašto paskyros informacija"
 
 msgid "Missing password. Please enter user name and password."
-msgstr "Zapomniano o haśle. Podaj identyfikator i hasło."
+msgstr "Trūkstamas slaptažodis. Prašome įvesti vartotojo vardą ir slaptažodį."
 
 #, fuzzy
 msgid "You need to log in."
-msgstr "Ciasteczko skasowane. Wylogowano."
+msgstr "Jūs dabar atsijungęs."
 
 #, python-format
 msgid ""
@@ -621,7 +628,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Verification canceled."
-msgstr "Operacja została anulowana"
+msgstr "Operacija buvo atsakyta."
 
 msgid "OpenID failure."
 msgstr ""
@@ -665,345 +672,340 @@ msgid "Wiki"
 msgstr "Wiki"
 
 msgid "Page"
-msgstr "Strona"
+msgstr "Puslapis"
 
 msgid "User"
-msgstr "Czytelnik"
+msgstr "Vartotojas"
 
 msgid "Diffs"
-msgstr "Różnice"
+msgstr "Pakeitimai"
 
 msgid "Info"
-msgstr "Info"
+msgstr "Informacija"
 
 msgid "Edit"
-msgstr "Edycja"
+msgstr "Redaguoti"
 
 msgid "Unsubscribe"
-msgstr "Rezygnuj z subskrybcji"
+msgstr "Atsisakyti"
 
 msgid "Subscribe"
-msgstr "Zasubskrybuj"
+msgstr "Užsisakyti"
 
 msgid "Raw"
-msgstr "Surowy"
+msgstr "Neapdorotas"
 
 msgid "XML"
 msgstr "XML"
 
 msgid "Print"
-msgstr "Drukuj"
+msgstr "Spausdinti"
 
 msgid "View"
-msgstr "Zobacz"
+msgstr "Peržiūrėti"
 
 msgid "Home"
-msgstr "Strona domowa"
+msgstr "Į pradžią"
 
 msgid "Up"
-msgstr "Góra"
+msgstr "Į viršų"
 
 msgid "[RSS]"
 msgstr "[RSS]"
 
 msgid "[DELETED]"
-msgstr "[SKASOWANA]"
+msgstr "[PAŠALINTAS]"
 
 msgid "[UPDATED]"
-msgstr "[UAKTUALNIONA]"
+msgstr "[ATNAUJINTAS]"
 
 msgid "[RENAMED]"
-msgstr "[PRZEMIANOWANA]"
+msgstr "[PERVADINTAS]"
 
 msgid "[CONFLICT]"
-msgstr "[KONFLIKT]"
+msgstr "[KONFLIKTUOJANTIS]"
 
 msgid "[NEW]"
-msgstr "[NOWA]"
+msgstr "[NAUJAS]"
 
 msgid "[DIFF]"
-msgstr "[RÓŻNICE]"
+msgstr "[PAKEITIMAI]"
 
 msgid "[BOTTOM]"
-msgstr "[KONIEC STRONY]"
+msgstr "[Į APAČIĄ]"
 
 msgid "[TOP]"
-msgstr "[POCZĄTEK STRONY]"
+msgstr "[Į VIRŠŲ]"
 
 msgid "Click to do a full-text search for this title"
-msgstr "Kliknij aby poszukać tytułu metodą pełnotekstową"
+msgstr "Spauskite, kad atliktumėte šios antraštės paiešką visame tekste"
 
 msgid "Settings"
 msgstr ""
 
 msgid "Logout"
-msgstr "Wyjdź"
+msgstr "Atsijungti"
 
 msgid "Clear message"
-msgstr "Usuń wiadomość"
+msgstr "Išvalyti žinutę"
 
 #, python-format
 msgid "last edited %(time)s by %(editor)s"
-msgstr "ostatnio edytowane %(time)s przez %(editor)s"
+msgstr "paskutinį kartą redaguota %(time)s redaktoriaus %(editor)s"
 
 #, python-format
 msgid "last modified %(time)s"
-msgstr "ostatnio modyfikowane %(time)s"
+msgstr "paskutinį kartą keista %(time)s"
 
 msgid "Search:"
-msgstr "Szukaj:"
+msgstr "Paieška:"
 
 msgid "Text"
-msgstr "Tekst"
+msgstr "Tekstas"
 
 msgid "Titles"
-msgstr "Tytuły"
+msgstr "Pavadinimai"
 
 msgid "Search"
-msgstr "Szukaj"
+msgstr "Paieška"
 
 msgid "More Actions:"
-msgstr "Więcej operacji:"
+msgstr "Daugiau veiksmų:"
 
 msgid "------------------------"
 msgstr "------------------------"
 
 msgid "Raw Text"
-msgstr "Tekst surowy"
+msgstr "Neapdorotas tekstas"
 
 msgid "Print View"
-msgstr "Podgląd wydruku"
+msgstr "Spausdinimo peržiūra"
 
 msgid "Delete Cache"
-msgstr "Usuń pamięć podręczną"
+msgstr "Ištrinti laikinąją atmintį"
 
 msgid "Rename Page"
-msgstr "Zmień nazwę strony"
+msgstr "Pervadinti puslapį"
 
 msgid "Copy Page"
-msgstr "Kopiuj stronę"
+msgstr "Kopijuoti puslapį"
 
 msgid "Delete Page"
-msgstr "Usuń stronę"
+msgstr "Pašalinti puslapį"
 
 msgid "Like Pages"
-msgstr "Podobne strony"
+msgstr "Panašūs puslapiai"
 
 msgid "Local Site Map"
-msgstr "Lokalna mapa witryny"
+msgstr "Lokalus svetainės žemėlapis"
 
 msgid "My Pages"
-msgstr "Moje strony"
+msgstr "Mano puslapiai"
 
 msgid "Subscribe User"
-msgstr "Zasubskrybuj Czytelnika"
+msgstr "Užsakyti vartotoją"
 
 msgid "Remove Spam"
-msgstr "Usuń spam"
+msgstr "Pašalinti šlamštą"
 
 msgid "Revert to this revision"
-msgstr "Przywróć do tej wersji"
+msgstr "Grąžinti į šią versiją"
 
 msgid "Package Pages"
-msgstr "Spakuj strony"
+msgstr "Paketų puslapiai"
 
 msgid "Render as Docbook"
-msgstr "Utwórz jako Docbook"
+msgstr "Apdoroti kaip Docbook"
 
 msgid "Sync Pages"
-msgstr "Synchronizuj strony"
+msgstr "Sinchronizuoti puslapius"
 
 msgid "Do"
-msgstr "Wykonaj"
+msgstr "Vykdyti"
 
 msgid "Comments"
-msgstr "Komentarze"
+msgstr "Komentarai"
 
 msgid "Edit (Text)"
-msgstr "Edytuj (tekstowo)"
+msgstr "Redaguoti (tekstą)"
 
 msgid "Edit (GUI)"
-msgstr "Edytuj (graficznie)"
+msgstr "Redaguoti (GUI)"
 
 msgid "Immutable Page"
-msgstr "Strona statyczna"
+msgstr "Nekeičiami puslapiai"
 
 msgid "Remove Link"
-msgstr "Usuń skrót"
+msgstr "Pašalinti nuorodą"
 
 msgid "Add Link"
-msgstr "Dodaj skrót"
+msgstr "Įtraukti nuorodą"
 
 msgid "Attachments"
-msgstr "Załączniki"
+msgstr "Priedai"
 
 #, python-format
 msgid "Show %s days."
-msgstr "Pokaż %s dni."
+msgstr "Rodyti %s dienų."
 
 msgid "Wiki Markup"
-msgstr "Język oznaczeń wiki"
+msgstr "Wiki žymėjimas"
 
 msgid "DeleteCache"
-msgstr "UsuńPamięćPodręczną"
+msgstr "PašalintiLaikinąjąAtmintį"
 
 #, python-format
 msgid "(cached %s)"
-msgstr "(w pamięci podręcznej %s)"
+msgstr "(saugomas %s)"
 
 msgid "Or try one of these actions:"
-msgstr "Lub spróbuj wykonać: "
+msgstr "Arba bandykite vieną iš šių veiksmų:"
 
 msgid "Date"
 msgstr "Data"
 
 msgid "From"
-msgstr "Od"
+msgstr "Nuo"
 
 msgid "To"
-msgstr "Do"
+msgstr "Kam"
 
 msgid "Content"
-msgstr "Zawartość"
+msgstr "Turinys"
 
 #, python-format
 msgid "Connection to mailserver '%(server)s' failed: %(reason)s"
-msgstr ""
-"Awaria połączenia z serwerem poczty elektronicznej '%(server)s' z powodu: %"
-"(reason)s"
+msgstr "Prisijungimas prie pašto serverio '%(server)s' nesėkmingas: %(reason)s"
 
 msgid "Mail not sent"
-msgstr "Poczta nie została wysłana"
+msgstr "Paštas neišsiųstas"
 
 msgid "Mail sent OK"
-msgstr "Poczta została wysłana"
+msgstr "Paštas išsiųstas"
 
 msgid ""
 "Rendering of reStructured text is not possible, please install Docutils."
 msgstr ""
-"Przetwarzanie tekstu w formacie reStructured jest niemożliwe, proszę "
-"doinstalować pakiet \"docutils\"."
+"Apdorojimas reStructured teksto nėra galimas, prašome instaliuoti Docutils."
 
 msgid "**Maximum number of allowed includes exceeded**"
-msgstr ""
-"**Przekroczona maksymalna dozwolona liczba dyrektyw włączających zawartość "
-"innych stron**"
+msgstr "**Didžiausias skaičius galimų įterpimų viršytas**"
 
 #, fuzzy, python-format
 msgid "**You are not allowed to read the page: %s**"
-msgstr "Nie możesz zmieniać nazwy tej strony!"
+msgstr "Jums neleidžiama pervadinti šio puslapio!"
 
 #, python-format
 msgid "**Could not find the referenced page: %s**"
-msgstr "**Nie można znaleźć strony, do której się odwołano: %s**"
+msgstr "**Negalėjau surasti minimo puslapio: %s**"
 
 msgid "XSLT option disabled, please look at HelpOnConfiguration."
-msgstr "Opcja XSLT jest wyłączona, proszę przeczytać HelpOnConfiguration."
+msgstr "XSLT opcija neįgalinta, prašome žiūrėti į HelpOnConfiguration."
 
 msgid "XSLT processing is not available, please install 4suite 1.x."
-msgstr "Przetwarzanie XSLT jest niedostępne, zainstaluj 4suite 1.x."
+msgstr "XSLT apdorojimas negalimas, prašome įdiegti 4suite 1.x."
 
 #, python-format
 msgid "%(errortype)s processing error"
-msgstr "błąd przetwarzania %(errortype)s"
+msgstr "%(errortype)s apdorojimo klaida"
 
 #, python-format
 msgid "Expected \"%(wanted)s\" after \"%(key)s\", got \"%(token)s\""
-msgstr "Spodziewane \"%(wanted)s\" po \"%(key)s\", otrzymano \"%(token)s\""
+msgstr "Tikėtasi \"%(wanted)s\" po \"%(key)s\", gauta \"%(token)s\""
 
 #, python-format
 msgid "Expected an integer \"%(key)s\" before \"%(token)s\""
-msgstr "Spodziewana wartość całkowita \"%(key)s\" przed \"%(token)s\""
+msgstr "Tikėtasi sveikojo skaičiaus \"%(key)s\" prieš \"%(token)s\""
 
 #, python-format
 msgid "Expected an integer \"%(arg)s\" after \"%(key)s\""
-msgstr "Spodziewana wartość całkowita \"%(arg)s\"  po \"%(key)s\""
+msgstr "Tikėtasi skaičiaus \"%(arg)s\" po \"%(key)s\""
 
 #, python-format
 msgid "Expected a color value \"%(arg)s\" after \"%(key)s\""
-msgstr "Spodziewana wartość koloru \"%(arg)s\" po \"%(key)s\""
+msgstr "Tikėtasi spalvos reikšmės \"%(arg)s\" po \"%(key)s\""
 
 msgid "FrontPage"
-msgstr "StronaGłówna"
+msgstr "PirmasisPuslapia"
 
 msgid "RecentChanges"
-msgstr "OstatnieZmiany"
+msgstr "PaskutiniaiPakeitimai"
 
 msgid "TitleIndex"
-msgstr "IndeksTytułów"
+msgstr "PavadinimųIndeksas"
 
 msgid "WordIndex"
-msgstr "IndeksSłów"
+msgstr "ŽodžiųIndeksas"
 
 msgid "FindPage"
-msgstr "ZnajdźStronę"
+msgstr "IeškotiPuslapio"
 
 msgid "SiteNavigation"
-msgstr "NawigacjaSerwisu"
+msgstr "SvetainėsNavigacija"
 
 msgid "HelpContents"
-msgstr "PomocSpisTreści"
+msgstr "PagalbaTurinio"
 
 msgid "HelpOnFormatting"
-msgstr "PomocPrzyFormatowaniu"
+msgstr "PagalbaFormatavimo"
 
 msgid "SendMyPassword"
-msgstr "WyślijMiHasło"
+msgstr "AtsiųstiManoSlaptažodį"
 
 msgid "WikiLicense"
-msgstr "LicencjaWiki"
+msgstr "WikiLicencija"
 
 msgid "MissingPage"
-msgstr "NieistniejącaStrona"
+msgstr "TrūkstamiPuslapiai"
 
 msgid "MissingHomePage"
-msgstr "NieistniejącaStronaDomowa"
+msgstr "TrūkstamiNamųPuslapiai"
 
 msgid "Mon"
-msgstr "pon"
+msgstr "Pr"
 
 msgid "Tue"
-msgstr "wto"
+msgstr "An"
 
 msgid "Wed"
-msgstr "śro"
+msgstr "Tr"
 
 msgid "Thu"
-msgstr "czw"
+msgstr "Kt"
 
 msgid "Fri"
-msgstr "pią"
+msgstr "Pe"
 
 msgid "Sat"
-msgstr "sob"
+msgstr "Št"
 
 msgid "Sun"
-msgstr "nie"
+msgstr "Sk"
 
 msgid "AttachFile"
-msgstr "ZałączPlik"
+msgstr "Priedai"
 
 msgid "DeletePage"
-msgstr "UsuńStronę"
+msgstr "PašalintiPuslapį"
 
 msgid "LikePages"
-msgstr "PodobneStrony"
+msgstr "PanašūsPuslapiai"
 
 msgid "LocalSiteMap"
-msgstr "LokalnaMapaSerwisu"
+msgstr "LokalusSvetainėsŽemėlapis"
 
 msgid "RenamePage"
-msgstr "ZmieńNazwę"
+msgstr "PervadintiPuslapį"
 
 msgid "SpellCheck"
-msgstr "SprawdźPisownię"
+msgstr "KlaidųTaisymas"
 
 #, python-format
 msgid ""
 "Sorry, can not save page because \"%(content)s\" is not allowed in this wiki."
 msgstr ""
-"Niestety, strona nie została zachowana ze względu na to, że \"%(content)s\" "
-"nie są dozwolone w tym wiki."
+"Atsiprašome, tačiau jūs negalite išsaugoti puslapio, kadangi \"%(content)s\" "
+"nėra leidžiamas šiame wiki."
 
 msgid "Notification"
 msgstr ""
@@ -1013,7 +1015,7 @@ msgstr ""
 
 #, fuzzy
 msgid "'''Email'''"
-msgstr "E-mail"
+msgstr "El. paštas"
 
 msgid "'''Jabber'''"
 msgstr ""
@@ -1031,28 +1033,30 @@ msgstr ""
 
 #, fuzzy
 msgid "Subscribed events"
-msgstr "Zasubskrybuj Czytelnika"
+msgstr "Užsakyti vartotoją"
 
 #, fuzzy
 msgid "Subscribed wiki pages<<BR>>(one regex per line)"
-msgstr "Zasubskrybowane strony wiki (jedno wyrażenie regularne w linii)"
+msgstr ""
+"Užsiprenumeruoti wiki puslapius (naudokite vieną reguliariąją išraišką "
+"vienoje eilutėje)"
 
 msgid "Save"
-msgstr "Zachowaj"
+msgstr "Išsaugoti"
 
 #, fuzzy
 msgid "Change password"
-msgstr "Hasło"
+msgstr "Slaptažodis"
 
 msgid "Passwords don't match!"
-msgstr "Hasła się nie zgadzają!"
+msgstr "Slaptažodžiai nesutampa!"
 
 msgid "Please specify a password!"
-msgstr "Proszę podać hasło!"
+msgstr "Prašome įvesti slaptažodį!"
 
 #, python-format
 msgid "Password not acceptable: %s"
-msgstr "Hasło niedopuszczalne: %s"
+msgstr "Slaptažodis nepriimtinas: %s"
 
 msgid "Your password has been changed."
 msgstr ""
@@ -1061,7 +1065,7 @@ msgid "To change your password, enter a new password twice."
 msgstr ""
 
 msgid "Password repeat"
-msgstr "Powtórz hasło"
+msgstr "Pakartoti slaptažodį"
 
 msgid "Switch user"
 msgstr ""
@@ -1082,7 +1086,7 @@ msgid ""
 msgstr ""
 
 msgid "Select User"
-msgstr "Wybierz czytelnika"
+msgstr "Pasirikite vartotoją"
 
 msgid "OpenID settings"
 msgstr ""
@@ -1098,7 +1102,7 @@ msgstr ""
 
 #, fuzzy
 msgid "This OpenID is already used for another account."
-msgstr "Niniejsza strona została już skasowana albo nigdy jej nie było!"
+msgstr "Šis puslapis jau pašalintas, arba niekada nebuvo sukurtas!"
 
 msgid "OpenID added successfully."
 msgstr ""
@@ -1113,7 +1117,7 @@ msgid "Add OpenID"
 msgstr ""
 
 msgid "Preferences"
-msgstr "PreferencjeCzytelnika"
+msgstr "Nustatymai"
 
 #, python-format
 msgid ""
@@ -1121,78 +1125,79 @@ msgid ""
 "Name may contain any Unicode alpha numeric character, with optional one\n"
 "space between words. Group page name is not allowed."
 msgstr ""
-"Nieprawidłowy identyfikator czytelnika {{{'%s'}}}.\n"
-"Identyfikator może zawierać alfanumeryczne znaki unikodu, z opcjonalnie\n"
-"jedną spacją pomiędzy słowami. Grupowa nazwa strony jest niedozwolona."
+"Klaidingas vartotojo vardas {{{'%s'}}}.\n"
+"Vardas gali susidaryti iš bet kokių Unikodo raidinių skaitmeninių simbolių, "
+"su neprivalomu vienu\n"
+"tarpu tarp žodžių. Grupės puslapių vardai neleidžiami."
 
 msgid "This user name already belongs to somebody else."
-msgstr "Niniejszy identyfikator należy już do kogoś innego."
+msgstr "Šis vartotojo vardas jau priklauso kažkam kitkam."
 
 msgid "Empty user name. Please enter a user name."
-msgstr "Puste pole identyfikatora. Podaj swój identyfikator."
+msgstr "Tuščias vartotojo vardas. Prašome įvesti vartotojo vardą."
 
 msgid ""
 "Please provide your email address. If you lose your login information, you "
 "can get it by email."
 msgstr ""
-"Lepiej podaj swój adres poczty elektronicznej. Jeśli nie podasz, a zapomnisz "
-"identyfikatora albo hasła, nie dostaniesz podpowiedzi pocztą."
+"Prašome pateikti savo el. pašto adresą. Jeigu jūs pamesite prisijungimo "
+"informaciją, galėsite ją atgauti el. paštu."
 
 msgid "This email already belongs to somebody else."
-msgstr "Ten adres poczty elektronicznej należy do kogoś innego."
+msgstr "Šis el. pašto adresas jau priklauso kažkam kitkam."
 
 #, fuzzy
 msgid "This jabber id already belongs to somebody else."
-msgstr "Ten adres poczty elektronicznej należy do kogoś innego."
+msgstr "Šis el. pašto adresas jau priklauso kažkam kitkam."
 
 #, python-format
 msgid "The theme '%(theme_name)s' could not be loaded!"
-msgstr "Wystrój '%(theme_name)s' nie może zostać załadowany!"
+msgstr "Tema '%(theme_name)s' negalėjo būti įkrauta!"
 
 msgid "User preferences saved!"
-msgstr "Ustawienia czytelnika zapisane!"
+msgstr "Vartotojo nustatymai išsaugoti!"
 
 msgid "Default"
-msgstr "Domyślny"
+msgstr "Numatytasis"
 
 msgid "<Browser setting>"
-msgstr "<Ustawienia przeglądarki>"
+msgstr "<Naršyklės nustatymai>"
 
 msgid "the one preferred"
-msgstr "tylko preferowany"
+msgstr "duodama pirmenybė"
 
 msgid "free choice"
-msgstr "wybór dowolny"
+msgstr "laisvas pasirinkimas"
 
 msgid "Preferred theme"
-msgstr "Ulubiony wystrój"
+msgstr "Nustatyta tema"
 
 msgid "Editor Preference"
-msgstr "Ulubiony edytor"
+msgstr "Redaktoriaus nustatymai"
 
 msgid "Editor shown on UI"
-msgstr "Pokazywany edytor"
+msgstr "Redaktorius rodomas UI"
 
 msgid "Time zone"
-msgstr "Strefa czasowa"
+msgstr "Laiko juosta"
 
 msgid "Your time is"
-msgstr "U Ciebie jest teraz"
+msgstr "Jūsų laikas yra"
 
 msgid "Server time is"
-msgstr "Na serwerze jest teraz"
+msgstr "Serverio laikas yra"
 
 msgid "Date format"
-msgstr "Format daty"
+msgstr "Datos formatas"
 
 msgid "Preferred language"
-msgstr "Ulubiony język"
+msgstr "Nustatyta kalba"
 
 msgid "General options"
-msgstr "Główne opcje"
+msgstr "Bendri nustatymai"
 
 msgid "Quick links"
-msgstr "Szybkie skróty"
+msgstr "Greitosios nuorodos"
 
 #, fuzzy, python-format
 msgid ""
@@ -1204,20 +1209,20 @@ msgid ""
 "The \"%(pagename)s\" page has been changed by %(editor)s:\n"
 "\n"
 msgstr ""
-"Drogi czytelniku wiki,\n"
+"Mielasis Wiki vartotojau,\n"
 "\n"
-"Zasubskrybowałeś stronę wiki lub kategorię wiki na \"%(sitename)s\" w celu "
-"otrzymywania informacji o zmianach.\n"
+"Jūs sėkmingai užsiregistravote wiki puslapyje arba wiki kategorijoje \"%"
+"(sitename)s\" dėl pakeitimų pranešimų.\n"
 "\n"
-"Następująca strona została zaktualizowana przez %(editor)s:\n"
+"Toliau paminėtas puslapis buvo pakeistas %(editor)s:\n"
 "%(pagelink)s\n"
 "\n"
 
 msgid "New page:\n"
-msgstr "Nowa strona:\n"
+msgstr "Naujas puslapis:\n"
 
 msgid "No differences found!\n"
-msgstr "Nie znaleziono różnic!\n"
+msgstr "Pakeitimų nerasta!\n"
 
 #, fuzzy, python-format
 msgid ""
@@ -1229,12 +1234,12 @@ msgid ""
 "The page \"%(pagename)s\" has been deleted by %(editor)s:\n"
 "\n"
 msgstr ""
-"Drogi czytelniku wiki,\n"
+"Mielasis Wiki vartotojau,\n"
 "\n"
-"Zasubskrybowałeś stronę wiki lub kategorię wiki na \"%(sitename)s\" w celu "
-"otrzymywania informacji o zmianach.\n"
+"Jūs sėkmingai užsiregistravote wiki puslapyje arba wiki kategorijoje \"%"
+"(sitename)s\" dėl pakeitimų pranešimų.\n"
 "\n"
-"Następująca strona została zaktualizowana przez %(editor)s:\n"
+"Toliau paminėtas puslapis buvo pakeistas %(editor)s:\n"
 "%(pagelink)s\n"
 "\n"
 
@@ -1248,12 +1253,12 @@ msgid ""
 "The page \"%(pagename)s\" has been renamed from \"%(oldname)s\" by %(editor)"
 "s:\n"
 msgstr ""
-"Drogi czytelniku wiki,\n"
+"Mielasis Wiki vartotojau,\n"
 "\n"
-"Zasubskrybowałeś stronę wiki lub kategorię wiki na \"%(sitename)s\" w celu "
-"otrzymywania informacji o zmianach.\n"
+"Jūs sėkmingai užsiregistravote wiki puslapyje arba wiki kategorijoje \"%"
+"(sitename)s\" dėl pakeitimų pranešimų.\n"
 "\n"
-"Następująca strona została zaktualizowana przez %(editor)s:\n"
+"Toliau paminėtas puslapis buvo pakeistas %(editor)s:\n"
 "%(pagelink)s\n"
 "\n"
 
@@ -1271,7 +1276,7 @@ msgstr ""
 
 #, fuzzy, python-format
 msgid "New attachment added to page %(pagename)s on %(sitename)s"
-msgstr "<<Verbatim(załącznik:)>>%(filename)s z %(pagename)s"
+msgstr "<<Verbatim(attachment:)>>%(filename)s iš %(pagename)s"
 
 #, python-format
 msgid ""
@@ -1293,26 +1298,26 @@ msgstr ""
 
 #, fuzzy
 msgid "Page has been renamed"
-msgstr "Ilość odsłon i edycji"
+msgstr "Puslapių aplankymai ir pakeitimai"
 
 #, fuzzy
 msgid "Page has been deleted"
-msgstr "Strona \"%s\" została pomyślnie skasowana!"
+msgstr "Puslapis \"%s\" buvo sėkmingai pašalintas!"
 
 #, fuzzy
 msgid "Page has been copied"
-msgstr "Ilość odsłon i edycji"
+msgstr "Puslapių aplankymai ir pakeitimai"
 
 #, fuzzy
 msgid "A new attachment has been added"
-msgstr "Nowy załącznik"
+msgstr "Naujas priedo pavadinimas"
 
 msgid "A page has been reverted to a previous state"
 msgstr ""
 
 #, fuzzy
 msgid "A user has subscribed to a page"
-msgstr "Zasubskrybowałeś tę stronę."
+msgstr "Jūs buvote užprenumeruotas šiame puslapyje."
 
 msgid "A new account has been created"
 msgstr ""
@@ -1320,11 +1325,11 @@ msgstr ""
 #, python-format
 msgid "[%(sitename)s] %(trivial)sUpdate of \"%(pagename)s\" by %(username)s"
 msgstr ""
-"[%(sitename)s] %(trivial)sAktualizacja strony \"%(pagename)s\" dokonana "
-"przez %(username)s"
+"[%(sitename)s] %(trivial)sAtnaujinimas \"%(pagename)s\" vartotojo %(username)"
+"s"
 
 msgid "Trivial "
-msgstr "Drobna "
+msgstr "Paprastas "
 
 #, python-format
 msgid ""
@@ -1341,86 +1346,85 @@ msgstr ""
 
 #, fuzzy
 msgid "Attachment link"
-msgstr "Załączniki"
+msgstr "Priedai"
 
 #, fuzzy
 msgid "Page link"
-msgstr "Stron w rodzaju \"%s\""
+msgstr "Puslapiai panašūs į \"%s\""
 
 #, fuzzy
 msgid "Changed page"
-msgstr "Spakuj strony"
+msgstr "Paketo puslapiai"
 
 #, fuzzy
 msgid "Page changed"
-msgstr "Zachowaj zmiany"
+msgstr "Išsaugoti pakeitimus"
 
 #, python-format
 msgid "Low-level communication error: %s"
 msgstr ""
 
 msgid "Options --pages and --search are mutually exclusive!"
-msgstr "Opcje --pages i --search wzajemnie się wykluczają!"
+msgstr "Opcijos --pages ir --search yra nesuderinamos!"
 
 msgid "You must specify an output file!"
-msgstr "Musisz podać plik wyjściowy!"
+msgstr "Jūs privalote nurodyti išvesties failą!"
 
 msgid "No pages specified using --pages or --search, assuming full package."
-msgstr ""
-"Nie podano stron dla --pages lub --search, zakładam że chodzi o pełen pakiet."
+msgstr "Nenurodyti puslapiai naudojant --pages arba --search,"
 
 msgid "Output file already exists! Cowardly refusing to continue!"
-msgstr "Plik wyjściowy już istnieje! Tchórzliwie odmawiam kontynuacji!"
+msgstr "Išvesties failas jau egzistuoja! Atsisakoma tęsti!"
 
 msgid "Language"
-msgstr "Język"
+msgstr "Kalba"
 
 msgid "Others"
-msgstr "Inni"
+msgstr "Kiti"
 
 msgid "Charts are not available!"
-msgstr "Wykresy nie są dostępne!"
+msgstr "Diagramos nėra prieinamos!"
 
 msgid "Page Size Distribution"
-msgstr "Rozkład rozmiarów stron"
+msgstr "Puslapio distribucijos dydis"
 
 msgid "page size upper bound [bytes]"
-msgstr "rozmiar strony [bajtów]"
+msgstr "puslapio aukštesnysis apribojimas [baitais]"
 
 msgid "# of pages of this size"
-msgstr "# stron tego rozmiaru"
+msgstr "# puslapių šio dydžio"
 
 msgid "Views/day"
-msgstr "Odsłon/dzień"
+msgstr "Peržiūros/dieną"
 
 msgid "Edits/day"
-msgstr "Edycji/dzień"
+msgstr "Pakeitimai/dieną"
 
 msgid "Page hits and edits"
-msgstr "Ilość odsłon i edycji"
+msgstr "Puslapių aplankymai ir pakeitimai"
 
 #, python-format
 msgid "%(chart_title)s for %(filterpage)s"
-msgstr "%(chart_title)s dla %(filterpage)s"
+msgstr "%(chart_title)s puslapiui %(filterpage)s"
 
 msgid ""
 "green=view\n"
 "red=edit"
 msgstr ""
-"zielony=podgląd\n"
-"czerwony=edycja"
+"žalias=peržiūrėti\n"
+"raudotas=redaguoti"
 
 msgid "date"
 msgstr "data"
 
 msgid "# of hits"
-msgstr "# odwiedzin"
+msgstr "# apsilankymų"
 
 msgid "User agent"
-msgstr "Typ przeglądarki (User-Agent)"
+msgstr "Vartotojo agentas"
 
 msgid "Distribution of User-Agent Types"
-msgstr "Rozkład typów przeglądarek (User-Agent)"
+msgstr "Distribucijos vartotojo agento tipai"
 
 #, fuzzy
 msgid ""
@@ -1440,23 +1444,24 @@ msgid ""
 "\n"
 "(!) For more help, see HelpOnEditing or SyntaxReference.\n"
 msgstr ""
-" Wyróżnienie:: <<Verbatim('')>>''kursywa''<<Verbatim('')>>; <<Verbatim(''')"
-">>'''pogrubienie'''<<Verbatim(''')>>; <<Verbatim(''''')>>'''''pogrubienie "
-"kursywa'''''<<Verbatim(''''')>>; <<Verbatim('')>>''mix ''<<Verbatim(''')"
-">>'''''pogrubienia'''<<Verbatim(''')>> i kursywy''<<Verbatim('')>>; "
-"<<Verbatim(----)>> pozioma linia.\n"
-" Nagłówki:: <<Verbatim(=)>> Tytuł 1 <<Verbatim(=)>>; <<Verbatim(==)>> Tytuł "
-"2 <<Verbatim(==)>>; <<Verbatim(===)>> Tytuł 3 <<Verbatim(===)>>;   <<Verbatim"
-"(====)>> Tytuł 4 <<Verbatim(====)>>; <<Verbatim(=====)>> Tytuł 5 <<Verbatim"
-"(=====)>>.\n"
-" Listy:: spacja i jeden ze: * znaków; 1., a., A., i., I. numerowane pozycje; "
-"1.#n rozpoczyna numerowanie od n; sama spacja robi wcięcie.\n"
-" Odnośniki:: <<Verbatim(JoinCapitalizedWords)>>; <<Verbatim([\"nawiasy i "
-"znaki cudzysłowia\"])>>; url; [url]; [url label].\n"
-" Tabele:: || tekst komórki |||| tekst komórki na dwa pola ||;    "
-"niedopuszczalna jest spacja po tabelach lub tytułach.\n"
+" Šriftas:: <<Verbatim('')>>''pasviręs''<<Verbatim('')>>; <<Verbatim(''')"
+">>'''paryškintas'''<<Verbatim(''')>>; <<Verbatim(''''')>>'''''paryškintas ir "
+"pasviręs'''''<<Verbatim(''''')>>; <<Verbatim('')>>''mišrus''<<Verbatim(''')"
+">>'''''paryškintas'''<<Verbatim(''')>> ir pasviręs''<<Verbatim('')>>; "
+"<<Verbatim(----)>> horizontali liniuotė.\n"
+" Antraštės:: <<Verbatim(=)>> 1 antraštė <<Verbatim(=)>>; <<Verbatim(==)>> 2 "
+"antraštė <<Verbatim(==)>>; <<Verbatim(===)>> 3 antraštė <<Verbatim(===)>>;   "
+"<<Verbatim(====)>> 4 antraštė <<Verbatim(====)>>; <<Verbatim(=====)>> 5 "
+"antraštė <<Verbatim(=====)>>.\n"
+" Sąrašai:: tarpas ir vienas iš: * punktų; 1., a., A., i., I. sunumeruotų "
+"punktų; 1.#n pradedant numeraciją nuo n; vienas tarpas rikiavimui.\n"
+" Nuorodos:: <<Verbatim(JoinCapitalizedWords)>>; <<Verbatim([[adresas|"
+"tekstas]])>>.\n"
+" Lentelės:: || stulpelio tekstas |||| stulpelio teksto trukmė 2 stulpeliams "
+"||;    neleidžiami baigtiniai tarpai po lentelių ar pavadinimų.\n"
 "\n"
-"(!) Aby uzyskać więcej pomocy, obejrzyj HelpOnEditing lub SyntaxReference.\n"
+"(!) Dėl papildomos informacijos žiūrėkite PagalbaRedagavimo arba "
+"PagalbaMoinWikiSintaksės.\n"
 
 #, fuzzy
 msgid ""
@@ -1478,319 +1483,321 @@ msgid ""
 "[[http://docutils.sourceforge.net/docs/user/rst/quickref.html|"
 "reStructuredText Quick Reference]].\n"
 msgstr ""
-"Wyróżnienie: <i>*italic*</i> <b>**bold**</b> ``maszynowy``<br/>\n"
-"<br/><pre>\n"
-"Nagłowki: Nagłówek 1  Nagłówek 2  Nagłówek 3\n"
-"          ==========  ----------  ~~~~~~~~~~\n"
+"{{{\n"
+"Šriftas: *pasviręs* **paryškintas** ``monospace``\n"
 "\n"
-"Pozioma linia: ---- \n"
-"Odnosniki: PodkreślenieNaKońcu_ `wiele słow z odrtonymi apostrofami`_ "
-"zewnętrzny_ \n"
+"Antraštės: 1 antraštė  2 antraštė  3 antraštė\n"
+"           ==========  ----------  ~~~~~~~~~~\n"
 "\n"
-".. _zewnętrzny: http://external-site.net/foo/\n"
+"Horizontali liniuotė: ---- \n"
+"Nuorodos: BaigiamasisBrūkšnys_ `multi žodžiai su atbulinėmis kabutėmis`_ "
+"išorinis_\n"
 "\n"
-"Listy: * wypunktowana; 1., a. numerowana.\n"
+".. _išorinis: http://išorinė-svetainė.net/foo/\n"
+"\n"
+"Sąrašai: * punktai; 1., a. sunumeruoti punktai.\n"
 "</pre>\n"
 "<br/>\n"
-"(!) Więcej pomocy na \n"
+"(!) Dėl papildomos informacijos, žiūrėkite \n"
 "<a href=\"http://docutils.sourceforge.net/docs/user/rst/quickref.html\">\n"
-"reStructuredText Quick Reference\n"
+"reStructuredText charakteristiką\n"
 "</a>.\n"
 
 msgid "UnSubscribe"
-msgstr "Zaprzestań subskrybcji"
+msgstr "Atsisakyti"
 
 msgid "Publish my email (not my wiki homepage) in author info"
-msgstr "Publikuj mój e-mail (nie moją stronę domową) w informacjach o autorze"
+msgstr ""
+"Platinti mano paštą (ne mano wiki namų puslapyje) autoriaus informacijoje"
 
 msgid "Open editor on double click"
-msgstr "Otwórz edytor podwójnym kliknięciem"
+msgstr "Atidaryti redaktorių spaudžiant du kartus"
 
 msgid "After login, jump to last visited page"
-msgstr "Po zalogowaniu, przejdź do ostatnio oglądanej strony"
+msgstr "Po prisijungimo, eiti į paskutinį aplankytą puslapį"
 
 msgid "Show comment sections"
-msgstr "Pokaż skecję komentarzy"
+msgstr "Rodyti komentarų sekciją"
 
 msgid "Show question mark for non-existing pagelinks"
-msgstr "Pokaż znaki zapytania dla nieistniejących jeszcze stron"
+msgstr "Rodyti greitą žymėjimą ne egzistuojančioms puslapių nuorodoms"
 
 msgid "Show page trail"
-msgstr "Pokaż ślad strony"
+msgstr "Rodyti puslapio pėdsaką"
 
 msgid "Show icon toolbar"
-msgstr "Pokaż pasek narzędziowy"
+msgstr "Rodyti įrankių juostos ikoną"
 
 msgid "Show top/bottom links in headings"
-msgstr "Pokaż górne/dolne odnośniki w nagłówkach"
+msgstr "Rodyti viršaus/apačios nuorodas viršūnėje"
 
 msgid "Show fancy diffs"
-msgstr "Pokaż ozdobne różnice"
+msgstr "Rodyti gražius pakeitimus"
 
 msgid "Add spaces to displayed wiki names"
-msgstr "Dodaj spacje do wyświetlanych nazw wiki"
+msgstr "Pridėti tarpus rodomuose wiki varduose"
 
 msgid "Remember login information"
-msgstr "Zapamiętaj informacje o czytelniku"
+msgstr "Prisiminti prisijungimo informaciją"
 
 msgid "Disable this account forever"
-msgstr "Wyłącz to konto na zawsze"
+msgstr "Išjungti šį vartotoją"
 
 msgid "(Use FirstnameLastname)"
-msgstr "(Użyj postaci Imię''''''Nazwisko)"
+msgstr "(Naudoti VardasPavardė)"
 
 msgid "Alias-Name"
-msgstr "Nazwa aliasu"
+msgstr "Sutrumpintas-Vardas"
 
 msgid "Jabber ID"
 msgstr ""
 
 msgid "User CSS URL"
-msgstr "Podaj odnośnik do pliku CSS"
+msgstr "Vartotojo CSS URL"
 
 msgid "(Leave it empty for disabling user CSS)"
-msgstr "(pozostaw pole puste, aby wyłączyć CSS użytkownika)"
+msgstr "(Palikite tuščią arba išjunkite vartotojo CSS)"
 
 msgid "Editor size"
-msgstr "Rozmiar edytora"
+msgstr "Redaktoriaus dydis"
 
 #, fuzzy
 msgid "File attachment browser"
-msgstr "Nowy załącznik"
+msgstr "Naujas priedo pavadinimas"
 
 msgid "User account browser"
 msgstr ""
 
 #, python-format
 msgid "Invalid include arguments \"%s\"!"
-msgstr "Nieprawidłowe argumenty \"%s\"!"
+msgstr "Klaidingas įtraukimo argumentas \"%s\"!"
 
 #, python-format
 msgid "Nothing found for \"%s\"!"
-msgstr "Nic nie znaleziono dla \"%s\"!"
+msgstr "Nieko nerasta \"%s\"!"
 
 msgid "edit"
-msgstr "edytuj"
+msgstr "redaguoti"
 
 #, python-format
 msgid "Upload of attachment '%(filename)s'."
-msgstr "Przekazano załącznik '%(filename)s'."
+msgstr "Įkelti priedą '%(filename)s'."
 
 #, python-format
 msgid "Attachment '%(filename)s' deleted."
-msgstr "Załącznik '%(filename)s' usunięty."
+msgstr "Priedas '%(filename)s' pašalintas."
 
 #, python-format
 msgid "Drawing '%(filename)s' saved."
-msgstr "Rysunek '%(filename)s' zachowany."
+msgstr "Piešinys '%(filename)s' išsaugotas."
 
 #, python-format
 msgid "Revert to revision %(rev)d."
-msgstr "Przywrócono wersję %(rev)d."
+msgstr "Grąžinti į versiją %(rev)d."
 
 #, python-format
 msgid "Renamed from '%(oldpagename)s'."
-msgstr "Zmieniono nazwę z  '%(oldpagename)s'."
+msgstr "Pervadintas iš '%(oldpagename)s'."
 
 #, python-format
 msgid "%(mins)dm ago"
-msgstr "%(mins)d minut temu"
+msgstr "prieš %(mins)dm"
 
 msgid "(no bookmark set)"
-msgstr "(brak ustalonych zakładek)"
+msgstr "(nenustatyta žyma)"
 
 #, python-format
 msgid "(currently set to %s)"
-msgstr "(obecnie ustawione na %s)"
+msgstr "(šiuo metu nustatyta žyma %s)"
 
 msgid "Delete bookmark"
-msgstr "Usuń zakładkę"
+msgstr "Pašalinti žymą"
 
 msgid "Set bookmark"
-msgstr "Ustaw zakładkę"
+msgstr "Nustatyti žymą"
 
 msgid "[Bookmark reached]"
-msgstr "[Zakładka osiągnięta]"
+msgstr "[Žyma pasiekta]"
 
 msgid "Contents"
-msgstr "PomocSpisTreści"
+msgstr "Turinys"
 
 #, python-format
 msgid "Please use a more selective search term instead of {{{\"%s\"}}}"
-msgstr "Spróbuj bardziej selektywnego sposobu poszukiwań zamiast {{{\"%s\"}}}"
+msgstr "Prašome naudoti labiau atrinktą paieškos raktą vietoje {{{\"%s\"}}}"
 
 msgid "Include system pages"
-msgstr "Uwzględnij strony systemowe"
+msgstr "Įtraukti sisteminius puslapius"
 
 msgid "Exclude system pages"
-msgstr "Pomiń strony systemowe"
+msgstr "Išskirti sisteminius puslapius"
 
 msgid "Go To Page"
-msgstr "Idź do strony"
+msgstr "Eiti į puslapį"
 
 msgid "No orphaned pages in this wiki."
-msgstr "Nie znaleziono osieroconych stron w tym wiki."
+msgstr "Nėra atskirų puslapių šiame wiki."
 
 msgid "Python Version"
-msgstr "Wersja języka Python"
+msgstr "Python versija"
 
 msgid "MoinMoin Version"
-msgstr "Wersja MoinMoin"
+msgstr "MoinMoin versija"
 
 #, python-format
 msgid "Release %s [Revision %s]"
-msgstr "Wydanie %s [Korekta %s]"
+msgstr "Laida %s [Versija %s]"
 
 msgid "4Suite Version"
-msgstr "Wersja 4Suite"
+msgstr "4Suite versija"
 
 msgid "Number of pages"
-msgstr "Ilość stron"
+msgstr "Puslapių kiekis"
 
 msgid "Number of system pages"
-msgstr "Ilość stron systemowych"
+msgstr "Sistemos puslapių kiekis"
 
 msgid "Accumulated page sizes"
-msgstr "Zakumulowana wielkość stron"
+msgstr "Susikaupusių puslapių dydžiai"
 
 #, python-format
 msgid "Disk usage of %(data_dir)s/pages/"
-msgstr "Użycie dysku przez %(data_dir)s/pages/"
+msgstr "Disko užimtumas puslapių %(data_dir)s/pages/"
 
 #, python-format
 msgid "Disk usage of %(data_dir)s/"
-msgstr "Użycie dysku przez %(data_dir)s/"
+msgstr "Disko užimtumas puslapių %(data_dir)s/"
 
 msgid "Entries in edit log"
-msgstr "Pozycji w dzienniku zmian"
+msgstr "Įrašai redagavimo žurnale"
 
 msgid "NONE"
-msgstr "BRAK"
+msgstr "NIEKAS"
 
 msgid "Global extension macros"
-msgstr "Globalne rozszerzenia makropoleceń"
+msgstr "Globalinių plėtinių makro-komandos"
 
 msgid "Local extension macros"
-msgstr "Lokalne rozszerzenia makropoleceń"
+msgstr "Lokalių plėtinių makro-komandos"
 
 msgid "Global extension actions"
-msgstr "Globalne rozszerzenia operacji"
+msgstr "Globalinių plėtinių veiksmai"
 
 msgid "Local extension actions"
-msgstr "Lokalne rozszerzenia operacji"
+msgstr "Lokalinių plėtinių veiksmai"
 
 msgid "Global parsers"
-msgstr "Globalne analizatory składni"
+msgstr "Globaliniai dorokliai"
 
 msgid "Local extension parsers"
-msgstr "Lokalne rozszerzenia analizatorów składni"
+msgstr "Lokalinių plėtinių dorokliai"
 
 msgid "Disabled"
-msgstr "Wyłączone"
+msgstr "Neįgalintas"
 
 msgid "Enabled"
-msgstr "Włączone"
+msgstr "Įgalintas"
 
 msgid "index available"
-msgstr "spis dostępny"
+msgstr "indeksas prieinamas"
 
 msgid "index unavailable"
-msgstr "spis niedostępny"
+msgstr "indeksas neprieinamas"
 
 msgid "N/A"
-msgstr "n/d"
+msgstr "N/A"
 
 msgid "Xapian and/or Python Xapian bindings not installed"
-msgstr "Xapian i/lub bindowanie Python Xapian nie jest zainstalowane"
+msgstr "Xapian ir/ar Python Xapian susiejimai neįdiegti"
 
 msgid "Xapian search"
-msgstr "Wyszukiwanie przez Xapian"
+msgstr "Xapian paieška"
 
 msgid "Xapian Version"
-msgstr "Wersja Xapian"
+msgstr "Xapian versija"
 
 msgid "PyStemmer not installed"
-msgstr "PyStemmer niezainstalowany"
+msgstr "PyStemmer neįdiegtas"
 
 msgid "Stemming for Xapian"
-msgstr "Stemming dla Xapiana"
+msgstr "Sulaikyti Xapian"
 
 msgid "PyStemmer Version"
-msgstr "Wersja PyStemmera"
+msgstr "PyStemmer versija"
 
 msgid "PyStemmer stems"
-msgstr "PyStemmer działa"
+msgstr "PyStemmer stiebai"
 
 msgid "Active threads"
-msgstr "Aktywne wątki"
+msgstr "Aktyvios gijos"
 
 msgid "Search for items"
-msgstr "Poszukuj obiektów"
+msgstr "Ieškoti įrašų"
 
 msgid "containing all the following terms"
-msgstr "zawierające wszystkie wyrażenia"
+msgstr "turintis visus iš šių terminų"
 
 msgid "containing one or more of the following terms"
-msgstr "zawierające przynjamniej jedno wyrażenie"
+msgstr "turintis vieną arba daugiau iš šių terminų"
 
 msgid "not containing the following terms"
-msgstr "niezawierający żadnego wyrażenia"
+msgstr "neturintis šių terminų"
 
 msgid "last modified since (e.g. last 2 weeks)"
-msgstr "ostatnio modyfikowany od (np. last 2 weeks)"
+msgstr "paskutinį kartą modifikuotas prieš (pvz. paskutines 2 savaites)"
 
 msgid "any category"
-msgstr ""
+msgstr "bet kokia kategorija"
 
 msgid "any language"
-msgstr "jakikolwiek język"
+msgstr "bet kokia kalba"
 
 msgid "any mimetype"
-msgstr "jakikolwiek typ MIME"
+msgstr "bet koks mime tipas"
 
 msgid "Categories"
-msgstr ""
+msgstr "Kategorijos"
 
 msgid "File Type"
-msgstr "Typ pliku"
+msgstr "Failo tipas"
 
 msgid "Search only in titles"
-msgstr "Przeszukaj wyłącznie tytuły"
+msgstr "Ieškoti tik pagal pavadinimus"
 
 msgid "Case-sensitive search"
-msgstr "Przeszukiwanie z uwzględnieniem wielkości liter"
+msgstr "Didžiosioms/mažosioms raidėms jautri paieška"
 
 msgid "Exclude underlay"
-msgstr "Wyklucz podkład"
+msgstr "Neįktraukti pataisymų"
 
 msgid "No system items"
-msgstr "Brak obiektów systemowych"
+msgstr "Nėra sisteminių įrašų"
 
 msgid "Search in all page revisions"
-msgstr "Szukaj we wszystkich wersjach stron"
+msgstr "Ieškoti visose šio puslapio versijose"
 
 msgid "Go get it!"
-msgstr "Dalej!"
+msgstr "Gauti!"
 
 #, python-format
 msgid "No quotes on %(pagename)s."
-msgstr "Brak przytoczeń na %(pagename)s."
+msgstr "Nėra citavimų puslapyje %(pagename)s"
 
 msgid "Search Titles"
-msgstr "Przeszukaj tytuły"
+msgstr "Paieškos pavadinimai"
 
 msgid "Display context of search results"
-msgstr "Pokaż kontekst rezultatu poszukiwań"
+msgstr "Rodyti paieškos rezultatų kontekstą"
 
 msgid "Case-sensitive searching"
-msgstr "Przeszukiwanie z uwzględnieniem wielkości liter"
+msgstr "Didžiųjų-mažųjų raidžių jautrumas"
 
 msgid "Search Text"
-msgstr "Szukaj frazy"
+msgstr "Paieškos tekstas"
 
 #, python-format
 msgid "Upload new attachment \"%(filename)s\""
-msgstr "Wgraj nowy załącznik \"%(filename)s\""
+msgstr "Įkelti naują priedą \"%(filename)s\""
 
 #, python-format
 msgid ""
@@ -1811,223 +1818,222 @@ msgid ""
 msgstr ""
 
 msgid "Embedded"
-msgstr "Osadzony"
+msgstr "Įmontuotas"
 
 #, python-format
 msgid "Unsupported navigation scheme '%(scheme)s'!"
-msgstr "Nieobsługiwany schemat nawigacyjny '%(scheme)s'!"
+msgstr "Nepalaikoma navigacijos schema '%(scheme)s'!"
 
 msgid "No parent page found!"
-msgstr "Nie znaleziono strony nadrzędnej!"
+msgstr "Pirminių puslapių nerasta!"
 
 msgid "Slideshow"
-msgstr "Pokaz slajdów"
+msgstr "Skaidrių peržiūra"
 
 msgid "Start"
-msgstr "Start"
+msgstr "Pradžia"
 
 #, python-format
 msgid "Slide %(pos)d of %(size)d"
-msgstr "Slajd %(pos)d z %(size)d"
+msgstr "Skaidrė %(pos)d iš %(size)d"
 
 msgid "Markup"
-msgstr "Znacznik"
+msgstr "Žymėjimas"
 
 msgid "Display"
-msgstr "Pokaż"
+msgstr "Rodymas"
 
 msgid "No wanted pages in this wiki."
-msgstr "Brak poszukiwanych stron w tym wiki."
+msgstr "Nėra norimų puslapių šiame wiki."
 
 msgid "You need to provide a chart type!"
-msgstr "Podaj rodzaj wykresu!"
+msgstr "Jūs privalote pateikti diagramos tipą!"
 
 #, python-format
 msgid "Bad chart type \"%s\"!"
-msgstr "Nieprawidłowy rodzaj wykresu \"%s\"!"
+msgstr "Klaidingas diagramos tipas \"%s\"!"
 
 #, fuzzy
 msgid "Revert"
-msgstr "Odtwórz wszystkie!"
+msgstr "Atstatyti viską!"
 
 msgid "You are not allowed to revert this page!"
-msgstr "Nie możesz przywracać tej strony!"
+msgstr "Jums neleidžiama grąžinti šio puslapio!"
 
 msgid ""
 "You were viewing the current revision of this page when you called the "
 "revert action. If you want to revert to an older revision, first view that "
 "older revision and then call revert to this (older) revision again."
 msgstr ""
-"Oglądałeś aktualną wersję tej strony, kiedy wywołałeś akcjęprzywracania. "
-"Jeśli chcesz przywrócić starszą wersjęm najpierw zobacza następnie wywołaj "
-"ponownie przywracanie do tej (straszej) wersji."
+"Jūs peržiūrinėjote dabartinę puslapio versiją ir pasirinkote grąžinimo "
+"veiksmą. Jeigu norite grąžinti senesnę versiją, pirma peržiūrėkite ją ir "
+"tada atstatykite (senesnę) versiją dar kartą."
 
 msgid "This page is already deleted or was never created!"
-msgstr "Niniejsza strona została już skasowana albo nigdy jej nie było!"
+msgstr "Šis puslapis jau pašalintas, arba niekada nebuvo sukurtas!"
 
 #, fuzzy
 msgid "Optional reason for reverting this page"
-msgstr "Opcjonalna przyczyna kopiowania"
+msgstr "Neprivaloma priežastis kopijavimui"
 
 #, fuzzy
 msgid "Really revert this page?"
-msgstr "Czy na pewno zmienić nazwę niniejszej strony?"
+msgstr "Ar tikrai pervadinti šį puslapį?"
 
 #, python-format
 msgid "Rolled back changes to the page %s."
-msgstr "Wycofano zmiany do strony %s."
+msgstr "Grąžinami pakeitimai į puslapį %s."
 
 msgid "Exception while calling rollback function:"
-msgstr "Wystąpił wyjątek w czasie wycofywania transakcji:"
+msgstr "Išimtis kreipiantis į atstatymo funkciją:"
 
 msgid ""
 "Please enter your password of your account at the remote wiki below. "
 "<<BR>> /!\\ You should trust both wikis because the password could be read "
 "by the particular administrators."
 msgstr ""
-"Podaj poniżej hasło do swojego konta na zdalnej stronie Wiki. <<BR>> /!\\ "
-"Powinieneś ufać obu wiki, ponieważ hasło może być przeczytane przez "
-"poszczególnych administratorów."
+"Prašome įvesti slaptažodį savo paskyros nuotoliniame wiki žemiau. <<BR>> /!"
+"\\ Jūs turėtumėte pasitikėti abejais wiki, kadangi slaptažodis gali būti "
+"perskaitytas tam tikrų administratorių."
 
 msgid "Operation was canceled."
-msgstr "Operacja została anulowana"
+msgstr "Operacija buvo atsakyta."
 
 msgid "The only supported directions are BOTH and DOWN."
-msgstr "Jedyne wspierane kierunki to BOTH i DOWN."
+msgstr "Vienintelė palaikoma kryptis yra ABU arba ŽEMYN."
 
 msgid ""
 "Please set an interwikiname in your wikiconfig (see HelpOnConfiguration) to "
 "be able to use this action."
 msgstr ""
-"Proszę ustawić interwikiname w twojej konfiguracji wiki (zobacz "
-"HelpOnConfiguration), bymóc używać tej akcji."
+"Prašome nustatyti interwikiname savo wikiconfig (žiūrėkite "
+"HelpOnConfiguration), kad galėtumėte naudoti šį veiksmą."
 
 msgid ""
 "Incorrect parameters. Please supply at least the ''remoteWiki'' parameter. "
 "Refer to HelpOnSynchronisation for help."
 msgstr ""
-"Niepoprawne parametry. Podaj przynajmniej parametr ''remoteWiki''.Zobacz "
-"HelpOnSynchronisation, by uzyskać pomoc."
+"Klaidingi parametrai. Prašome pateikti bent ''remoteWiki'' parametrą. "
+"Žiūrėkite į HelpOnSynchronisation dėl pagalbos."
 
 msgid "The ''remoteWiki'' is unknown."
-msgstr "''remoteWiki'' jest nieznane."
+msgstr "''remoteWiki'' yra nežinomas."
 
 #, fuzzy
 msgid "A severe error occurred:"
-msgstr "Wystąpił błąd serwera:"
+msgstr "Įvyko kritinė klaida:"
 
 msgid "Synchronisation finished. Look below for the status messages."
-msgstr "Synchronizacja zakończona. Informacje znajdziesz poniżej."
+msgstr "Sinchronizacija pasibaigė. Žiūrėkite žemiau dėl būsenos žinučių."
 
 msgid "Synchronisation started -"
-msgstr "Synchronizacja rozpoczęta -"
+msgstr "Sinchronizacija prasidėjo -"
 
 #, fuzzy, python-format
 msgid ""
 "Got a list of %s local and %s remote pages. This results in %s pages to "
 "process."
 msgstr ""
-"Otrzymano listę %s lokalnych i %s zdalnych stron. Wynik różnią się w sumie %"
-"s stronami."
+"Gautas sąrašas %s lokalių ir %s nuotolinių puslapių. Rezultatai %s "
+"skirtinguose puslapiuose."
 
 #, python-format
 msgid "After filtering: %s pages"
-msgstr "Po przefiltrowaniu : %s stron"
+msgstr "Po filtravimo: %s puslapių"
 
 #, python-format
 msgid "Skipped page %s because of no write access to local page."
-msgstr ""
-"Pominięto stronę %s z powodu braku uprawnień do zapisu na stronie lokalnej."
+msgstr "Praleistas puslapis %s dėl negalimų rašymo teisių lokaliam puslapiui."
 
 #, python-format
 msgid "Deleted page %s locally."
-msgstr "Usunięto lokalnie stronę %s."
+msgstr "Pašalintas puslapis %s lokaliai."
 
 #, python-format
 msgid "Error while deleting page %s locally:"
-msgstr "Błąd podczas lokalnego usuwania strony %s:"
+msgstr "Klaida pašalinant puslapį %s lokaliai:"
 
 #, python-format
 msgid "Deleted page %s remotely."
-msgstr "Usunięto zdalnie stronę %s."
+msgstr "Pašalintas nuotolinis puslapis %s."
 
 #, python-format
 msgid "Error while deleting page %s remotely:"
-msgstr "Błąd podczas zdalnego usuwania strony %s:"
+msgstr "Klaida pašalinant nuotolinį puslapį %s:"
 
 #, python-format
 msgid ""
 "The item %s cannot be merged automatically but was changed in both wikis. "
 "Please delete it in one of both wikis and try again."
 msgstr ""
-"Obiekt %s nie może zostać scalony automatycznie ale zmienił się w obu wiki. "
-"Usuń go w jednej z nich i spróbuj ponownie."
+"Įrašas %s negalėjo būti sulietas automatiškai, bet buvo pakeistas abejuose "
+"wiki. Prašome pašalinti jį viename iš wiki ir bandyti dar kartą."
 
 #, python-format
 msgid ""
 "The item %s has different mime types in both wikis and cannot be merged. "
 "Please delete it in one of both wikis or unify the mime type, and try again."
 msgstr ""
-"Obeikt %s ma inne typy MIME w obu wiki i nie może zostać scalony. Usuń go w "
-"jednej z wiki lub ujednolić typy MIME i spróbuj ponownie."
+"Įrašas %s turi skirtingus mime tipis abejuose wiki ir negalėjo būti "
+"sulietas. Prašome pašalinti jį viename iš wiki arba suvienyti mime tipą ir "
+"bandyti dar kartą."
 
 #, python-format
 msgid ""
 "The item %s was renamed locally. This is not implemented yet. Therefore the "
 "full synchronisation history is lost for this page."
 msgstr ""
-"Nazwa %s została zmieniona lokalnie. Ta funkcja nie jest jeszcze "
-"zaimplementowana. W związku z tym pełna historia synchronizacji została "
-"utracona dla tej strony."
+"Įrašas %s buvo pervadintas lokaliai. Tai dar nėra sukurta. Taigi,pilna "
+"sinchronizacijos istorija bus prarasta šiam puslapiui."
 
 #, python-format
 msgid "Synchronising page %s with remote page %s ..."
-msgstr "Synchronizacja strony %s ze zdalną stroną %s ..."
+msgstr "Sinchronizuojamas puslapis %s su nuotoliniu puslapiu %s ..."
 
 #, python-format
 msgid "The page %s was deleted remotely but changed locally."
-msgstr "Strona %s została usunięta zdalnie, ale zmieniona lokalnie."
+msgstr "Puslapis %s buvo pašalintas nuotoliniu būtu, bet pakeistas lokaliai."
 
 #, python-format
 msgid ""
 "The page %s could not be synced. The remote page was renamed. This is not "
 "supported yet. You may want to delete one of the pages to get it synced."
 msgstr ""
-"Strona %s nie może być zsynchronizowana. Zdalna strona zmieniła nazwę. Ten "
-"przypadek nie jest jeszcze obsługiwany. Możesz usunąć jedną ze stron, by je "
-"zsynchronizować."
+"Puslapis %s negalėjo būti sinchronizuotas. Nuotolinis puslapis buvo "
+"pakeistas. Tai dar nėra palaikoma. Jūs tikriausiai norėsite pašalinti vieną "
+"iš puslapių, kad juos sinchronizuotumėte."
 
 #, python-format
 msgid "Skipped page %s because of a locally or remotely unresolved conflict."
 msgstr ""
-"Pominięto stronę %s z powodu lokalnego lub zdalnego nierozwiązanego konfliktu"
+"Praleistas puslapis %s dėl lokalių ar nuotolinių neišspręstų konfliktų."
 
 #, python-format
 msgid ""
 "This is the first synchronisation between the local and the remote wiki for "
 "the page %s."
 msgstr ""
-"To jest pierwsza synchronizacja pomiędzy lokalną i zdalną wiki dla strony %s."
+"Tai yra pirmoji sichronizacija tarp lokalaus ir nuotolinio wiki puslapiui %s."
 
 #, python-format
 msgid ""
 "The page %s could not be merged because you are not allowed to modify the "
 "page in the remote wiki."
 msgstr ""
-"Strona %s nie może być scalona, ponieważ nie masz pozwolenia na modyfikację "
-"zdalnej strony wiki."
+"Puslapis %s negalėjo būti sulietas, kadangi jums neleidžiama modifikuoti "
+"puslapio nuotoliniame wiki."
 
 #, python-format
 msgid "Page %s successfully merged."
-msgstr "Strona %s została pomyślnie scalona."
+msgstr "Puslapis %s sėkmingai sulietas."
 
 #, python-format
 msgid "Page %s contains conflicts that were introduced on the remote side."
-msgstr "Strona %s zawiera konflikty powstałe po stronie zdalnej."
+msgstr "Puslapis %s turi konfliktų, kurie buvo sukurti nuotolinėje pusėje."
 
 #, python-format
 msgid "Page %s merged with conflicts."
-msgstr "Strona %s scalona pomimo konfliktów."
+msgstr "Puslapis %s sulietas be konfliktų."
 
 msgid ""
 "You need to manually go to your OpenID provider wiki\n"
@@ -2061,7 +2067,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Remember decision"
-msgstr "Wersja PyStemmera"
+msgstr "PyStemmer versija"
 
 msgid "Remember this trust decision and don't ask again"
 msgstr ""
@@ -2085,60 +2091,61 @@ msgstr ""
 
 #, python-format
 msgid "Invalid filename \"%s\"!"
-msgstr "Nieprawidłowa nazwa pliku \"%s\"!"
+msgstr "Klaidingas failo vardas \"%s\"!"
 
 #, python-format
 msgid "Attachment '%(target)s' (remote name '%(filename)s') already exists."
-msgstr "Załącznik '%(target)s' (nazwa zdalna '%(filename)s') już istnieje."
+msgstr ""
+"Priedas '%(target)s' (nuotolinis pavadinimas '%(filename)s') jau egzistuoja."
 
 #, python-format
 msgid "Created the package %s containing the pages %s."
-msgstr "Utworzono pakiet %s zawierający strony %s."
+msgstr "Sukurtas paketas %s turintis puslapius %s."
 
 msgid "Package pages"
-msgstr "Spakuj strony"
+msgstr "Paketo puslapiai"
 
 msgid "Package name"
-msgstr "Nazwa pakietu"
+msgstr "Paketo pavadinimas"
 
 msgid "List of page names - separated by a comma"
-msgstr "Lista nazw stron - oddzielonych przecinkami"
+msgstr "Puslapių vardų sąrašas - atskirtas kableliu"
 
 #, python-format
 msgid "No pages like \"%s\"!"
-msgstr "Brak stron w rodzaju \"%s\"!"
+msgstr "Nėra puslapių panašių į \"%s\"!"
 
 msgid "Please choose:"
 msgstr ""
 
 msgid "You must login to remove a quicklink."
-msgstr "Musisz się zalogować by usunąć szybki odnośnik."
+msgstr "Jūs privalote prisijungti, kad pašalintumėte greitąją nuorodą."
 
 msgid "Your quicklink to this page has been removed."
-msgstr "Szybki odnośnik do tej strony został usunięty."
+msgstr "Jūsų greitoji nuoroda šiame puslapyje buvo pašalinta."
 
 msgid "Your quicklink to this page could not be removed."
-msgstr "Szybki odnośnik do tej strony nie może zostać usunięty."
+msgstr "Jūsų greitoji nuoroda šiame puslapyje negalėjo būti pašalinta."
 
 msgid "You need to have a quicklink to this page to remove it."
-msgstr "Musiałbyś najpierw mieć szybki odnośnik do tej strony aby go usunąć."
+msgstr ""
+"Jums reikia turėti greitąją nuorodą šiam puslapiui, kad pašalintumėte ją."
 
 #, python-format
 msgid ""
 "Restored Backup: %(filename)s to target dir: %(targetdir)s.\n"
 "Files: %(filecount)d, Directories: %(dircount)d"
 msgstr ""
-"Odtworzony Backup: %(filename)s do katalogu docelowego: %(targetdir)s.\n"
-"Plików: %(filecount)d, Katalogów: %(dircount)d"
+"Grąžinta kopija: %(filename)s į direktoriją: %(targetdir)s.\n"
+"Failai: %(filecount)d, Direktorijos: %(dircount)d"
 
 #, python-format
 msgid "Restoring backup: %(filename)s to target dir: %(targetdir)s failed."
 msgstr ""
-"Odtwarzanie backupu: %(filename)s do katalogu docelowego: %(targetdir)s nie "
-"powiodło się."
+"Kopijos grąžinimas: %(filename)s į direktoriją: %(targetdir)s nepavyko."
 
 msgid "Wiki Backup / Restore"
-msgstr "Wiki Backup / Odtworzenie"
+msgstr "Wiki kopija / grąžinimas"
 
 msgid ""
 "Some hints:\n"
@@ -2157,59 +2164,63 @@ msgid ""
 "complete.\n"
 "\n"
 msgstr ""
-"Wskazówki:\n"
-" * By przywrócić kopię zapasową:\n"
-"  * Przwrócenie kopii zapasowej nadpisze istniejące dane, bądź ostrożny.\n"
-"  * Zmień nazwę na <siteid>.tar.<compression> (usuń --date--time--UTC "
-"itp.).\n"
-"  * Umieść kopię zapasową w backup_storage_dir (użyj scp, ftp, ...).\n"
-"  * Kliknij przycisk <<GetText(Restore)>> poniżej.\n"
+"Keletas patarimų:\n"
+" * Kad grąžinti kopiją:\n"
+"  * Kopijos gražinimas perrašys egzistuojančius duomenis, taigi būkite "
+"atsargūs.\n"
+"  * Pervadinkite į <saitoid>.tar.<suspaudimas> (pašalinkite --date--time--"
+"UTC šlamštą).\n"
+"  * Įkelkite kopiją į backup_storage_dir (naudokite scp, ftp, ...).\n"
+"  * Spauskite <<GetText(Restore)>> mygtuką žemiau.\n"
 "\n"
-" * By utworzyć kopię zapasową, po prostu kliknij przycisk <<GetText(Backup)"
-">> i zapisz plik\n"
-"   jaki otrzymasz w bezpieczne miejsce.\n"
+" * Kad padaryti kopiją, tiesiog spauskite <<GetText(Backup)>> mygtuką ir "
+"išsaugokite failą\n"
+"   kurį gausite į saugią vietą.\n"
 "\n"
-"Please make sure your wiki configuration backup_* values are correct and "
-"complete.\n"
+"Prašome įsitikinti, kad jūsų wiki konfigūracijos backup_* reikšmės yra "
+"teisingos ir galutinės.\n"
 "\n"
 
 msgid "Backup"
-msgstr "Kopia zapasowa"
+msgstr "Kopija"
 
 msgid "Restore"
-msgstr "Przywróć"
+msgstr "Grąžinti"
 
 msgid "You are not allowed to do remote backup."
-msgstr "Nie możesz wykonać kopii zapasowej na tej stronie."
+msgstr "Jums neleidžiama daryti nuotolinės kopijos."
 
 #, python-format
 msgid "Unknown backup subaction: %s."
-msgstr "Nieznana akcja: %s"
+msgstr "Nežinomas kopijos subveiksmas: %s."
 
 msgid "Do it."
-msgstr "Wykonaj"
+msgstr "Vykdyti."
 
 #, python-format
 msgid "Execute action %(actionname)s?"
-msgstr "Wykonać akcję %(actionname)s?"
+msgstr "Vykdyti veiksmą %(actionname)s?"
 
 #, python-format
 msgid "Action %(actionname)s is excluded in this wiki!"
-msgstr "Akcja %(actionname)s jest w tej wiki wykluczona!"
+msgstr "Veiksmas %(actionname)s yra neįtrauktas į šį wiki!"
 
 #, python-format
 msgid "You are not allowed to use action %(actionname)s on this page!"
-msgstr "Nie możesz użyć akcji %(actionname)s na niniejszej stronie."
+msgstr "Jums neleidžiama naudoti veiksmo %(actionname)s šiame puslapyje!"
 
 #, python-format
 msgid "Please use the interactive user interface to use action %(actionname)s!"
-msgstr "Użyj interaktywnego interfejsu aby użyc akcji %(actionname)s!"
+msgstr ""
+"Prašome naudoti interaktyvų vartotojo interfeisą, kad naudotumėte veiksmą %"
+"(actionname)s!"
 
 msgid "Please log in first."
-msgstr "Proszę się najpierw zalogować."
+msgstr "Prašome pirma prisijungti."
 
 msgid "Please first create a homepage before creating additional pages."
-msgstr "Proszę utowrzyć stronę domową przed stworzeniem dodatkowych stron."
+msgstr ""
+"Prašome pirma sukurti namų puslapį prieš sukuriant papildomus puslapius."
 
 #, python-format
 msgid ""
@@ -2238,132 +2249,132 @@ msgid ""
 "(username)s only||\n"
 "\n"
 msgstr ""
-"Tutaj możesz utworzyć dodatkowe podstrony swojej już istniejącej strony "
-"domowej.\n"
-"Możesz wybrać jak otwarte mają być te strony dla innych czytelników i "
-"twórców,\n"
-"dostęp jest kontrolowany przez przynależnośc do grupy odpowiedniej strony "
-"grupowej.\n"
+"Jūs galite pridėti papildomų sub puslapių prie jau egzistuojančio namų "
+"puslapio čia.\n"
 "\n"
-"Po prostu wpisz nazwę podstrony i naciśnij przycisk aby utworzyć nową "
-"stronę.\n"
+"Jūs galite pasirinkti kokie skaitikliai ar rašikliai bus šiam puslapiui,\n"
+"priėjimas yra kontroliuojamas grupės narių atitinkamiems grupių puslapiams.\n"
 "\n"
-"Zanim spróbujesz utowrzyć chroniąną stronę, upewnij się, że odpowiednia "
-"strona\n"
-"grupy istnieje zawiera właściwych członków. Użyj szablonu "
-"HomepageGroupsTemplate\n"
-"do tworzenia stron grup.\n"
-"||'''Dodaj nową osopistą stronę:'''||'''Związana grupa kontroli "
-"dostępu:'''||\n"
-"||<<NewPage(HomepageReadWritePageTemplate,read-write page,%(username)s)>>||"
-"[\"%(username)s/ReadWriteGroup\"]||\n"
-"||<<NewPage(HomepageReadPageTemplate,read-only page,%(username)s)>>||[\"%"
-"(username)s/ReadGroup\"]||\n"
-"||<<NewPage(HomepagePrivatePageTemplate,private page,%(username)s)>>||%"
-"(username)s only||\n"
+"Jūs turite įvesti sub puslapio vardą ir paspausti mygtuką, kad sukurtumėte "
+"naują puslapį.\n"
+"\n"
+"Prieš sukuriant nuo priėjimo apsaugotus puslapius, įsitikinkite, kad "
+"atitinkamas puslapis\n"
+"egzistuoja ir turi tinkamus narius jame. Naudokite HomepageGroupsTemplate "
+"sukūrimui\n"
+"naujų puslapių.\n"
+"\n"
+"||'''Pridėti naują asmeninį puslapį:'''||'''Susijęs priėjimo kontrolės "
+"sąrašas grupei:'''||\n"
+"||<<NewPage(HomepageReadWritePageTemplate,skaitymo-rašymo puslapis,%"
+"(username)s)>>||[\"%(username)s/ReadWriteGroup\"]||\n"
+"||<<NewPage(HomepageReadPageTemplate,tik-skaitymo puslapis,%(username)s)>>||"
+"[\"%(username)s/ReadGroup\"]||\n"
+"||<<NewPage(HomepagePrivatePageTemplate,privatus puslapis,%(username)s)>>||"
+"tik %(username)s||\n"
 "\n"
 
 msgid "MyPages management"
-msgstr "Zarządzanie MyPages"
+msgstr "MyPages valdymas"
 
 msgid "Rename all /subpages too?"
-msgstr "Zmieni nazwę wszystkich /podstron?"
+msgstr "Pervadinti viską /subpuslapius taip pat?"
 
 msgid "New name"
-msgstr "Nowa nazwa"
+msgstr "Naujas pavadinimas"
 
 msgid "Optional reason for the renaming"
-msgstr "Opcjonalna przyczyna zmiany nazwy"
+msgstr "Neprivaloma priežastis pervadinimui"
 
 msgid "Really rename this page?"
-msgstr "Czy na pewno zmienić nazwę niniejszej strony?"
+msgstr "Ar tikrai pervadinti šį puslapį?"
 
 msgid "Your subscription to this page has been removed."
-msgstr "Twoja subskrybcja tej strony została usunięta."
+msgstr "Jūsų užsakymas šiame puslapyje buvo atsakytas."
 
 msgid "Can't remove regular expression subscription!"
-msgstr "Nie można usunąć subskrybcji wyrażenia regularnego!"
+msgstr "Negalėjau pašalinti reguliariosios išraiškos atsisakymo!"
 
 #, fuzzy
 msgid "Edit the subscription regular expressions in your settings."
 msgstr ""
-"Edytuj subskrybcję za pomocą wyrażeń regularnych w swoich "
-"PreferencjeCzytelnika."
+"Redaguokite užsiprenumeravimo reguliariąsias išraiškas puslapyje "
+"VartotojoNuostatos."
 
 msgid "You need to be subscribed to unsubscribe."
-msgstr "Nie było subskrypcji do tej strony, więc nie można z niej zrezygnować."
+msgstr "Juma pirma reikia užsiprenumeruoti, kad galėtumėte atsisakyti."
 
 msgid "TextCha: Wrong answer! Go back and try again..."
-msgstr "TextCha: Zła odpowiedź! Wróć i spróbuj ponownie..."
+msgstr "TextCha: Klaidingas atsakymas! Eikite atgal ir bandykite dar kartą..."
 
 msgid "Copy all /subpages too?"
-msgstr "Skopiować również wszystkie /podstrony?"
+msgstr "Kopijuoti viską /subpuslapius taip pat?"
 
 msgid "Optional reason for the copying"
-msgstr "Opcjonalna przyczyna kopiowania"
+msgstr "Neprivaloma priežastis kopijavimui"
 
 msgid "Really copy this page?"
-msgstr "Czy na pewno skopiować niniejszą stronę?"
+msgstr "Tikrai kopijuoti šį puslapį?"
 
 msgid "No older revisions available!"
-msgstr "Nie ma starszych wersji!"
+msgstr "Nėra senesnių versijų!"
 
 #, python-format
 msgid "Diff for \"%s\""
-msgstr "Różnice \"%s\""
+msgstr "Skirtumas \"%s\""
 
 #, python-format
 msgid "Differences between revisions %d and %d"
-msgstr "Różnice pomiędzy wersjami %d i %d"
+msgstr "Pakeitimai tarp versijų %d ir %d"
 
 #, python-format
 msgid "(spanning %d versions)"
-msgstr "(Spinanie %d wersji)"
+msgstr "(patvirtinamos %d versijos)"
 
 #, fuzzy
 msgid "Previous change"
-msgstr "Poprzedni"
+msgstr "Ankstesnis"
 
 #, fuzzy
 msgid "Next change"
-msgstr "Nic nie uległo zmianie"
+msgstr "Nieko neįvyko"
 
 #, python-format
 msgid "The page was saved %(count)d times, though!"
-msgstr "Strona została zachowana %(count)d razy, wszelako!"
+msgstr "Puslapis buvo išsaugotas %(count)d kartų!"
 
 msgid "(ignoring whitespace)"
-msgstr "(pomijam spacje)"
+msgstr "(ignoruojami tarpai)"
 
 msgid "Ignore changes in the amount of whitespace"
-msgstr "Ignoruj zmiany w ilości spacji"
+msgstr "Ignoruoti tarpų pakeitimus"
 
 msgid "Load"
-msgstr "Wczytaj"
+msgstr "Įkrauti"
 
 msgid "You are not allowed to delete attachments on this page."
-msgstr "Nie możesz kasować załączników tej strony."
+msgstr "Jums neleidžiama pašalinti priedo šiame puslapyje."
 
 #, python-format
 msgid ""
 "Attachment '%(target)s' (remote name '%(filename)s') with %(bytes)d bytes "
 "saved."
 msgstr ""
-"Załącznik '%(target)s' (nazwa zdalna '%(filename)s') o wielkości %(bytes)d "
-"bajtów zapisany."
+"Priedas '%(target)s' (nuotolinis pavadinimas '%(filename)s') užimantis %"
+"(bytes)d baitų išsaugotas."
 
 msgid "New Page or New Attachment"
-msgstr "Nowa strona lub załącznik"
+msgstr "Naujas puslapis arba priedas"
 
 msgid ""
 "You can upload a file to a new page or choose to upload a file as attachment "
 "for the current page"
 msgstr ""
-"Możesz uploadować plik do nowej strony albo wybrać upload pliku jako "
-"załącznik do aktualnej strony"
+"Jūs galite įkelti failą į naują puslapį arba pasirikti įkelti failą kaip "
+"priedą dabartiniam puslapiui"
 
 msgid "New Attachment"
-msgstr "Nowy załącznik"
+msgstr "Naujas priedas"
 
 msgid ""
 "An upload will never overwrite an existing file. If there is a name\n"
@@ -2371,283 +2382,282 @@ msgid ""
 "Otherwise, if \"Rename to\" is left blank, the original filename will be "
 "used."
 msgstr ""
-"Wgranie pliku do wiki nigdy nie nadpisze istniejącego zbioru. Jeżeli w wiki\n"
-"istnieje już plik o identycznej nazwie, musisz zmienić nazwę zbioru, który "
-"chcesz wgrać.\n"
-"W przeciwnym wypadku, kiedy pole \"Zmień nazwę\" jest puste, zostanie użyta "
-"nazwa oryginalna."
+"Įkėla niekuomet neperrašys jau egzistuojančio failo. Jeigu atsiranda failų\n"
+"konfliktas, jūs privalote pervadinti failą, kurį norite įkelti.\n"
+"Priešingai, jeigu \"Pervadinti į\" yra paliktas tuščias, originalus failo "
+"vardas bus naudojamas."
 
 msgid "attachment"
-msgstr "załącznik"
+msgstr "priedas"
 
 msgid "overwrite"
-msgstr "nadpisz"
+msgstr "perrašyti"
 
 msgid "Upload"
-msgstr "Przekaż"
+msgstr "Įkelti"
 
 msgid "New Name"
-msgstr "Nowa nazwa"
+msgstr "Naujas vardas"
 
 msgid "You are not allowed to subscribe to a page you can't read."
-msgstr "Nie możesz subskrybować strony, której nie możesz przeczytać."
+msgstr "Jums neleidžiama užsiprenumeruoti puslapyje, kurio negalite skaityti."
 
 #, fuzzy
 msgid "This wiki is not enabled for mail/Jabber processing."
-msgstr ""
-"W tym wiki nie uruchomiono przetwarzania poczty elektronicznej.\n"
-"Skontaktuj się z właścicielem, który może tę opcję włączyć."
+msgstr "Šis wiki nėra įgalintas pašto aprodojimui."
 
 msgid "You must log in to use subscriptions."
-msgstr "Musisz się zalogować, aby móc korzystać z subskrybcji."
+msgstr "Jūs privalote prisijungti prieš naudojant prenumeracijas."
 
 #, fuzzy
 msgid ""
 "Add your email address or Jabber ID in your user settings to use "
 "subscriptions."
 msgstr ""
-"Wpisz swój adres poczty elektronicznej w PreferencjeCzytelnika aby korzystać "
-"z subskrybcji."
+"Pridėkite savo el. pašto adresą puslapyje VartotojoNuostatos, kad "
+"užsiprenumeruotumėte."
 
 msgid "You are already subscribed to this page."
-msgstr "Już wcześniej zasubskrybowałeś tę stronę."
+msgstr "Jūs jau esate užsiprenumeravęs šiame puslapyje."
 
 msgid "You have been subscribed to this page."
-msgstr "Zasubskrybowałeś tę stronę."
+msgstr "Jūs buvote užprenumeruotas šiame puslapyje."
 
 msgid "You could not get subscribed to this page."
-msgstr "Nie możesz subsrybować tej strony."
+msgstr "Jūs negalėjote užsiprenumeriuoti šio puslapio."
 
 msgid "General Information"
-msgstr "Podstawowe informacje"
+msgstr "Bendra informacija"
 
 #, python-format
 msgid "Page size: %d"
-msgstr "Rozmiar strony: %d"
+msgstr "Puslapio dydis: %d"
 
 msgid "SHA digest of this page's content is:"
-msgstr "Odcisk SHA niniejszej strony:"
+msgstr "SHA antspaudas šio puslapio turiniui yra:"
 
 msgid "The following users subscribed to this page:"
-msgstr "Następujący czytelnicy zasubskrybowali niniejszą stronę:"
+msgstr "Sekantys vartotojai užsiprenumeravę šiame puslapyje:"
 
 msgid "This page links to the following pages:"
-msgstr "Niniejsza strona zawiera odnośniki do następujących stron:"
+msgstr "Šis puslapis turi nuorodas į sekančius puslapius:"
 
 msgid "Size"
-msgstr "Rozmiar"
+msgstr "Dydis"
 
 msgid "Diff"
-msgstr "Różnice"
+msgstr "Pakeitimai"
 
 msgid "Editor"
-msgstr "Edytor"
+msgstr "Redaktorius"
 
 msgid "Comment"
-msgstr "Komentarz"
+msgstr "Komentaras"
 
 msgid "view"
-msgstr "zobacz"
+msgstr "peržiūrėti"
 
 #, fuzzy
 msgid "to previous"
-msgstr "Poprzedni"
+msgstr "Ankstesnis"
 
 msgid "get"
-msgstr "pobierz"
+msgstr "gauti"
 
 msgid "del"
-msgstr "usuń"
+msgstr "pašalinti"
 
 msgid "Revision History"
-msgstr "Histora zmian"
+msgstr "Versijų istorija"
 
 msgid "No log entries found."
-msgstr "Nie znaleziono wpisów do dziennika."
+msgstr "Nerasta žurnalo įrašų."
 
 #, python-format
 msgid "Info for \"%s\""
-msgstr "Informacja o \"%s\""
+msgstr "Informacija \"%s\""
 
 #, python-format
 msgid "Show \"%(title)s\""
-msgstr "Pokaż \"%(title)s\""
+msgstr "Rodyti \"%(title)s\""
 
 msgid "General Page Infos"
-msgstr "Główne informacje o stronie"
+msgstr "Bendrų puslapių informacija"
 
 msgid ""
 "Cannot create a new page without a page name.  Please specify a page name."
-msgstr "Nie można utworzyć strony bez nazwy. Proszę podać nazwę strony."
+msgstr ""
+"Negalėjau sukurti naujo puslapio be puslapio vardo.  Prašau pasirinkti "
+"puslapio vardą."
 
 msgid "Delete"
-msgstr "Usunąć"
+msgstr "Pašalinti"
 
 msgid "Delete all /subpages too?"
-msgstr "Usunąć również wszystkie /podstrony?"
+msgstr "Pašalinti visus /subpuslapius taip pat?"
 
 msgid "Optional reason for the deletion"
-msgstr "Opcjonalna przyczyna usunięcia"
+msgstr "Neprivaloma pašalinimo priežastis"
 
 msgid "Really delete this page?"
-msgstr "Czy na pewno usunąć niniejszą stronę?"
+msgstr "Ar tikrai pašalinti šį puslapį?"
 
-#, fuzzy
 msgid "You are not allowed to create the supplementation page."
-msgstr "Nie możesz zmieniać nazwy tej strony!"
+msgstr "Jums neleidžiama kurti pridėtinio puslapio."
 
 #, fuzzy
 msgid "Only superuser is allowed to use this action."
-msgstr "Nie możesz uzyć tej akcji."
+msgstr "Jums neleidžiama vykdyti šio veiksmo."
 
 #, python-format
 msgid "Subscribe users to the page %s"
-msgstr "Zasubksrybuj czytelników do strony %s"
+msgstr "Užprenumeruoti vartotojus puslapiui %s"
 
 msgid "Enter user names (comma separated):"
-msgstr "Wprowadź nazwy czytelników (oddzielone przecinkami):"
+msgstr "Įveskite vartotojo vardus (atskirtus kableliais):"
 
 #, python-format
 msgid "Subscribed for %s:"
-msgstr "Zasubskrybuj %s:"
+msgstr "Užsiprenumeravęs %s:"
 
 msgid "Not a user:"
-msgstr "Nie-użytkownik:"
+msgstr "Ne vartotojas:"
 
 msgid "You are not allowed to perform this action."
-msgstr "Nie możesz wykonać tej akcji."
+msgstr "Jums neleidžiama vykdyti šio veiksmo."
 
 #, python-format
 msgid "(!) Only pages changed since '''%s''' are being displayed!"
-msgstr "(!) Wyłącznie strony zmieniane od '''%s''' są wyświetlane!"
+msgstr "(!) Tik puslapiai pasikeitę nuo '''%s''' yra rodomi!"
 
 msgid ""
 "/!\\ The modification date you entered was not recognized and is therefore "
 "not considered for the search results!"
 msgstr ""
-"/!\\ Data modyfikacji, którą wprowadziłeś, nie została rozpoznana i w "
-"związku z tym nie będzie uwzględniona w wynikach wyszukiwania!"
+"/!\\ Modifikacijos data, kurią jūs pateikėte, nebuvo atpažinta, taigi ji "
+"nėra naudojama paieškos rezultatams!"
 
 #, python-format
 msgid "Title Search: \"%s\""
-msgstr "Przeszukiwanie tytułów: \"%s\""
+msgstr "Pavadinimų paieška \"%s\""
 
 #, python-format
 msgid "Advanced Search: \"%s\""
-msgstr "Przeszukiwanie zaawanasowane: \"%s\""
+msgstr "Pažangi paieška: \"%s\""
 
 #, python-format
 msgid "Full Text Search: \"%s\""
-msgstr "Przeszukiwanie pełnotekstowe: \"%s\""
+msgstr "Pilno teksto paieška: \"%s\""
 
 #, python-format
 msgid ""
 "Your search query {{{\"%s\"}}} is invalid. Please refer to HelpOnSearching "
 "for more information."
 msgstr ""
-"Twoje zapytanie {{{\"%s\"}}} jest niewłaściwe. Zobacz na HelpOnSearching by "
-"uzyskać pomoc."
+"Jūsų paieškos užklausa {{{\"%s\"}}} yra netinkama. Prašome žiūrėti į "
+"PagalbaPaieškos dėl papildomos informacijos."
 
 #, python-format
 msgid ""
 "Your search query {{{\"%s\"}}} didn't return any results. Please change some "
 "terms and refer to HelpOnSearching for more information.%s"
 msgstr ""
-"Twoje zapytanie {{{\"%s\"}}} nie dałoz żadnych wyników. Zmień niektóre "
-"warunki i zobacz HelpOnSearching, by uzyskać więcej informacji.%s"
+"Jūsų paieškos užklausa {{{\"%s\"}}} neatitiko jokių rezultatų. Prašome "
+"pakeisti terminus ir žiūrėti į PagalbaPaieškos dėl platesnės informacijos.%s"
 
 msgid "(!) Consider performing a"
-msgstr "(!) Rozważ wykonanie"
+msgstr "(!) Apgalvokite vykdyti"
 
 msgid "full-text search with your search terms"
-msgstr "wyszukiwanie pełnotekstowe z twoimi warunkami"
+msgstr "pilno-teksto paieška su jūsų paieškos terminais"
 
 msgid ""
 "(!) You're performing a title search that might not include all related "
 "results of your search query in this wiki. <<BR>>"
 msgstr ""
-"(!) Wykonujesz wyszukiwanie tytułów, które może nie uwzględnić wszystkich "
-"wyników odnoszących się do twojego zapytania w tym wiki. <<BR>>"
+"(!) Jūs atliekate pavadinimų paiešką, kuri gali neįtraukti visų susijusių "
+"rezultatų jūsų paieškos laukelyje šiame wiki. <<BR>>"
 
 msgid "Click here to perform a full-text search with your search terms!"
-msgstr "Kliknij aby poszukać strony metodą pełnotekstową z twoimi warunkami!"
+msgstr "Spauskite čia, kad atliktumėte savo užklausos paiešką visame tekste!"
 
 msgid "User account created! You can use this account to login now..."
 msgstr ""
-"Konto czytelnika utworzone! Możesz teraz użyć tego konta żeby się "
-"zalogować..."
+"Vartotojo paskyra sukurta! Jūs jau galite naudoti šią paskyrą "
+"prisijungimui..."
 
 msgid "TextCha (required)"
-msgstr "TextCha (wymagane)"
+msgstr "TextCha (reikalaujamas)"
 
 msgid "Create Profile"
-msgstr "Utwórz profil"
+msgstr "Sukurti profilį"
 
 msgid "Create Account"
 msgstr ""
 
 msgid "You must login to add a quicklink."
-msgstr "Musisz się zalogować by dodać szybki odnośnik."
+msgstr "Jūs privalote prisijungti, kad įdėtumėte greitąją nuorodą."
 
 msgid "A quicklink to this page has been added for you."
-msgstr "Szybki odnośnik do tej strony został dodany."
+msgstr "Greitoji nuoroda šiame puslapyje jums buvo įdėta."
 
 msgid "A quicklink to this page could not be added for you."
-msgstr "Szybki odnośnik do tej strony nie może zostać dodany."
+msgstr "Greitoji nuoroda šiame puslapyje jums negalėjo būti įdėta."
 
 msgid "You already have a quicklink to this page."
-msgstr "Już zapisałeś tę stronę w szybkich odnośnikach!"
+msgstr "Jūs jau turite greijąją nuorodą šiame puslapyje."
 
 #, python-format
 msgid "(including %(localwords)d %(pagelink)s)"
-msgstr "(zawarto  %(localwords)d %(pagelink)s)"
+msgstr "(įskaitant ir %(localwords)d %(pagelink)s)"
 
 #, python-format
 msgid ""
 "The following %(badwords)d words could not be found in the dictionary of %"
 "(totalwords)d words%(localwords)s and are highlighted below:"
 msgstr ""
-"Następujące %(badwords)d wyrazy nie zostały odnalezione w słowniku z %"
-"(totalwords)d words%(localwords)s i zostały podświetlone poniżej:"
+"Žemiau %(badwords)d žodžiai nebuvo rasti žodyne susidarančiame iš %"
+"(totalwords)d žodžių%(localwords)s ir yra paryškinti žemiau:"
 
 msgid "Add checked words to dictionary"
-msgstr "Dodaj sprawdzone słowa do słownika"
+msgstr "Pridėti patikrintus žodžius į žodyną"
 
 msgid "No spelling errors found!"
-msgstr "Nie znaleziono błędów!"
+msgstr "Nerasta rašybos klaidų!"
 
 msgid "You can't save spelling words."
-msgstr "Nie możesz zapisywać LocalSpellingWords."
+msgstr "Jūs negalite išsaugoti žodžių."
 
 msgid "You can't check spelling on a page you can't read."
-msgstr "Nie możesz sprawdzać stron, których nie możesz czytać."
+msgstr "Jūs negalite patikrinti rašybos puslapyje, kurio negalite skaityti."
 
 msgid "You are now logged out."
-msgstr "Ciasteczko skasowane. Wylogowano."
+msgstr "Jūs dabar atsijungęs."
 
 msgid ""
 "This wiki is not enabled for mail processing.\n"
 "Contact the owner of the wiki, who can enable email."
 msgstr ""
-"W tym wiki nie uruchomiono przetwarzania poczty elektronicznej.\n"
-"Skontaktuj się z właścicielem, który może tę opcję włączyć."
+"Šis wiki nėra įgalintas pašto apdorojimui.\n"
+"Susisiekite su wiki savininku, kuris gali įgalinti el. paštą."
 
 msgid "Please provide a valid email address!"
-msgstr "Podaj prawidłowy adres poczty elektronicznej!"
+msgstr "Prašome pateikti galiojantį el. pašto adresą"
 
 msgid "If an account with this username exists, an email was sent."
-msgstr "Jeśli takie konto istnieje, to wysłano e-mail."
+msgstr ""
+"Jeigu paskyra su šiuo naudotojo vardu egzistuoja, išsiųstas el. laiškas"
 
 #, python-format
 msgid "Found no account matching the given email address '%(email)s'!"
-msgstr "Brak odpowiednich kont do podanego adresu '%(email)s'!"
+msgstr "Nerasta paskyra atitinkanti duotą el. pašto adresą '%(email)s'!"
 
 msgid "Mail me my account data"
-msgstr "Prześlij do mnie moje dane"
+msgstr "Atsiųsti paskyros duomenis paštu"
 
 #, fuzzy
 msgid "Lost password"
-msgstr "Hasło"
+msgstr "Slaptažodis"
 
 msgid ""
 "\n"
@@ -2664,41 +2674,41 @@ msgstr ""
 
 #, python-format
 msgid "Local Site Map for \"%s\""
-msgstr "Mapa \"%s\""
+msgstr "Lokalaus saito žemėlapis \"%s\""
 
 msgid "Pages"
-msgstr "Strony"
+msgstr "Puslapiai"
 
 msgid "Select Author"
-msgstr "Wybierz Autora"
+msgstr "Pasirinkti autorių"
 
 msgid "Revert all!"
-msgstr "Odtwórz wszystkie!"
+msgstr "Atstatyti viską!"
 
 msgid "You are not allowed to use this action."
-msgstr "Nie możesz uzyć tej akcji."
+msgstr "Jums neleidžiama vykdyti šio veiksmo."
 
 #, python-format
 msgid "[%d attachments]"
-msgstr "[%d załączników]"
+msgstr "[%d priedų]"
 
 #, python-format
 msgid ""
 "There are <a href=\"%(link)s\">%(count)s attachment(s)</a> stored for this "
 "page."
 msgstr ""
-"Istnieje <a href=\"%(link)s\">%(count)s załącznik(ów)</a> do tej strony."
+"Yra <a href=\"%(link)s\">%(count)s priedų</a> patalpintų šiame puslapyje."
 
 #, python-format
 msgid "Attachment '%(target)s' already exists."
-msgstr "Załącznik '%(target)s' już istnieje."
+msgstr "Priedas '%(target)s' jau egzistuoja."
 
 msgid "Filename of attachment not specified!"
-msgstr "Nie została podana nazwa pliku załącznika!"
+msgstr "Nenurodytas failo priedo vardas!"
 
 #, python-format
 msgid "Attachment '%(filename)s' does not exist!"
-msgstr "Załącznik '%(filename)s' nie istnieje!"
+msgstr "Priedas '%(filename)s' neegzistuoja!"
 
 msgid ""
 "To refer to attachments on a page, use '''{{{attachment:filename}}}''', \n"
@@ -2706,333 +2716,330 @@ msgid ""
 "Do '''NOT''' use the URL of the {{{[get]}}} link, \n"
 "since this is subject to change and can break easily."
 msgstr ""
-"Aby odnieść się do załącznika na stronie, użyj '''{{{attachment:"
+"Kad nurodytumėte priedą šiame puslapyje, naudokite '''{{{attachment:"
 "filename}}}''', \n"
-"jak pokazano poniżej na liście plików. \n"
-"'''NIGDY''' nie używaj URLa {{{[get]}}}, ponieważ odnośnik może się "
-"zmienić \n"
-"i spowodować utratę informacji, którą chcesz przekazać."
+"kaip parodyta žemiau failų sąraše. \n"
+"'''NENAUDOKITE''' adresų {{{[get]}}} nuorodoje, \n"
+"kadangi tai yra besikeičianti tema ir gali lengvai susigadinti."
 
 msgid "move"
-msgstr "przesuń"
+msgstr "perkelti"
 
 msgid "unzip"
-msgstr "rozpakuj"
+msgstr "išarchyvuoti"
 
 msgid "install"
-msgstr "instaluj"
+msgstr "įdiegti"
 
 #, python-format
 msgid "No attachments stored for %(pagename)s"
-msgstr "Strona %(pagename)s nie ma żadnych załączników"
+msgstr "Nėra priedų puslapiui %(pagename)s"
 
 msgid "Edit drawing"
-msgstr "Edytuj rysunek"
+msgstr "Redaguoti priešinį"
 
 msgid "File to upload"
-msgstr "Plik do przekazania"
+msgstr "Failas įkėlimui"
 
 msgid "Rename to"
-msgstr "Zmień nazwę"
+msgstr "Pervadinti į"
 
 msgid "Overwrite existing attachment of same name"
-msgstr "Nadpisz istniejący załącznik o tej samej nazwie"
+msgstr "Perrašyti egzistuojantį priedą tuo pačiu vardu"
 
 msgid "Attached Files"
-msgstr "Załączone pliki"
+msgstr "Pridėti failai"
 
 msgid "You are not allowed to attach a file to this page."
-msgstr "Nie możesz załączać plików do niniejszej strony."
+msgstr "Jums neleidžiama pridėti failą šiame puslapyje"
 
 msgid "File attachments are not allowed in this wiki!"
-msgstr "Załączniki w postaci plików nie są dozwolne w tym wiki!"
+msgstr "Failo priedai nėra leidžiami šiame wiki!"
 
 #, python-format
 msgid "Unsupported AttachFile sub-action: %s"
-msgstr "Nieprzewidziany sposób poboru pliku: %s"
+msgstr "Nepalaikomas AttachFile sub-veiksmas: %s"
 
 #, python-format
 msgid "Attachments for \"%(pagename)s\""
-msgstr "Załączniki do \"%(pagename)s\""
+msgstr "Priedai \"%(pagename)s\""
 
 msgid ""
 "No file content. Delete non ASCII characters from the file name and try "
 "again."
 msgstr ""
-"W pliku nie ma nic. Skasuj wszystkie dziwne znaczki i spróbuj ponownie."
+"Nėra naujo turinio. Pašaliknite ne ASCII simbolius iš failo vardo ir "
+"bandykite dar kartą."
 
 msgid "You are not allowed to save a drawing on this page."
-msgstr "Nie możesz zachowywać rysunków na niniejszej stronie."
+msgstr "Jums neleidžiama išsaugoti piešinio šiame puslapyje."
 
 #, fuzzy, python-format
 msgid "Attachment '%(new_pagename)s/%(new_filename)s' already exists."
-msgstr "Załącznik '%(filename)s' już istnieje."
+msgstr "Priedas '%(filename)s' jau egzistuoja."
 
 #, fuzzy, python-format
 msgid ""
 "Attachment '%(pagename)s/%(filename)s' moved to '%(new_pagename)s/%"
 "(new_filename)s'."
-msgstr "Załącznik '%(filename)s' przeniesiono na stronę %(page)s."
+msgstr "Priedas '%(filename)s' perkeltas į %(page)s."
 
 msgid "Nothing changed"
-msgstr "Nic nie uległo zmianie"
+msgstr "Nieko neįvyko"
 
 #, fuzzy, python-format
 msgid "Page '%(new_pagename)s' does not exist or you don't have enough rights."
-msgstr "Strona %(newpagename)s nie istnieje lub nie masz wymaganych uprawnień."
+msgstr ""
+"Puslapis %(newpagename)s neegzistuoja arba jūs neturite pakankamai teisių."
 
 msgid "Move aborted!"
-msgstr "Ruch przerwany!"
+msgstr "Perkėlimas nutrauktas!"
 
 msgid "Please use the interactive user interface to move attachments!"
-msgstr "Użyj interaktywnego interfejsu aby przenieść załąćznik!"
+msgstr "Prašome naudoti interaktyvų vartotojo interfeisą priedų perkėlimui!"
 
 msgid "You are not allowed to move attachments from this page."
-msgstr "Nie możesz przenosić załączników z tej strony."
+msgstr "Jums neleidžiama perkelti priedų iš šio puslapio."
 
 #, fuzzy
 msgid "Move aborted because new page name is empty."
-msgstr "Przenoszenie przerwane z powodu pustej nazwy strony"
+msgstr "Perkėlimas nutrauktas dėl tuščio puslapio pavadinimo"
 
 #, python-format
 msgid "Please use a valid filename for attachment '%(filename)s'."
-msgstr "Użyj poprawnej nazwy pliku załącznka '%(filename)s'."
+msgstr "Prašome naudoti galiojantį failo vardą priedui '%(filename)s'."
 
 #, fuzzy
 msgid "Move aborted because new attachment name is empty."
-msgstr "Nie możesz zapisywać pustych załączników"
+msgstr "Perkėlimas nutrauktas dėl tuščio priedo pavadinimo"
 
 msgid "Move"
-msgstr "Przenieś"
+msgstr "Perkelti"
 
 msgid "New page name"
-msgstr "Nowa nazwa strony"
+msgstr "Naujo puslapio pavadinimas"
 
 msgid "New attachment name"
-msgstr "Nowy załącznik"
+msgstr "Naujas priedo pavadinimas"
 
 msgid "You are not allowed to get attachments from this page."
-msgstr "Nie możesz pobierać załączników z tej strony."
+msgstr "Jums neleidžiama parsisiųsti priedų iš šio puslapio."
 
 msgid "You are not allowed to install files."
-msgstr "Nie możesz instalować plików."
+msgstr "Jums neleidžiama įdiegti failų."
 
 #, python-format
 msgid "Attachment '%(filename)s' installed."
-msgstr "Załącznik '%(filename)s' zachowano."
+msgstr "Priedas '%(filename)s' įdiegtas."
 
 msgid "You are not allowed to unzip attachments of this page."
-msgstr "Nie możesz rozpakowywać załączników tej strony."
+msgstr "Jums neleidžiama išarchyvuoti priedų šiame puslapyje."
 
 #, python-format
 msgid ""
 "Attachment '%(filename)s' could not be unzipped because the resulting files "
 "would be too large (%(space)d kB missing)."
 msgstr ""
-"Załącznik '%(filename)s' nie mógł zostać rozpakowany, ponieważ powstałe "
-"pliki byłyby zbyt duże (zabrakło %(space)d kB)."
+"Priedas '%(filename)s' negalėjo būti išpakuotas dėl išpakuojamų failų dydžio "
+"kuris būtų per didelis (trūksta %(space)d kB)."
 
 #, python-format
 msgid ""
 "Attachment '%(filename)s' could not be unzipped because the resulting files "
 "would be too many (%(count)d missing)."
 msgstr ""
-"Załącznik '%(filename)s' nie mógł zostać rozpakowany, ponieważ powstałoby "
-"zbyt wiele plików (zabrakło %(count)d)."
+"Priedas '%(filename)s' negalėjo būti išarchyvuotas, kadangi išpakuojamų "
+"failų būtų per daug (trūksta %(count)d)."
 
 #, python-format
 msgid "Attachment '%(filename)s' unzipped."
-msgstr "Załącznik '%(filename)s' rozpakowano."
+msgstr "Priedas '%(filename)s' išpakuotas."
 
 #, python-format
 msgid ""
 "Attachment '%(filename)s' not unzipped because the files are too big, .zip "
 "files only, exist already or reside in folders."
 msgstr ""
-"Nie rozpakowano załącznika '%(filename)s', ponieważ pliki są zbyt duże, "
-"tylko typu .zip, już istnieją, albo znajdują się w podkatalogach."
+"Priedas '%(filename)s' nebuvo išarchyvuotas, kadangi failai yra per dideli, "
+"tiktai .zip failai, jau egzistuoja kataloguose."
 
 #, python-format
 msgid "The file %(filename)s is not a .zip file."
-msgstr "Plik %(filename)s nie jest typu .zip."
+msgstr "Failas %(filename)s nėra .zip failas."
 
 #, python-format
 msgid "Attachment '%(filename)s'"
-msgstr "Załącznik '%(filename)s'"
+msgstr "Priedas '%(filename)s'"
 
 msgid "Download"
-msgstr "Download"
+msgstr "Parsisiųsti"
 
 msgid "Package script:"
-msgstr "Skrypt pakietu:"
+msgstr "Paketo skriptas:"
 
 msgid "File Name"
-msgstr "Nazwa pliku"
+msgstr "Failo pavadinimas"
 
 msgid "Modified"
-msgstr "Zmodyfikowane"
+msgstr "Modifikuotas"
 
 msgid "Unknown file type, cannot display this attachment inline."
-msgstr "Nieznany rodzaj pliku, nie potrafię go tutaj wyświetlić."
+msgstr "Nežinomas failo tipas, negaliu parodyti priedo."
 
 msgid "You are not allowed to view attachments of this page."
-msgstr "Nie możesz oglądać załączników tej strony."
+msgstr "Jums neleidžiama peržiūrėti priedų šiame puslapyje."
 
 #, python-format
 msgid "attachment:%(filename)s of %(pagename)s"
-msgstr "<<Verbatim(załącznik:)>>%(filename)s z %(pagename)s"
+msgstr "<<Verbatim(attachment:)>>%(filename)s iš %(pagename)s"
 
 #, python-format
 msgid "Full Link List for \"%s\""
-msgstr "Pełna lista odnośników dla \"%s\""
+msgstr "Pilnas sąrašas \"%s\""
 
 #, python-format
 msgid "Exactly one page like \"%s\" found, redirecting to page."
-msgstr ""
-"Dokładnie jedna strona typu \"%s\" została znaleziona, przekazuję Cię na tę "
-"stronę."
+msgstr "Lygiai vienas puslapis panašus į \"%s\" rastas, perkeliama į puslapį."
 
 #, python-format
 msgid "Pages like \"%s\""
-msgstr "Stron w rodzaju \"%s\""
+msgstr "Puslapiai panašūs į \"%s\""
 
 #, python-format
 msgid "%(matchcount)d %(matches)s for \"%(title)s\""
-msgstr "%(matchcount)d %(matches)s dla \"%(title)s\""
+msgstr "%(matchcount)d %(matches)s pavadinimą \"%(title)s\""
 
 #, python-format
 msgid "Inlined image: %(url)s"
-msgstr "Obraz typu inline: %(url)s"
+msgstr "Paveiksliukas: %(url)s"
 
 #, python-format
 msgid "Create new drawing \"%(filename)s (opens in new window)\""
-msgstr "Utwórz nowy rysunek \"%(filename)s\" (otwiera nowe okno)"
+msgstr "Sukurti naują piešinį \"%(filename)s (atsidaro naujame lange)\""
 
 #, python-format
 msgid "Edit drawing %(filename)s (opens in new window)"
-msgstr "Edytuj rysunek %(filename)s (otwiera nowe okno)"
+msgstr "Redaguoti piešinį %(filename)s (atsidaro naujame lange)"
 
 #, python-format
 msgid "Clickable drawing: %(filename)s"
-msgstr "Klikalny rysunek %(filename)s"
+msgstr "Paspaudžiamas piešinys: %(filename)s"
 
 msgid "Toggle line numbers"
-msgstr "Ustaw numery linii"
+msgstr "Keisti eilučių numerius"
 
 #, python-format
 msgid "Unknown action %(action_name)s."
-msgstr "Nieznana akcja %(action_name)s."
+msgstr "Nežinomas veiksmas %(action_name)s."
 
 #, python-format
 msgid "You are not allowed to do %(action_name)s on this page."
-msgstr "Nie możesz wykonać %(action_name)s na niniejszej stronie."
+msgstr "Jums neleidžiama vykdyti %(action_name)s šiame puslapyje."
 
 msgid "Login and try again."
-msgstr "Zaloguj się i spróbuj ponownie."
+msgstr "Prisijunkite ir bandykite dar kartą."
 
 #~ msgid "Use UserPreferences to change your settings or create an account."
 #~ msgstr ""
-#~ "Wejdź do PreferencjeCzytelnika aby zmienić swe ustawienia lub utworzyć "
-#~ "konto."
+#~ "Naudokite puslapį VartotojoNuostatos nustatymų pakeitimui arba paskyros "
+#~ "sukūrimui"
 
 #~ msgid "Use UserPreferences to change settings of the selected user account"
 #~ msgstr ""
-#~ "Wejdź do PreferencjeCzytelnika aby zmienić ustawienia wybranego konta."
+#~ "Naudokite puslapį VartotojoNuostatos pasirinkto vartotojo nuostatų "
+#~ "pakeitimui"
 
 #~ msgid ""
 #~ "This list does not work, unless you have entered a valid email address!"
 #~ msgstr ""
-#~ "Ta lista nie działa, dopóki nie podasz prawidłowego adresu poczty "
-#~ "elektronicznej!"
+#~ "Šus sąrašas neveikia, nebent jūs įvedate galiojantį el. pašto adresą!"
 
 #~ msgid ""
 #~ "To create an account, see the %(userprefslink)s page. To recover a lost "
 #~ "password, go to %(sendmypasswordlink)s."
 #~ msgstr ""
-#~ "Aby utworzyć konto, zobacz %(userprefslink)s. Aby odzyskać utracone "
-#~ "hasło, zobacz %(sendmypasswordlink)s."
+#~ "Kad sukurti paskyrą, žiūrėkite %(userprefslink)s puslapį. Kad atgauti "
+#~ "prarastą paskyros slaptažodį, eikite į %(sendmypasswordlink)s."
 
 #~ msgid ""
 #~ "'''A page with the name {{{'%s'}}} already exists.'''\n"
 #~ "Try a different name."
 #~ msgstr ""
-#~ "'''Strona o nazwie {{{'%s'}}} już istnieje.'''\n"
-#~ "\n"
-#~ "Spróbuj innej nazwy."
+#~ "'''Puslapis pavadinimu {{{'%s'}}} jau egzistuoja.'''\n"
+#~ "Pabandykite naują vardą."
 
 #~ msgid ""
 #~ "The comment on the change is:\n"
 #~ "%(comment)s\n"
 #~ "\n"
 #~ msgstr ""
-#~ "Komentarz do zmiany:\n"
+#~ "Pakeitimo komentaras yra:\n"
 #~ "%(comment)s\n"
 #~ "\n"
 
 #~ msgid "Status of sending notification mails:"
-#~ msgstr "Stan wysyłki powiadomienia pocztą elektroniczną:"
+#~ msgstr "Siunčiamų pašto pranešimų būsena:"
 
 #~ msgid "[%(lang)s] %(recipients)s: %(status)s"
 #~ msgstr "[%(lang)s] %(recipients)s: %(status)s"
 
 #~ msgid "UserPreferences"
-#~ msgstr "PreferencjeCzytelnika"
+#~ msgstr "VartotojoNuostatos"
 
 #~ msgid "Subscribe to trivial changes"
-#~ msgstr "Zasubksrybuj drobne zmiany"
+#~ msgstr "Užsiprenumeruoti paprastiems pakeitimams"
 
 #~ msgid "(Only for password change or new account)"
-#~ msgstr "(Tylko do zmiany hasła i nowego konta"
+#~ msgstr "(Tik slaptažodžių pakeitimams arba naujai paskyrai)"
 
 #~ msgid "Check your argument %s"
-#~ msgstr "Sprawdź swój argument %s"
+#~ msgstr "Patikrinkite savo argumentą %s"
 
 #~ msgid "ERROR in regex '%s'"
-#~ msgstr "Błąd w wyrażeniu '%s'"
+#~ msgstr "KLAIDA regulerioje išraiškoje '%s'"
 
 #~ msgid "Bad timestamp '%s'"
-#~ msgstr "Nieprawidłowy datownik binarny '%s'"
+#~ msgstr "Klaidinga laiko žyma '%s'"
 
 #~ msgid "Not supported mimetype of file: %s"
-#~ msgstr "Niewspierany type MIME pliku: %s"
+#~ msgstr "Nepalaikomas mime tipas failo: %s"
 
 #~ msgid "Embedding of object by chosen formatter not possible"
-#~ msgstr "Osadzenie obiektu w wybrany sposób niemożliwe"
+#~ msgstr "Objekto įmontavimas pasirinktu formatuotoju neįmanomas"
 
 #~ msgid ""
 #~ "Not enough arguments given to EmbedObject macro! Try <<EmbedObject"
 #~ "(attachment [,width=width] [,height=height] [,alt=alternate Text])>>"
 #~ msgstr ""
-#~ "Zbyt mało argumentów dostarczonych do makra EmbedObject! Spróbuj "
-#~ "<<EmbedObject(attachment [,width=width] [,height=height] [,alt=alternate "
-#~ "Text])>"
+#~ "Ne pakankamai argumentų duota EmbedObject makro-komandai! Pabandykite "
+#~ "<<EmbedObject(attachment [,width=ilgis] [,height=plotis] [,"
+#~ "alt=apibūdinantis tekstas])>>"
 
 #~ msgid ""
 #~ "Not enough arguments given to EmbedObject macro! Try <<EmbedObject(url, "
 #~ "url_mimetype [,width=width] [,height=height] [,alt=alternate Text])>>"
 #~ msgstr ""
-#~ "Zbyt mało argumentów przekazanych do makra EmbedObject! Spróbuj "
-#~ "<<EmbedObject(url, url_mimetype [,width=width] [,height=height] [,"
-#~ "alt=alternate Text])>>"
+#~ "Ne pakankamai argumentų duota EmbedObject makro-komandai! Pabandykite "
+#~ "<<EmbedObject(url, url_mimetype [,width=ilgis] [,height=plotis] [,"
+#~ "alt=apibūdinantis tekstas])>>"
 
 #~ msgid "Invalid MonthCalendar calparms \"%s\"!"
-#~ msgstr "Nieprawidłowe parametry wywołania kalendarza \"%s\"!"
+#~ msgstr "Klaidingas MonthCalendar parametras \"%s\"!"
 
 #~ msgid "Invalid MonthCalendar arguments \"%s\"!"
-#~ msgstr "Nieprawidłowe argumenty kalendarza \"%s\"!"
+#~ msgstr "Klaidingas MonthCalendar argumentas \"%s\"!"
 
 #~ msgid "Sorry, login failed."
-#~ msgstr "Przykro mi, nieprawidłowe hasło."
+#~ msgstr "Atsiprašome, prisijungimas nepavyko."
 
 #~ msgid "Filename"
-#~ msgstr "Nazwa pliku"
+#~ msgstr "Failo vardas"
 
 #~ msgid ""
 #~ "The remote version of MoinMoin is too old, version 1.6 is required at "
 #~ "least."
 #~ msgstr ""
-#~ "Zdalna wersja MoinMoin jest zbyt stara, wymagana jest przynajmniej wersja "
-#~ "1.6."
+#~ "Nuotolinė MoinMoin versija yra per sena, būtina 1.6 arba naujesnė versija."
 
 #~ msgid "belonging to one of the following categories"
-#~ msgstr "należaca do jednej z następujących kategorii"
+#~ msgstr "priklausantis vienai iš šių kategorijų"

@@ -10,14 +10,14 @@
     @license: GNU GPL, see COPYING for details
 """
 
-import time, os, errno, codecs
+import sys, os, time, errno, codecs
 
 from MoinMoin import log
 logging = log.getLogger(__name__)
 
 from MoinMoin import wikiutil, config
 from MoinMoin.Page import Page
-from MoinMoin.util import lock
+from MoinMoin.util import lock, filesys
 from MoinMoin.search.results import getSearchResults
 from MoinMoin.search.queryparser import Match, TextMatch, TitleMatch
 
@@ -204,7 +204,7 @@ class BaseIndex:
 
     def touch(self):
         """ Touch the index """
-        os.utime(self.dir, None)
+        filesys.touch(self.dir)
 
     def _search(self, query):
         """ Actually perfom the search (read-lock acquired)

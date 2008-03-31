@@ -6,6 +6,7 @@
     @copyright: 2004 Vito Miliano (vito_moinnewpagewithtemplate@perilith.com),
                 2004 Nir Soffer <nirs@freeshell.org>,
                 2004 Alexander Schremmer <alex AT alexanderweb DOT de>
+                2008 MoinMoin:ReimarBauer
     @license: GNU GPL, see COPYING for details.
 """
 
@@ -96,5 +97,8 @@ class NewPage:
 
 def execute(pagename, request):
     """ Temporary glue code for current moin action system """
+    if request.request_method != 'POST':
+        return False, u''
+
     return NewPage(request, pagename).render()
 
