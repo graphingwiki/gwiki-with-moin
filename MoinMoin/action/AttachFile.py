@@ -503,11 +503,6 @@ def execute(pagename, request):
     """ Main dispatcher for the 'AttachFile' action. """
     _ = request.getText
 
-    if action_name in request.cfg.actions_excluded:
-        msg = _('File attachments are not allowed in this wiki!')
-        error_msg(pagename, request, msg)
-        return
-
     do = request.form.get('do', ['upload_form'])
     handler = globals().get('_do_%s' % do[0])
     if handler:
@@ -784,8 +779,6 @@ def _do_move(pagename, request):
 
 
 def _do_get(pagename, request):
-    import shutil
-
     _ = request.getText
 
     pagename, filename, fpath = _access_file(pagename, request)
@@ -820,7 +813,7 @@ def _do_get(pagename, request):
         ])
 
         # send data
-        shutil.copyfileobj(open(fpath, 'rb'), request, 8192)
+        request.send_file(open(fpath, 'rb'))
 
 
 def _do_install(pagename, request):

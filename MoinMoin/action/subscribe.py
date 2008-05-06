@@ -11,6 +11,11 @@ from MoinMoin.Page import Page
 def execute(pagename, request):
     """ Subscribe the user to pagename """
     _ = request.getText
+    if not request.user.valid:
+        actname = __name__.split('.')[-1]
+        request.theme.add_msg(_("You must login to use this action: %(action)s.") % {"action": actname}, "error")
+        return Page(request, pagename).send_page()
+
     cfg = request.cfg
 
     if not request.user.may.read(pagename):

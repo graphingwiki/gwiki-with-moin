@@ -2,7 +2,7 @@
 """
     MoinMoin - Theme Package
 
-    @copyright: 2003-2007 MoinMoin:ThomasWaldmann
+    @copyright: 2003-2008 MoinMoin:ThomasWaldmann
     @license: GNU GPL, see COPYING for details.
 """
 
@@ -12,10 +12,11 @@ from MoinMoin.util import pysupport
 
 modules = pysupport.getPackageModules(__file__)
 
-# Check whether we can emit a RSS feed (code stolen from wikitest.py).
-# Currently RSS is broken on plain Python, and works only when installing PyXML.
-import xml
-rss_supported = '_xmlplus' in xml.__file__
+# Check whether we can emit a RSS feed.
+# RSS is broken on plain Python 2.3.x/2.4.x, and works only when installing PyXML.
+# News: A user reported that the RSS is valid when using Python 2.5.1 on Windows.
+import sys, xml
+rss_supported = sys.version_info[:3] >= (2, 5, 1) or '_xmlplus' in xml.__file__
 
 
 class ThemeBase:
@@ -277,7 +278,8 @@ class ThemeBase:
                         request.formatter.interwikilink(0, title=title, id="userhome", *interwiki))
             userlinks.append(homelink)
             # link to userprefs action
-            userlinks.append(d['page'].link_to(request, text=_('Settings'),
+            if 'userprefs' not in self.request.cfg.actions_excluded:
+                userlinks.append(d['page'].link_to(request, text=_('Settings'),
                                                querystr={'action': 'userprefs'}, id='userprefs', rel='nofollow'))
 
         if request.user.valid:
@@ -543,7 +545,7 @@ class ThemeBase:
         @return: html link tag
         """
         qs = {}
-        querystr, title, icon = self.cfg.page_icons_table[which]
+        pagekey, querystr, title, icon = self.cfg.page_icons_table[which]
         qs.update(querystr) # do not modify the querystr dict in the cfg!
         d['icon-alt-text'] = d['title'] = title % d
         d['i18ntitle'] = self.request.getText(d['title'])
@@ -552,7 +554,11 @@ class ThemeBase:
         if rev and which in ['raw', 'print', ]:
             qs['rev'] = str(rev)
         attrs = {'rel': 'nofollow', 'title': d['i18ntitle'], }
-        page = d['page']
+        page = d[pagekey]
+        if isinstance(page, unicode):
+            # e.g. d['page_parent_page'] is just the unicode pagename
+            # while d['page'] will give a page object
+            page = Page(self.request, page)
         return page.link_to_raw(self.request, text=img_src, querystr=qs, **attrs)
 
     def msg(self, d):
@@ -961,6 +967,9 @@ var search_hint = "%(search_hint)s";
         available = request.getAvailableActions(page)
         for action in menu:
             data = {'action': action, 'disabled': '', 'title': titles[action]}
+            # removes excluded actions from the more actions menu
+            if action in request.cfg.actions_excluded:
+                continue
 
             # Enable delete cache only if page can use caching
             if action == 'refresh':
@@ -1170,6 +1179,9 @@ actionsMenuInit('%(label)s');
         If the user want to show both editors, it will display "Edit
         (Text)", otherwise as "Edit".
         """
+        if 'edit' in self.request.cfg.actions_excluded:
+            return ""
+
         if not (page.isWritable() and
                 self.request.user.may.write(page.page_name)):
             return self.disabledEdit()
@@ -1234,6 +1246,9 @@ var gui_editor_link_text = "%(text)s";
 
     def infoLink(self, page):
         """ Return link to page information """
+        if 'info' in self.request.cfg.actions_excluded:
+            return ""
+
         _ = self.request.getText
         return page.link_to(self.request,
                             text=_('Info'),
@@ -1253,6 +1268,8 @@ var gui_editor_link_text = "%(text)s";
             action, text = 'unsubscribe', _("Unsubscribe")
         else:
             action, text = 'subscribe', _("Subscribe")
+        if action in self.request.cfg.actions_excluded:
+            return ""
         return page.link_to(self.request, text=text, querystr={'action': action}, css_class='nbsubscribe', rel='nofollow')
 
     def quicklinkLink(self, page):
@@ -1269,10 +1286,15 @@ var gui_editor_link_text = "%(text)s";
             action, text = 'quickunlink', _("Remove Link")
         else:
             action, text = 'quicklink', _("Add Link")
+        if action in self.request.cfg.actions_excluded:
+            return ""
         return page.link_to(self.request, text=text, querystr={'action': action}, css_class='nbquicklink', rel='nofollow')
 
     def attachmentsLink(self, page):
         """ Return link to page attachments """
+        if 'AttachFile' in self.request.cfg.actions_excluded:
+            return ""
+
         _ = self.request.getText
         return page.link_to(self.request,
                             text=_('Attachments'),

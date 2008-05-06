@@ -468,8 +468,7 @@ class Search:
 
         # when xapian was used, we can estimate the numer of matches
         # Note: hits can't be estimated by xapian with historysearch enabled
-        if not self.request.cfg.xapian_index_history and \
-                self.request.cfg.xapian_search:
+        if not self.request.cfg.xapian_index_history and hasattr(self, '_xapianMset'):
             self.sort = None
             mset = self._xapianMset
             estimated_hits = (
@@ -650,9 +649,12 @@ class Search:
 
             if wikiname in (self.request.cfg.interwikiname, 'Self'): # THIS wiki
                 page = Page(self.request, pagename, rev=revision)
-                if not self.historysearch and revision and \
-                        page.getRevList()[0] != revision:
-                    continue
+                if not self.historysearch and revision:
+                    revlist = page.getRevList()
+                    # revlist can be empty if page was nuked/renamed since it was included in xapian index
+                    if not revlist or revlist[0] != revision:
+                        # nothing there at all or not the current revision
+                        continue
                 if attachment:
                     if pagename == fs_rootpage: # not really an attachment
                         page = Page(self.request, "%s/%s" % (fs_rootpage, attachment))

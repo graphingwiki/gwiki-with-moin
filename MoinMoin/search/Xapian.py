@@ -75,7 +75,7 @@ class WikiAnalyzer:
                  }
 
     singleword_re = re.compile(singleword, re.U)
-    wikiword_re = re.compile(WikiParser.word_rule, re.U)
+    wikiword_re = re.compile(WikiParser.word_rule, re.UNICODE|re.VERBOSE)
 
     token_re = re.compile(
         r"(?P<company>\w+[&@]\w+)|" + # company names like AT&T and Excite@Home.
@@ -97,10 +97,13 @@ class WikiAnalyzer:
         @param request: current request
         @param language: if given, the language in which to stem words
         """
-        if request and request.cfg.xapian_stemming and language:
-            self.stemmer = Stemmer(language)
-        else:
-            self.stemmer = None
+        self.stemmer = None
+        if request and request.cfg.xapian_stemming and language and Stemmer:
+            try:
+                self.stemmer = Stemmer(language)
+            except (KeyError, TypeError):
+                # lang is not stemmable or not available
+                pass
 
     def raw_tokenize(self, value):
         """ Yield a stream of lower cased raw and stemmed words from a string.
@@ -463,7 +466,7 @@ class Index(BaseIndex):
         mtime = page.mtime_usecs()
         revision = str(page.get_real_rev())
         itemid = "%s:%s:%s" % (wikiname, pagename, revision)
-        author = page.last_edit(request)['editor']
+        author = page.edit_info().get('editor', '?')
         # XXX: Hack until we get proper metadata
         language, stem_language = self._get_languages(page)
         categories = self._get_categories(page)
@@ -642,6 +645,7 @@ class Index(BaseIndex):
             logging.debug("indexing all (%d) pages..." % len(pages))
             for pagename in pages:
                 p = Page(request, pagename)
+                request.page = p
                 if request.cfg.xapian_index_history:
                     for rev in p.getRevList():
                         self._index_page(writer,
