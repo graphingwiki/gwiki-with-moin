@@ -571,7 +571,7 @@ class convert_tree(visitor):
     def process_heading(self, node):
         text = self.node_list_text_only(node.childNodes).strip()
         if text:
-            depth = int(node.localName[1]) - 1
+            depth = int(node.localName[1])
             hstr = "=" * depth
             self.text.append(self.new_line)
             self.text.append("%s %s %s" % (hstr, text.replace("\n", " "), hstr))
@@ -802,7 +802,8 @@ class convert_tree(visitor):
             command = ",,"
         elif name == 'sup':
             command = "^"
-        elif name in ('font', 'meta', ):
+        elif name in ('area', 'center', 'code', 'embed', 'fieldset', 'font', 'form', 'iframe', 'input', 'label', 'link', 'map',
+                      'meta', 'noscript', 'option', 'script', 'select', 'textarea', 'wbr'):
             command = "" # just throw away unsupported elements
         else:
             raise ConvertError("process_inline: Don't support %s element" % name)
@@ -1183,7 +1184,7 @@ class convert_tree(visitor):
         for i in node.childNodes:
             if i.nodeType == Node.ELEMENT_NODE:
                 name = i.localName
-                if name == 'td':
+                if name in ('td', 'th', ):
                     self.process_table_data(i, style=style)
                     style = ""
                 else:
