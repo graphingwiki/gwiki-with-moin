@@ -1,0 +1,18 @@
+<<NewPage(JournalEntryTemplate, Add a new journal entry, @SELF, %Y%m%d%H%M%S)>>
+
+<<TableOfContents>>
+
+= Latest Entry =
+
+<<Include(^Journal/2.*,,to="^----$",sort=descending,items=1,editlink)>>
+
+= Past Topics =
+
+<<MetaTable(Journal=Journal, >>Date, ||Date||Topic||Who||)>>
+
+----
+ gwikishapefile:: {{attachment:journal.png}}
+----
+<<LinkedIn>>
+----
+CategoryCollection CategoryJournal

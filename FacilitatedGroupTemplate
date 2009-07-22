@@ -1,0 +1,12 @@
+#acl FacilitatorGroup:admin,revert,read,write,invite All:none
+
+ * [[FacilitatorGroup]]
+ * @USERNAME@
+
+----
+ Privacy:: facilitated
+----
+<<LinkedIn>>
+----
+CategoryGroup
+
