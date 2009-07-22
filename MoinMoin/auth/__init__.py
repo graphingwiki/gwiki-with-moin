@@ -158,8 +158,10 @@ def get_multistage_continuation_url(request, auth_name, extra_fields={}):
               'stage': auth_name}
     fields.update(extra_fields)
     if request.page:
+        logging.debug("request.page.url: " + request.page.url(request, querystr=fields))
         return request.page.url(request, querystr=fields)
     else:
+        logging.debug("request.abs_href: " + request.abs_href(**fields))
         return request.abs_href(**fields)
 
 class LoginReturn(object):
@@ -248,12 +250,24 @@ class MoinAuth(BaseAuth):
 
     def login_hint(self, request):
         _ = request.getText
+        #if request.cfg.openidrp_registration_url:
+        #    userprefslink = request.cfg.openidrp_registration_url
+        #else:
         userprefslink = request.page.url(request, querystr={'action': 'newaccount'})
         sendmypasswordlink = request.page.url(request, querystr={'action': 'recoverpass'})
-        return _('If you do not have an account, <a href="%(userprefslink)s">you can create one now</a>. '
-                 '<a href="%(sendmypasswordlink)s">Forgot your password?</a>') % {
-               'userprefslink': userprefslink,
+
+        msg = ''
+        #if request.cfg.openidrp_allow_registration:
+        msg = _('If you do not have an account, <a href="%(userprefslink)s">you can create one now</a>. ') % {
+              'userprefslink': userprefslink}
+        msg += _('<a href="%(sendmypasswordlink)s">Forgot your password?</a>') % {
                'sendmypasswordlink': sendmypasswordlink}
+        return msg
+
+        #return _('If you do not have an account, <a href="%(userprefslink)s">you can create one now</a>. '
+        #         '<a href="%(sendmypasswordlink)s">Forgot your password?</a>') % {
+        #       'userprefslink': userprefslink,
+        #       'sendmypasswordlink': sendmypasswordlink}
 
 
 class GivenAuth(BaseAuth):
