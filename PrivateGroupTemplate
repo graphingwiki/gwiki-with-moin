@@ -1,4 +1,4 @@
-#acl @PAGE@,FacilitatorGroup:admin,revert,read,write,invite All:none
+#acl @PAGE@,FacilitatorGroup:admin,revert,delete,read,write,invite All:none
 
  * [[FacilitatorGroup]]
  * @USERNAME@

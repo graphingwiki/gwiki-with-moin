@@ -1,4 +1,4 @@
-#acl FacilitatorGroup:admin,revert,read,write,invite All:none
+#acl FacilitatorGroup:admin,revert,delete,read,write,invite All:none
 
  * [[FacilitatorGroup]]
  * @USERNAME@
