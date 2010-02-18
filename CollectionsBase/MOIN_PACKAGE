@@ -8,10 +8,9 @@ ReplaceUnderlay|JournalEntryTemplate|JournalEntryTemplate
 DelAttachment|journal.png|Journal
 AddAttachment|journal.png|journal.png|Journal
 ReplaceUnderlay|CategoryGallery|CategoryGallery
-ReplaceUnderlay|Gallery|Gallery
 ReplaceUnderlay|GalleryTemplate|GalleryTemplate
-DelAttachment|gallery.png|Gallery
-AddAttachment|gallery.png|gallery.png|Gallery
+DelAttachment|gallery.png|GalleryTemplate
+AddAttachment|gallery.png|gallery.png|GalleryTemplate
 ReplaceUnderlay|CategoryGroup|CategoryGroup
 ReplaceUnderlay|Groups|Groups
 ReplaceUnderlay|FacilitatedGroupTemplate|FacilitatedGroupTemplate
