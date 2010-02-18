@@ -7,6 +7,11 @@ ReplaceUnderlay|JournalTemplate|JournalTemplate
 ReplaceUnderlay|JournalEntryTemplate|JournalEntryTemplate
 DelAttachment|journal.png|Journal
 AddAttachment|journal.png|journal.png|Journal
+ReplaceUnderlay|CategoryGallery|CategoryGallery
+ReplaceUnderlay|Gallery|Gallery
+ReplaceUnderlay|GalleryTemplate|GalleryTemplate
+DelAttachment|gallery.png|Gallery
+AddAttachment|gallery.png|gallery.png|Gallery
 ReplaceUnderlay|CategoryGroup|CategoryGroup
 ReplaceUnderlay|Groups|Groups
 ReplaceUnderlay|FacilitatedGroupTemplate|FacilitatedGroupTemplate
