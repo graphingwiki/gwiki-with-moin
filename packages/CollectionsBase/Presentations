@@ -1,0 +1,31 @@
+= Presentations =
+
+{{{
+#!wiki tip
+Use the button below to add presentations. After that the presentation page
+has a button to add slides to the presentation.
+}}}
+
+<<NewPage(SlideShowTemplate, Add a new slide show, , , editmetaform)>>
+
+<<MetaTable(CategorySlideShow, ||Author||Title||)>>
+
+= Raw slide material =
+
+{{{
+#!wiki tip
+Use the button below to add raw slides. This is an optional way of doing
+reusable slide material that you just include on the actual slides
+when creating the presentation otherwise in a tradional way (see above).
+}}}
+
+<<NewPage(RawSlideTemplate, Add a new slide)>>
+
+<<MetaTable(CategoryRawSlide, || ||)>>
+
+----
+ gwikishapefile:: {{attachment:presentations.png}}
+----
+<<LinkedIn>>
+----
+CategoryCollection

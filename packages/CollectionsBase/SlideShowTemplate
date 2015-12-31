@@ -1,0 +1,11 @@
+## DON'T CHANGE THIS - See Below
+<<NewPage(SlideTemplate, Add a new slide to the show, @PAGE@)>>
+
+<<Include(^@PAGE@/[0-9].*,,editlink)>>
+
+## CHANGE THIS - Fill in the Title & Author, new Author:: line for each Author
+----
+ Title:: 
+ Author:: 
+----
+CategorySlideShow

@@ -3,7 +3,7 @@ From: @INVITEREMAIL@
 To: @INVITEDEMAIL@
 Bcc: @INVITEREMAIL@
 
-Hello @INVITEDUSER@, 
+Hello @INVITEDUSER@,
 
 You have been invited to collaborate by @INVITERUSER@.
 
@@ -12,7 +12,7 @@ You can access the collaboration environment by using the link
 
 Please log in using the username and password given below.
 
-User Name: @INVITEDUSER@ 
+User Name: @INVITEDUSER@
 Password:  @INVITEDPASSWORD@
 
 You should change your password from user 'Settings' after login.
