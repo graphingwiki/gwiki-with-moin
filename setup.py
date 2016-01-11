@@ -90,8 +90,8 @@ class RemovingInstall(install):
         install.run(self)
 
 setup(
-    name='collab',
-    version='1.0',
+    name='collabbackend',
+    version='1.0.0',
     author='Marko Laakso, Jani Kenttälä',
     author_email='contact@clarifiednetworks.com',
     description='Collab Backend',
