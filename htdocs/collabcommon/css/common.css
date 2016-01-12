@@ -117,8 +117,38 @@ div.heartbleed:before {
 /* admonition end */
 
 #content div.roundrect {
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	padding: 10px;
+    border-radius: 10px;
+    padding: 10px;
 }
+
+/* This class is meant to be used as an replacement for raw html styling when creating
+ * a floating "menu"-like section. While this is still very suboptimal, there really isn't
+ * any sane way to create nested markup structures...
+ *
+ *  Previously:
+ *  {{{#!html
+ *      <div style="float: left;">
+ *  }}}
+ *
+ * From now on:
+ * {{{#!html
+ *      <div class="float-left">
+ * }}}
+ *
+ * The ~ ul, ~ div and ~ p rules make sure that following normal sections
+ * are aligned correctly. Particularly, this works around IE(11) bug causing list element
+ * "dots" to overlap incorrectly with the floated element.
+ */
+#content .float-left {
+    float: left;
+}
+
+#content .float-left ~ ul {
+    display: inline-block;
+}
+
+#content .float-left ~ div, #content .float-left ~ p {
+    overflow: hidden;
+}
+
 
