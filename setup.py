@@ -118,6 +118,8 @@ setup(
         'scripts/collab-group-edit',
         'scripts/collab-group-list',
         'scripts/collab-htaccess',
+        'scripts/collab-htpasswd-sync',
+        'scripts/collab-mail-aliases',
     ],
     cmdclass={
         "build": RemovingBuild,
