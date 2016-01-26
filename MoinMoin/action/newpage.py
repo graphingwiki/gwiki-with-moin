@@ -7,12 +7,16 @@
                 2004 Nir Soffer <nirs@freeshell.org>,
                 2004 Alexander Schremmer <alex AT alexanderweb DOT de>
                 2008 MoinMoin:ReimarBauer
+                2016 Jussi Eronen <exec@iki.fi>
     @license: GNU GPL, see COPYING for details.
 """
 
 import time
 from MoinMoin.Page import Page
 from MoinMoin.util.abuse import log_attempt
+
+import MetaFormEdit
+import editmeta
 
 class NewPage:
     """ Open editor for a new page, using template """
@@ -101,6 +105,17 @@ def execute(pagename, request):
     """ Temporary glue code for current moin action system """
     if request.method != 'POST':
         return False, u''
+
+    # Editaction allows for meta editing actions to be used for
+    # editing target page
+    editaction = request.values.get('editfunc', '')
+    # Edit actions assumed to be all in lower case
+    editaction = editaction.lower()
+
+    if editaction == 'editmetaform':
+        return MetaFormEdit.execute(request, pagename)
+    elif editaction == 'editmeta':
+        return editmeta.execute(request, pagename)
 
     return NewPage(request, pagename).render()
 
