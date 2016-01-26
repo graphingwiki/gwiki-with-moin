@@ -48,6 +48,7 @@ class ThemeBase:
         'diff':        (_("Diffs"),               "moin-diff.png",   15, 11),
         'info':        (_("Info"),                "moin-info.png",   12, 11),
         'edit':        (_("Edit"),                "moin-edit.png",   12, 12),
+        'formedit':    (_("FormEdit"),            "moin-news.png",     12, 12),
         'unsubscribe': (_("Unsubscribe"),         "moin-unsubscribe.png", 14, 10),
         'subscribe':   (_("Subscribe"),           "moin-subscribe.png", 14, 10),
         'raw':         (_("Raw"),                 "moin-raw.png",    12, 13),

@@ -218,6 +218,12 @@ class HTTPContext(BaseContext):
 
     # proxy further attribute lookups to the underlying request first
     def __getattr__(self, name):
+        if name == 'editlog':
+            if "editlog" not in self.__dict__:
+                from MoinMoin.logfile import editlog
+                self.request.rootpage = self.rootpage
+                self.editlog = editlog.EditLog(self.request)
+            return self.editlog
         try:
             return getattr(self.request, name)
         except AttributeError, e:

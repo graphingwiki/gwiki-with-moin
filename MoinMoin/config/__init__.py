@@ -25,7 +25,7 @@ umask = 0770
 # list of acceptable password hashing schemes for cfg.password_scheme,
 # here we only give reasonably good schemes, which is passlib (if we
 # have passlib) and ssha (if we only have builtin stuff):
-password_schemes_configurable = ['{PASSLIB}', '{SSHA}', ]
+password_schemes_configurable = ['{PASSLIB}', '{SSHA}', '{SHA}' ]
 
 # ordered list of supported password hashing schemes, best (passlib) should be
 # first, best builtin one should be second. this is what we support if we
@@ -57,6 +57,9 @@ split_regex = re.compile('([%s])([%s])' % (chars_lower, chars_upper), re.UNICODE
 page_invalid_chars_regex = re.compile(
     ur"""
     \u0000 | # NULL
+
+    \# | # http://tools.ietf.org/html/rfc3986#section-3.3
+    \? |
 
     # Bidi control characters
     \u202A | # LRE

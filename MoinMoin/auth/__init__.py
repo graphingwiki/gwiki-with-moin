@@ -371,7 +371,7 @@ class GivenAuth(BaseAuth):
             auth_username = self.transform_username(auth_username)
             logging.debug("auth_username (after decode/transform) = %r" % auth_username)
             u = user.User(request, auth_username=auth_username,
-                          auth_method=self.name, auth_attribs=('name', 'password'))
+                          auth_method=self.name, auth_attribs=('name'))
 
         logging.debug("u: %r" % u)
         if u and self.autocreate:

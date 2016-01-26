@@ -17,7 +17,7 @@
 """
 
 import os, time, codecs, errno
-
+import unicodedata
 
 from MoinMoin import caching, config, wikiutil, error
 from MoinMoin.Page import Page
@@ -53,6 +53,17 @@ var countdown_lock_secs = "%(lock_secs)s"
 addLoadEvent(countdown)
 </script>
 """
+
+#############################################################################
+### Filtering unprintable characters from page content
+#############################################################################
+
+ALLOWED_CONTROL_CHARS = '\t\n\r'
+
+def filter_unprintable(text):
+    return ''.join(x for x in text 
+                   if (not unicodedata.category(x) in ['Cc', 'Cn', 'Cs']
+                       or x in ALLOWED_CONTROL_CHARS))
 
 
 #############################################################################
@@ -1066,6 +1077,26 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
         """
         request = self.request
         _ = self._
+
+        # Depending on the configuration, filter unprintable
+        # characters from text content or warn of them. Unprintable
+        # characters are often undesired, and result from
+        # eg. copy-pasting text from productivity tools.
+        _handle_unprintable = getattr(self.request.cfg, 
+                                      'gwiki_handle_unprintable', '')
+        if _handle_unprintable in ['warn', 'filter']:
+            _newtext = filter_unprintable(newtext)
+            if _handle_unprintable == 'filter':
+                newtext = _newtext
+            elif _newtext != newtext:
+                _pos = 0
+                for i in len(_newtext):
+                    _pos = i
+                    if _newtext[i] != newtext[i]:
+                        break
+                raise self.SaveError(_("Bad character in text at position %s.")%
+                                     (_pos))
+
         self._save_draft(newtext, rev, **kw)
         action = kw.get('action', 'SAVE')
         deleted = kw.get('deleted', False)
