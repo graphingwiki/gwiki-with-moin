@@ -20,6 +20,8 @@ class Theme(ThemeBase):
         # FileAttach
         'attach':     ("%(attach_count)s",       "moin-attach.png",   16, 16),
         'info':       ("[INFO]",                 "moin-info.png",     16, 16),
+        'edit':       (_("Edit"),                "moin-edit.png",     12, 12),
+        'formedit':   (_("FormEdit"),            "moin-news.png",     12, 12),
         'attachimg':  (_("[ATTACH]"),            "attach.png",        32, 32),
         # RecentChanges
         'rss':        (_("[RSS]"),               "moin-rss.png",      16, 16),

@@ -135,7 +135,10 @@ class FormatterBase:
                 # Try to decode text. It might return junk, but we don't
                 # have enough information with attachments.
                 content = wikiutil.decodeUnknownInput(content)
-                colorizer = Parser(content, self.request, filename=filename)
+                if '.csv' in getattr(Parser, 'extensions', list()):
+                    colorizer = Parser(content, self.request, filename=filename, format_args=kw.get('format_args', ''))
+                else:
+                    colorizer = Parser(content, self.request, filename=filename)
                 colorizer.format(self)
             except IOError:
                 pass
