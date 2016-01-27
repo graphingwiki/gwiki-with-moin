@@ -118,7 +118,7 @@ def getAttachUrl(pagename, filename, request, addts=0, do='get'):
     action = get_action(request, filename, do)
     if action:
         args = dict(action=action, do=do, target=filename)
-        if do not in ['get', 'view', # harmless
+        if do not in ['get', 'view', 'diff', # harmless
                       'modify', # just renders the applet html, which has own ticket
                       'move', # renders rename form, which has own ticket
             ]:
@@ -426,6 +426,12 @@ def _build_filelist(request, pagename, showheader, readonly, mime_type='*', filt
         label_view = _("view")
         label_unzip = _("unzip")
         label_install = _("install")
+        label_diff = _("diff")
+
+        label_normal = _("Normal")
+        label_sort = _("Sort")
+        label_sortuniq = _("Sort + uniq")
+        label_sortuniqcount = _("Sort + uniq + count")
 
         may_read = request.user.may.read(pagename)
         may_write = request.user.may.write(pagename)
@@ -442,10 +448,22 @@ function checkAll(bx, targets_name) {
   }
 }
 </script>
+""")
+
+        html.append(u"""\
+<form method="GET" action="%s">
+<input type=hidden name=action value="AttachFile">
+        """ % request.page.url(request))
+
+        html.append(u"""\
 <form method="POST">
 <input type="hidden" name="action" value="AttachFile">
 <input type="hidden" name="do" value="multifile">
 """)
+
+        att1 = request.values.get('att1', '')
+        att2 = request.values.get('att2', '')
+        sort = request.values.get('sort', 'normal')
 
         html.append(fmt.bullet_list(1))
         for file in files:
@@ -511,6 +529,11 @@ function checkAll(bx, targets_name) {
 
             html.append(fmt.listitem(1))
             html.append("[%s]" % "&nbsp;| ".join(links))
+            html.append('<input type="radio" value="%s" name="att1"/%s>' % \
+                        (file, att1 == file and ' checked' or '')+ \
+                        '<input type="radio" value="%s" name="att2"/%s>' % \
+                        (file, att2 == file and ' checked' or '')+ \
+                        label_diff)
             html.append('''<input type="checkbox" name="fn" value="%s">''' % file)
             html.append(" (%(fmtime)s, %(fsize)s KB) [[attachment:%(file)s]]" % parmdict)
             html.append(fmt.listitem(0))
@@ -533,6 +556,16 @@ function checkAll(bx, targets_name) {
             submit=_("Do it."),
 ))
         html.append("</form>")
+
+        html.append('<input type="radio" value="normal" name="sort"/%s>%s\n' % \
+                    (sort == 'normal' and ' checked' or '', label_normal) + \
+                    '<input type="radio" value="sort" name="sort"/%s>%s\n' % \
+                    (sort == 'sort' and ' checked' or '', label_sort) + \
+                    '<input type="radio" value="uniq" name="sort"/%s>%s\n' % \
+                    (sort == 'uniq' and ' checked' or '', label_sortuniq) + \
+                    '<input type="radio" value="cnt" name="sort"/%s>%s\n' % \
+                    (sort == 'cnt' and ' checked' or '', label_sortuniqcount) + \
+                    '<br><input type=submit name=do value="diff"></form>')
 
     else:
         if showheader:

@@ -37,6 +37,7 @@ from MoinMoin.PageEditor import PageEditor
 from MoinMoin.logfile import editlog
 from MoinMoin.action import AttachFile
 from MoinMoin import caching
+from MoinMoin.metadata import graphdata_close
 
 def is_login_required(request):
     login_required = True
@@ -1232,8 +1233,14 @@ class XmlRpc2(XmlRpcBase):
 
 
 def xmlrpc(request):
-    return XmlRpc1(request).process()
+    try:
+        return XmlRpc1(request).process()
+    finally:
+        graphdata_close(request)
 
 def xmlrpc2(request):
-    return XmlRpc2(request).process()
+    try:
+        return XmlRpc2(request).process()
+    finally:
+        graphdata_close(request)
 

@@ -2,13 +2,13 @@
 """
      Link harvesting "parser"
 """
-
-from MoinMoin.wikiutil import resolve_interwiki, join_wiki
-from MoinMoin.parser.text_moin_wiki import Parser as WikiParser
-from MoinMoin import macro, wikiutil
 from string import rsplit
 
-from graphingwiki.util import category_regex
+from MoinMoin.wikiutil import resolve_interwiki, join_wiki
+from MoinMoin import macro, wikiutil
+from MoinMoin.metadata.util import category_regex
+
+from text_moin_wiki import Parser as WikiParser
 from wiki_form import Parser as listParser
 
 Dependencies = []

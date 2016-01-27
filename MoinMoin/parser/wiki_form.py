@@ -6,15 +6,14 @@
        intact as much as possible.
 
     @copyright: 2008-2010 by Juhani Eronen
-    @license: MIT <http://www.opensource.org/licenses/mit-license.php>
 """
 from string import rsplit
 
 from MoinMoin import wikiutil
 from MoinMoin.parser.text_moin_wiki import Parser as wikiParser
 
-from graphingwiki.util import category_regex, form_escape
-from graphingwiki import SEPARATOR
+from MoinMoin.metadata.util import category_regex, form_escape
+from MoinMoin.metadata import SEPARATOR
 
 Dependencies = []
 

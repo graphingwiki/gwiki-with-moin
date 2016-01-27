@@ -2010,3 +2010,22 @@ class RootPage(Page):
         self.request.clock.stop('getPageCount')
 
         return count
+
+# Override Page.py to change the parser. This method has the advantage
+# that it works regardless of any processing instructions written on
+# page, including the use of other parsers
+class LinkCollectingPage(Page):
+    def __init__(self, request, page_name, content, **keywords):
+        # Cannot use super as the Moin classes are old-style
+        apply(Page.__init__, (self, request, page_name), keywords)
+        self.set_raw_body(content)
+
+    # It's important not to cache this, as the wiki thinks we are
+    # using the default parser
+    def send_page_content(self, request, notparser, body, format_args='',
+                          do_cache=0, **kw):
+        self.parser = lcparser
+
+        kw['format_args'] = format_args
+        kw['do_cache'] = 0
+        apply(Page.send_page_content, (self, request, self.parser, body), kw)
