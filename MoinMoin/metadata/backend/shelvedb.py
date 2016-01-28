@@ -14,8 +14,8 @@ import errno
 import fcntl
 import os
 
-from graphingwiki.backend.basedb import GraphDataBase
-from graphingwiki.util import encode_page, decode_page, log
+from basedb import GraphDataBase
+from MoinMoin.metadata.util import encode_page, decode_page, log
 
 from time import time, sleep
 

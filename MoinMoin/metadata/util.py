@@ -12,7 +12,9 @@ from MoinMoin import wikiutil
 from MoinMoin import caching
 
 from MoinMoin.parser.text_moin_wiki import Parser
-from MoinMoin.PageEditor import PageEditor
+
+import logging
+log = logging.getLogger("MoinMoin.metadata")
 
 # Default node attributes that should not be shown
 SPECIAL_ATTRS = ["gwikilabel", "gwikisides", "gwikitooltip", "gwikiskew",
@@ -63,30 +65,6 @@ def node_type(request, nodename):
 
     return 'page'
 
-def delete_moin_caches(request, pageitem):
-    # Clear cache
-    arena = PageEditor(request, pageitem.page_name)
-
-    # delete pagelinks
-    key = 'pagelinks'
-    cache = caching.CacheEntry(request, arena, key, scope='item')
-    cache.remove()
-
-    # forget in-memory page text
-    pageitem.set_raw_body(None)
-
-    # clean the in memory acl cache
-    # XXX gone in moin 1.9
-    # pageitem.clean_acl_cache()
-
-    request.graphdata.cache = dict()
-
-    # clean the cache
-    for formatter_name in request.cfg.caching_formats:
-        key = formatter_name
-        cache = caching.CacheEntry(request, arena, key, scope='item')
-        cache.remove()
-
 def category_regex(request):
     if hasattr(request.cfg.cache, 'page_category_regex'):
         return request.cfg.cache.page_category_regex
@@ -115,3 +93,9 @@ def filter_categories(request, candidates):
     # just use the wikiutil function until further notice
     # XXX
     return wikiutil.filterCategoryPages(request, candidates)
+
+def encode_page(page):
+    return encode(page)
+
+def decode_page(page):
+    return unicode(page, config.charset)

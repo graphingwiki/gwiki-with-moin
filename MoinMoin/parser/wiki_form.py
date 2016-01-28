@@ -9,11 +9,10 @@
 """
 from string import rsplit
 
-from MoinMoin import wikiutil
+from MoinMoin.wikiutil import parameter_escape, AbsPageName
 from MoinMoin.parser.text_moin_wiki import Parser as wikiParser
 
-from MoinMoin.metadata.util import category_regex, form_escape
-from MoinMoin.metadata import SEPARATOR
+from MoinMoin.metadata.wikitextutil import SEPARATOR
 
 Dependencies = []
 
@@ -26,7 +25,7 @@ class Parser(wikiParser):
 
         # Cannot use super as the Moin classes are old-style
         apply(wikiParser.__init__, (self, raw, request), kw)
-        self.cat_re=category_regex(request)
+        self.cat_re = request.cfg.cache.page_category_regex
 
     def __nonempty_groups(self, groups):
         return [(x, y) for x, y in groups.iteritems() if y]
@@ -102,7 +101,7 @@ class Parser(wikiParser):
 
         return apply(wikiParser._dl_repl, (self, match, groups)) + \
                '\n<input class="metavalue" type="text" name="' + \
-               form_escape('%s%s%s' % (self.pagename, SEPARATOR, dt)) + \
+               parameter_escape('%s%s%s' % (self.pagename, SEPARATOR, dt)) + \
                '" value="'
 
     def __real_val(self, word):
@@ -131,7 +130,7 @@ class Parser(wikiParser):
         if self.in_dd:
             name = groups.get('word_name')
             current_page = self.formatter.page.page_name
-            abs_name = wikiutil.AbsPageName(current_page, name)
+            abs_name = AbsPageName(current_page, name)
             if abs_name == current_page:
                 return self.__real_val(abs_name)
             else:

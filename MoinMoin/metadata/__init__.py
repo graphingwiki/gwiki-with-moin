@@ -10,89 +10,11 @@ from MoinMoin.wikiutil import get_processing_instructions
 from MoinMoin.Page import LinkCollectingPage
 from MoinMoin.wikiutil import AbsPageName
 from MoinMoin import config
+from MoinMoin import caching
 from MoinMoin.parser.link_collect import Parser as lcparser
 
-from util import node_type, SPECIAL_ATTRS, NO_TYPE, delete_moin_caches
-from wikitextutil import parse_categories
-
-SEPARATOR = '-gwikiseparator-'
-
-def parse_text(request, page, text):
-    pagename = page.page_name
-    
-    newreq = request
-    newreq.page = lcpage = LinkCollectingPage(newreq, pagename, text)
-    parserclass = lcparser
-    myformatter = importPlugin(request.cfg, "formatter",
-                               'nullformatter', "Formatter")
-    lcpage.formatter = myformatter(newreq)
-    lcpage.formatter.page = lcpage
-    p = parserclass(lcpage.get_raw_body(), newreq, formatter=lcpage.formatter)
-    lcpage.parser = p
-    lcpage.format(p)
-    
-    # These are the match types that really should be noted
-    linktypes = ["wikiname_bracket", "word",                  
-                 "interwiki", "url", "url_bracket"]
-    
-    new_data = dict_with_getpage()
-
-    # Add the page categories as links too
-    categories, _, _ = parse_categories(request, text)
-
-    # Process ACL:s
-    pi, _ = get_processing_instructions(text)
-    for verb, args in pi:
-        if verb == u'acl':
-            # Add all ACL:s on multiple lines to an one-lines
-            acls = new_data.get(pagename, dict()).get('acl', '')
-            acls = acls.strip() + args
-            new_data.setdefault(pagename, dict())['acl'] = acls
-
-    for metakey, value in p.definitions.iteritems():
-        for ltype, item in value:
-            dnode = None
-
-            if  ltype in ['url', 'wikilink', 'interwiki', 'email']:
-                dnode = item[1]
-                if '#' in dnode:
-                    # Fix anchor links to point to the anchor page
-                    url = False
-                    for schema in config.url_schemas:
-                        if dnode.startswith(schema):
-                            url = True
-                    if not url:
-                        # Do not fix URLs
-                        if dnode.startswith('#'):
-                            dnode = pagename
-                        else:
-                            dnode = dnode.split('#')[0]
-                if (dnode.startswith('/') or
-                    dnode.startswith('./') or
-                    dnode.startswith('../')):
-                    # Fix relative links
-                    dnode = AbsPageName(pagename, dnode)
-
-                hit = item[0]
-            elif ltype == 'category':
-                # print "adding cat", item, repr(categories)
-                dnode = item
-                hit = item
-                if item in categories:
-                    add_link(new_data, pagename, dnode, 
-                             u"gwikicategory")
-            elif ltype == 'meta':
-                add_meta(new_data, pagename, (metakey, item))
-            elif ltype == 'include':
-                # No support for regexp includes, for now!
-                if not item[0].startswith("^"):
-                    included = AbsPageName(pagename, item[0])
-                    add_link(new_data, pagename, included, u"gwikiinclude")
-
-            if dnode:
-                add_link(new_data, pagename, dnode, metakey)
-
-    return new_data
+from util import node_type, SPECIAL_ATTRS, NO_TYPE
+from wikitextutil import parse_categories, parse_text
 
 def strip_meta(key, val):
     key = key.strip()
@@ -485,7 +407,6 @@ def savegraphdata_execute2(pagename, request, text, pagedir, pageitem):
             linktype, src = edge
             add_in(request.graphdata, [src, page], linktype)
 
-
     ## Remove deleted pages from the shelve
     # 1. Removing data at the moment of deletion
     # Deleting == saving a revision with the text 'deleted/n', then 
@@ -503,6 +424,26 @@ def savegraphdata_execute2(pagename, request, text, pagedir, pageitem):
     
     delete_moin_caches(request, pageitem)
     request.graphdata.post_save(pagename)
+
+def delete_moin_caches(request, pageitem):
+    # Clear cache
+    arena = PageEditor(request, pageitem.page_name)
+
+    # delete pagelinks
+    key = 'pagelinks'
+    cache = caching.CacheEntry(request, arena, key, scope='item')
+    cache.remove()
+
+    # forget in-memory page text
+    pageitem.set_raw_body(None)
+
+    request.graphdata.cache = dict()
+
+    # clean the cache
+    for formatter_name in request.cfg.caching_formats:
+        key = formatter_name
+        cache = caching.CacheEntry(request, arena, key, scope='item')
+        cache.remove()
 
 def underlay_to_pages(req, p):
     underlaydir = req.cfg.data_underlay_dir

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-"
 import re
 
 from util import filter_categories
@@ -9,6 +10,85 @@ DEFAULT_META_BEFORE = '^----'
 DL_RE = re.compile('(^\s+(.+?):: (.+)$\n?)', re.M)
 # From Parser, slight modification due to multiline usage
 DL_PROTO_RE = re.compile('(^\s+(.+?)::\s*$\n?)', re.M)
+
+SEPARATOR = '-gwikiseparator-'
+
+def parse_text(request, page, text):
+    pagename = page.page_name
+    
+    newreq = request
+    newreq.page = lcpage = LinkCollectingPage(newreq, pagename, text)
+    parserclass = lcparser
+    myformatter = importPlugin(request.cfg, "formatter",
+                               'nullformatter', "Formatter")
+    lcpage.formatter = myformatter(newreq)
+    lcpage.formatter.page = lcpage
+    p = parserclass(lcpage.get_raw_body(), newreq, formatter=lcpage.formatter)
+    lcpage.parser = p
+    lcpage.format(p)
+    
+    # These are the match types that really should be noted
+    linktypes = ["wikiname_bracket", "word",                  
+                 "interwiki", "url", "url_bracket"]
+    
+    new_data = dict_with_getpage()
+
+    # Add the page categories as links too
+    categories, _, _ = parse_categories(request, text)
+
+    # Process ACL:s
+    pi, _ = get_processing_instructions(text)
+    for verb, args in pi:
+        if verb == u'acl':
+            # Add all ACL:s on multiple lines to an one-lines
+            acls = new_data.get(pagename, dict()).get('acl', '')
+            acls = acls.strip() + args
+            new_data.setdefault(pagename, dict())['acl'] = acls
+
+    for metakey, value in p.definitions.iteritems():
+        for ltype, item in value:
+            dnode = None
+
+            if  ltype in ['url', 'wikilink', 'interwiki', 'email']:
+                dnode = item[1]
+                if '#' in dnode:
+                    # Fix anchor links to point to the anchor page
+                    url = False
+                    for schema in config.url_schemas:
+                        if dnode.startswith(schema):
+                            url = True
+                    if not url:
+                        # Do not fix URLs
+                        if dnode.startswith('#'):
+                            dnode = pagename
+                        else:
+                            dnode = dnode.split('#')[0]
+                if (dnode.startswith('/') or
+                    dnode.startswith('./') or
+                    dnode.startswith('../')):
+                    # Fix relative links
+                    dnode = AbsPageName(pagename, dnode)
+
+                hit = item[0]
+            elif ltype == 'category':
+                # print "adding cat", item, repr(categories)
+                dnode = item
+                hit = item
+                if item in categories:
+                    add_link(new_data, pagename, dnode, 
+                             u"gwikicategory")
+            elif ltype == 'meta':
+                add_meta(new_data, pagename, (metakey, item))
+            elif ltype == 'include':
+                # No support for regexp includes, for now!
+                if not item[0].startswith("^"):
+                    included = AbsPageName(pagename, item[0])
+                    add_link(new_data, pagename, included, u"gwikiinclude")
+
+            if dnode:
+                add_link(new_data, pagename, dnode, metakey)
+
+    return new_data
 
 def parse_categories(request, text):
     r"""

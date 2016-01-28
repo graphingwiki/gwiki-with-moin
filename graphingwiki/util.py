@@ -57,9 +57,6 @@ from graphingwiki.graph import Graph
 MOIN_VERSION = float('.'.join(MoinVersion.release.split('.')[:2]))
 
 
-import logging
-log = logging.getLogger("graphingwiki")
-
 # configure default logger as advised in logger docs
 class NullHandler(logging.Handler):
     def emit(self, record):
@@ -204,28 +201,6 @@ def form_unescape(text):
     # Deprecated, use parameter_unescape() instead.
     return parameter_unescape(text)
 
-def text_escape(text):
-    """Escape function to be used for content going to HTML text body.
-
-       Entity encodes "<", ">" and "&".
-    """
-    return cgi.escape(text)
-
-def parameter_escape(text):
-    """Escape function to be used for content going to HTML parameter values.
-
-       This is not enough for style and on* parameters.
-       This is not enough for URLs.
-    """
-    return saxutils.escape(text, QUOTEDATTRS)
-
-def parameter_unescape(text):
-    return saxutils.unescape(text, UNQUOTEDATTRS)
-
-def form_writer(fmt, *args):
-    args = tuple(map(form_escape, args))
-    return fmt % args
-
 def _as_str(string):
     if isinstance(string, unicode):
         return string.encode("utf-8")
@@ -289,13 +264,6 @@ def make_tooltip(request, pagename, format=''):
     return tooldata
 
 ATTACHMENT_SCHEMAS = ["attachment", "drawing"]
-
-def encode_page(page):
-    return encode(page)
-
-def decode_page(page):
-    return unicode(page, config.charset)
-
 
 
 def get_url_ns(request, pagename, link):
