@@ -104,32 +104,43 @@ apt-get install python-igraph
 ## Get moin, gwiki sources. Install.
 mkdir -p /usr/local/src/
 cd /usr/local/src/
-wget -N -q https://bitbucket.org/clarifiednetworks/graphingwiki/get/\
-default.tar.gz -O graphingwiki.tar.gz
-wget -N -q http://static.moinmo.in/files/moin-1.9.7.tar.gz
+wget -N -q https://github.com/graphingwiki/graphingwiki/archive/\
+master.tar.gz -O graphingwiki.tar.gz
+wget -N -q https://github.com/graphingwiki/opencollab/archive/\
+master.tar.gz -O opencollab.tar.gz
+wget -N -q https://github.com/graphingwiki/collabbackend/archive/\
+master.tar.gz -O collabbackend.tar.gz
+wget -N -q http://static.moinmo.in/files/moin-1.9.8.tar.gz
 mkdir graphingwiki
 tar -zxvf graphingwiki.tar.gz -C graphingwiki/ --strip-components 1
+mkdir opencollab
+tar -zxvf opencollab.tar.gz -C opencollab/ --strip-components 1
+mkdir collabbackend
+tar -zxvf collabbackend.tar.gz -C collabbackend/ --strip-components 1
 
 # Patch and install moin
-tar -zxvf moin-1.9.7.tar.gz 
-cd moin-1.9.7/
-ls /usr/local/src/graphingwiki/graphingwiki/patch.d/* | \
+tar -zxvf moin-1.9.8.tar.gz 
+cd moin-1.9.8/
+ls /usr/local/src/graphingwiki/patch.d/* | \
 xargs -I {} sh -c 'patch -p0 -N -t < {}'
-ls /usr/local/src/graphingwiki/collab/patch.d/* | \
+ls /usr/local/src/collabbackend/patch.d/* | \
 xargs -I {} sh -c 'patch -p0 -N -t < {}'
 python setup.py install
 
 # Install graphingwiki, collabbackend and opencollab
 cd ../graphingwiki/graphingwiki
 python setup.py install
-cd ../collab/
+cd ../collabbackend/
 python setup.py install
 cd ../opencollab/
 python setup.py install
 
 ## Start bootstrapping collabbackend
 # Make user collab
-useradd -u 812 -s /sbin/nologin -c 'Service Collab' collab
+mkdir /var/empty
+chown root:root /var/empty
+chmod 755 /var/empty
+useradd -u 812 -s /sbin/nologin -d /var/empty -c 'Service Collab' collab
 usermod -a -G collab www-data
 # Moin setup might have left the permissions lacking, so explicitly allowing
 chgrp -R collab /usr/local/share/moin/
@@ -162,7 +173,7 @@ chmod 660 collab/log/moinmoin.log
 ln -sf /srv/wikis/collab/htdocs/ /srv/www/https/collab
 ln -sf /usr/local/share/moin/htdocs/ /srv/www/https/moin_static
 
-# Ensure that Moin 1.9.7 htdocs are copied to the expected place
+# Ensure that Moin 1.9.8 htdocs are copied to the expected place
 # instead of libs. This was a 1.9 change.
 PYVERSION=`python -c 'import sys; print sys.version_info[1]'`
 cp -r \
@@ -173,11 +184,9 @@ cp -r \
 su - collab -s /bin/bash -c "umask 007; cp -r /usr/local/share/moin/underlay \
 /srv/wikis/collab/; chmod -R g+w /srv/wikis/collab/underlay"
 
-# Making collab users. 
-su - collab -s /bin/bash -c "collab-account-create -f -r collab"
-
 # Make the base collab
 su - collab -s /bin/bash -c "collab-create collab collab"
+su - collab -s /bin/bash -c "collab-account-create -f -r collab"
 su - collab -s /bin/bash -c "collab-htaccess"
 
 # Making htaccess to the base collab
@@ -227,7 +236,7 @@ apt-get install python-geoip
 # commands.
 
 PYTHONPATH=/srv/wikis/collab/wikis/collab/config/ python -m MoinMoin.packages \
-i /usr/local/src/moin-1.9.7/wiki/underlay/pages/LanguageSetup/\
+i /usr/local/src/moin-1.9.8/wiki/underlay/pages/LanguageSetup/\
 attachments/English--all_pages.zip 
 
 PYTHONPATH=/srv/wikis/collab/wikis/collab/config/ python -m MoinMoin.packages \
