@@ -471,13 +471,13 @@ class GraphData(GraphDataBase):
             for edge in changed_del_out[page]:
                 #print 'delout', repr(page), edge
                 linktype, dst = edge
-                self.__remove_out([page, dst], [linktype])
+                self._remove_out([page, dst], [linktype])
 
         for page in changed_del_in:
             for edge in changed_del_in[page]:
                 #print 'delin', repr(page), edge
                 linktype, src = edge
-                self.__remove_in([src, page], [linktype])
+                self._remove_in([src, page], [linktype])
 
         for page in changed_new_out:
             for i, edge in enumerate(changed_new_out[page]):

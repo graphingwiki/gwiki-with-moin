@@ -8,9 +8,8 @@ import os
 
 from time import time
 
-from MoinMoin.wikiutil import get_processing_instructions
+from MoinMoin.wikiutil import get_processing_instructions, AbsPageName
 from MoinMoin.Page import LinkCollectingPage
-from MoinMoin.wikiutil import AbsPageName
 from MoinMoin import config
 from MoinMoin import caching
 from MoinMoin.parser.link_collect import Parser as lcparser
@@ -128,3 +127,140 @@ def graphdata_rename(page):
             break
 
         os.rmdir(dirpath)
+
+# Fetch requested metakey value for the given page.
+def get_metas(request, name, metakeys, checkAccess=True, 
+              includeGenerated=True, formatLinks=False, **kw):
+    if not includeGenerated:
+        metakeys = [x for x in metakeys if not '->' in x]
+
+    metakeys = set(metakeys)
+    pageMeta = dict([(key, list()) for key in metakeys])
+
+    if checkAccess:
+        if not request.user.may.read(name):
+            return pageMeta
+
+    loadedPage = request.graphdata.getpage(name)
+
+    # Make a real copy of loadedOuts and loadedMeta for tracking indirection
+    loadedOuts = dict()
+    outs = request.graphdata.get_out(name)
+    for key in outs:
+        loadedOuts[key] = list(outs[key])
+
+    loadedMeta = dict()
+    metas = request.graphdata.get_meta(name)
+    for key in metas:
+        loadedMeta.setdefault(key, list())
+        if formatLinks:
+            values = metas_to_abs_links(request, name, metas[key])
+        else:
+            values = metas[key]
+        loadedMeta[key].extend(values)
+
+    loadedOutsIndir = dict()
+    for key in loadedOuts:
+        loadedOutsIndir.setdefault(key, set()).update(loadedOuts[key])
+
+    if includeGenerated:
+        # Handle inlinks separately
+        if 'gwikiinlinks' in metakeys:
+            inLinks = inlinks_key(request, loadedPage, checkAccess=checkAccess)
+
+            loadedOuts['gwikiinlinks'] = inLinks
+
+        # Meta key indirection support
+        for key in metakeys:
+            add_matching_redirs(request, loadedPage, loadedOuts, 
+                                loadedMeta, metakeys,
+                                key, name, key, formatLinks)
+
+    # Add values
+    for key in metakeys & set(loadedMeta):
+        for value in loadedMeta[key]:
+            pageMeta[key].append(value)
+
+    # Add gwikicategory as a special case, as it can be metaedited
+    if loadedOuts.has_key('gwikicategory'):
+        # Empty (possible) current gwikicategory to fix a corner case
+        pageMeta['gwikicategory'] = loadedOuts['gwikicategory']
+            
+    return pageMeta
+
+def add_matching_redirs(request, loadedPage, loadedOuts, loadedMeta,
+                        metakeys, key, curpage, curkey,
+                        prev='', formatLinks=False, linkdata=None):
+    if not linkdata:
+        linkdata = dict()
+    args = curkey.split('->')
+
+    inlink = False
+    if args[0] == 'gwikiinlinks':
+        inlink = True
+        args = args[1:]
+
+    newkey = '->'.join(args[2:])
+
+    last = False
+
+    if not args:
+        return
+    if len(args) in [1, 2]:
+        last = True
+
+    if len(args) == 1:
+        linked, target_key = prev, args[0]
+    else:
+        linked, target_key = args[:2]
+
+    if inlink:
+        pages = request.graphdata.get_in(curpage).get(linked, set())
+    else:
+        pages = request.graphdata.get_out(curpage).get(linked, set())
+
+    for indir_page in set(pages):
+        # Relative pages etc
+        indir_page = wikiutil.AbsPageName(request.page.page_name,
+                                          indir_page)
+
+        if request.user.may.read(indir_page):
+            pagedata = request.graphdata.getpage(indir_page)
+
+            outs = pagedata.get('out', dict())
+            metas = pagedata.get('meta', dict())
+
+            # Add matches at first round
+            if last:
+                if target_key in metas:
+                    loadedMeta.setdefault(key, list())
+                    linkdata.setdefault(key, dict())
+                    if formatLinks:
+                        values = metas_to_abs_links(
+                            request, indir_page, metas[target_key])
+                    else:
+                        values = metas[target_key]
+                    loadedMeta[key].extend(values)
+                    linkdata[key].setdefault(indir_page, list()).extend(values)
+                else:
+                    linkdata.setdefault(key, dict())
+                    linkdata[key].setdefault(indir_page, list())
+                continue
+
+            elif not target_key in outs:
+                continue
+
+            # Handle inlinks separately
+            if 'gwikiinlinks' in metakeys:
+                inLinks = inlinks_key(request, loadedPage,
+                                      checkAccess=checkAccess)
+
+                loadedOuts[key] = inLinks
+                continue
+
+            linkdata = add_matching_redirs(request, loadedPage, loadedOuts,
+                                           loadedMeta, metakeys, key,
+                                           indir_page, newkey, target_key,
+                                           formatLinks, linkdata)
+
+    return linkdata
