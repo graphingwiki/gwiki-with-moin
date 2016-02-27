@@ -22,6 +22,8 @@ SEPARATOR = '-gwikiseparator-'
 
 ATTACHMENT_SCHEMAS = ["attachment", "drawing"]
 
+regexp_re = re.compile('^/.+/$')
+
 # Default node attributes that should not be shown
 SPECIAL_ATTRS = ["gwikilabel", "gwikisides", "gwikitooltip", "gwikiskew",
                  "gwikiorientation", "gwikifillcolor", 'gwikiperipheries',
@@ -110,3 +112,8 @@ def encode_page(page):
 
 def decode_page(page):
     return unicode(page, config.charset)
+
+def url_escape(text):
+    # Escape characters that break links in html values fields, 
+    # macros and urls with parameters
+    return re.sub('[\]"\?#&+]', lambda mo: '%%%02x' % ord(mo.group()), text)

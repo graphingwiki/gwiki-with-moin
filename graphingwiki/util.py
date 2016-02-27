@@ -281,37 +281,6 @@ def get_url_ns(request, pagename, link):
     else:
         return '../' * subrank + './%sProperty' % (link)
 
-def format_wikitext(request, data, parser=None):
-    request.page.formatter = request.formatter
-    request.formatter.page = request.page
-
-    if not parser:
-        parser = Parser(data, request)
-    else:
-        parser.raw = data
-    parser.request = request
-
-    # Do not store pagelinks for values in metadata listings
-    plstore = getattr(request.formatter, '_store_pagelinks', 0)
-    request.formatter._store_pagelinks = 0
-
-    parser.formatter = request.formatter
-    # No line anchors of any type to table cells
-    request.page.formatter.in_p = 1
-    parser._line_anchordef = lambda: ''
-
-    # Do not parse macros from revision pages. For some reason,
-    # it spawns multiple requests, which are not finished properly,
-    # thus littering a number of readlocks. Besides, the macros do not
-    # return anything useful anyway for pages they don't recognize
-    if '?action=recall' in request.page.page_name:
-        parser._macro_repl = lambda x: x
-
-    out = parser.scan(data, inhibit_p=True)
-
-    request.formatter._store_pagelinks = plstore
-    return out.strip()
-
 def wrap_span(request, key, data, id):
     if not key:
         return format_wikitext(request, data)

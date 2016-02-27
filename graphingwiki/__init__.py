@@ -30,11 +30,6 @@ def actionname(request, pagename=None):
     else:
         return Page(request, pagename).url(request)
 
-def url_escape(text):
-    # Escape characters that break links in html values fields, 
-    # macros and urls with parameters
-    return re.sub('[\]"\?#&+]', lambda mo: '%%%02x' % ord(mo.group()), text)
-
 def url_unescape(text):
     return re.sub(r"%([0-9a-f]{2})", lambda mo: chr(int(mo.group(1), 16)), text)
 

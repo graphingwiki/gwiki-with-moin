@@ -53,6 +53,11 @@ def text_escape(text):
     """
     return cgi.escape(text)
 
+# See also http://bugs.python.org/issue9061
+QUOTEDATTRS = {'"': '&#x22;', "'": '&#x27;', '/': '&#x2F;'}
+UNQUOTEDATTRS = dict()
+UNQUOTEDATTRS.update([(y, x) for x, y in QUOTEDATTRS.items()])
+
 def parameter_escape(text):
     """Escape function to be used for content going to HTML parameter values.
 

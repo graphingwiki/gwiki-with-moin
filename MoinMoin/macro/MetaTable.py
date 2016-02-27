@@ -32,11 +32,13 @@ from urllib import quote
 
 from MoinMoin.Page import Page
 from MoinMoin.parser.text_moin_wiki import Parser
+from MoinMoin.wikiutil import form_writer
 
-from graphingwiki import url_escape
-from graphingwiki.editing import metatable_parseargs, get_metas, \
-    get_properties, PROPERTIES, add_matching_redirs
-from graphingwiki.util import format_wikitext, form_writer
+from MoinMoin.metadata.util import url_escape
+from MoinMoin.metadata import (metatable_parseargs, get_metas,
+                               get_properties, PROPERTIES, 
+                               add_matching_redirs)
+from MoinMoin.metadata.wikitextutil import format_wikitext
 
 try:
     import simplejson as json
