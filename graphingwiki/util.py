@@ -263,9 +263,6 @@ def make_tooltip(request, pagename, format=''):
 
     return tooldata
 
-ATTACHMENT_SCHEMAS = ["attachment", "drawing"]
-
-
 def get_url_ns(request, pagename, link):
     # Find out subpage level to adjust URL:s accordingly
     subrank = pagename.count('/')

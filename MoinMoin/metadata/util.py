@@ -7,6 +7,8 @@
 """
 import re
 
+from codecs import getencoder
+
 from MoinMoin import config
 from MoinMoin import wikiutil
 from MoinMoin import caching
@@ -15,6 +17,10 @@ from MoinMoin.parser.text_moin_wiki import Parser
 
 import logging
 log = logging.getLogger("MoinMoin.metadata")
+
+SEPARATOR = '-gwikiseparator-'
+
+ATTACHMENT_SCHEMAS = ["attachment", "drawing"]
 
 # Default node attributes that should not be shown
 SPECIAL_ATTRS = ["gwikilabel", "gwikisides", "gwikitooltip", "gwikiskew",
@@ -93,6 +99,11 @@ def filter_categories(request, candidates):
     # just use the wikiutil function until further notice
     # XXX
     return wikiutil.filterCategoryPages(request, candidates)
+
+# Encoder from unicode to charset selected in config
+encoder = getencoder(config.charset)
+def encode(str):
+    return encoder(str, 'replace')[0]
 
 def encode_page(page):
     return encode(page)

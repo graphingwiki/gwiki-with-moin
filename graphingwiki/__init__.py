@@ -23,28 +23,6 @@ import socket
 import xmlrpclib
 from cStringIO import StringIO
 
-def RequestCLI(pagename='', parse=True):
-    """
-    The MoinScript class does command line argument parsing, which
-    might not be what is desired, as it will complain about custom
-    arguments in gwiki-* scripts. MoinScript initialises the request
-    by calling up ScriptContext, which is then assigned to the
-    script.request.
-
-    If a gwiki-* script uses non-MoinScript command line arguments,
-    the ScriptContext is initialized with minimum sane default.
-    """
-    if parse:
-        script = MoinScript()
-        if pagename:
-            script.parser.set_defaults(page=pagename)
-        script.options, script.args = script.parser.parse_args()
-        script.init_request()
-        return script.request
-
-    # Default values
-    return ScriptContext(None, pagename)
-
 # Get action name for forms
 def actionname(request, pagename=None):
     if not pagename:

@@ -102,3 +102,15 @@ class GraphDataBase(UserDict.DictMixin):
                 for val in value['meta'][key]:
                     self.vals_on_pages.setdefault(val, set()).add(page)
                     self.vals_on_keys.setdefault(key, set()).add(val)
+
+    def set_page(self, request, pagename, new_data):
+        raise NotImplementedError()
+
+    def set_page_meta(self, pagename, metas):
+        raise NotImplementedError()
+
+    def set_acl(self, pagename, acl):
+        raise NotImplementedError()
+
+    def set_saved(self, pagename, saved, mtime):
+        raise NotImplementedError()

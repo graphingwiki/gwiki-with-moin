@@ -4,12 +4,23 @@
 import sys, os
 
 from optparse import OptionParser
-from graphingwiki import graphdata_close
-from graphingwiki.editing import savetext
+from MoinMoin.metadata import graphdata_close
 
 from MoinMoin.Page import Page
+from MoinMoin.PageEditor import PageEditor
+from MoinMoin.script import MinimalMoinScript
 
-if __name__ == '__main__':
+def savetext(request, pagename, newtext, **kw):
+    page = PageEditor(request, pagename)
+
+    try:
+        msg = page.saveText(newtext, 0, **kw)
+    except page.Unchanged:
+        msg = u'Unchanged'
+
+    return msg
+
+def run():
     usage = "usage: %prog [options] <path to wiki> <pagename>"
     parser = OptionParser(usage=usage)
     parser.add_option("-v", "--verbose", action="store_true", dest="verbose",
@@ -25,8 +36,6 @@ if __name__ == '__main__':
         print parser.get_usage()
         sys.exit(2)
 
-    from graphingwiki import RequestCLI
-
     # Configdir to path, so wikiconfig can be imported by Request
     cp = args[0]
     cp2 = os.path.join(cp, 'config')
@@ -37,7 +46,7 @@ if __name__ == '__main__':
     pagename = unicode(args[1], sys.getfilesystemencoding())
 
     # Make a new request for the page
-    req = RequestCLI(pagename, parse=False)
+    req = MinimalMoinScript(pagename, parse=False)
     req.page = Page(req, pagename)
 
     # Auth

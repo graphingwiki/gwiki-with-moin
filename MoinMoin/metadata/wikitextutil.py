@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-"
 import re
 
-from util import filter_categories
+from MoinMoin import config
+
+from MoinMoin.Page import LinkCollectingPage
+from MoinMoin.parser.link_collect import Parser as lcparser
+from MoinMoin.formatter.nullformatter import Formatter as nullformatter
+from MoinMoin.wikiutil import get_processing_instructions, AbsPageName
+
+from MoinMoin.metadata.util import filter_categories, node_type, SPECIAL_ATTRS
 
 DEFAULT_META_BEFORE = '^----'
 
@@ -11,7 +18,57 @@ DL_RE = re.compile('(^\s+(.+?):: (.+)$\n?)', re.M)
 # From Parser, slight modification due to multiline usage
 DL_PROTO_RE = re.compile('(^\s+(.+?)::\s*$\n?)', re.M)
 
-SEPARATOR = '-gwikiseparator-'
+def _add_meta(new_data, pagename, (key, val)):
+    # Do not handle empty metadata, except empty labels
+    val = val.strip()
+    if key == 'gwikilabel' and not val:
+        val = ' '        
+
+    if not val:
+        return
+
+    # Values to be handled in graphs
+    if key in SPECIAL_ATTRS:
+        _set_attribute(new_data, pagename, key, val)
+        # If color defined, set page as filled
+        if key == 'fillcolor':
+            _set_attribute(new_data, pagename, 'style', 'filled')
+        return
+
+    # Save to shelve's metadata list
+    _set_attribute(new_data, pagename, key, val)
+
+def _strip_meta(key, val):
+    key = key.strip()
+    val = val.strip()
+
+    # retain empty labels
+    if key == 'gwikilabel' and not val:
+        val = ' '        
+
+    return key, val
+
+def _set_attribute(new_data, node, key, val):
+    key, val = _strip_meta(key, val)
+
+    temp = new_data.get(node, {})
+
+    if not temp.has_key(u'meta'):
+        temp[u'meta'] = {key: [val]}
+    elif not temp[u'meta'].has_key(key):
+        temp[u'meta'][key] = [val]
+    # a page can not have more than one label, shapefile etc
+    elif key in SPECIAL_ATTRS:
+        temp[u'meta'][key] = [val]
+    else:
+        temp[u'meta'][key].append(val)
+
+    new_data[node] = temp
+
+def _add_link(new_data, pagename, dnode, linktype):
+    pagedata = new_data.setdefault(pagename, dict())
+    pagelinks = pagedata.setdefault('out', dict())
+    pagelinks.setdefault(linktype, list()).append(dnode)
 
 def parse_text(request, page, text):
     pagename = page.page_name
@@ -19,8 +76,7 @@ def parse_text(request, page, text):
     newreq = request
     newreq.page = lcpage = LinkCollectingPage(newreq, pagename, text)
     parserclass = lcparser
-    myformatter = importPlugin(request.cfg, "formatter",
-                               'nullformatter', "Formatter")
+    myformatter = nullformatter
     lcpage.formatter = myformatter(newreq)
     lcpage.formatter.page = lcpage
     p = parserclass(lcpage.get_raw_body(), newreq, formatter=lcpage.formatter)
@@ -31,7 +87,7 @@ def parse_text(request, page, text):
     linktypes = ["wikiname_bracket", "word",                  
                  "interwiki", "url", "url_bracket"]
     
-    new_data = dict_with_getpage()
+    new_data = dict()
 
     # Add the page categories as links too
     categories, _, _ = parse_categories(request, text)
@@ -75,18 +131,18 @@ def parse_text(request, page, text):
                 dnode = item
                 hit = item
                 if item in categories:
-                    add_link(new_data, pagename, dnode, 
+                    _add_link(new_data, pagename, dnode, 
                              u"gwikicategory")
             elif ltype == 'meta':
-                add_meta(new_data, pagename, (metakey, item))
+                _add_meta(new_data, pagename, (metakey, item))
             elif ltype == 'include':
                 # No support for regexp includes, for now!
                 if not item[0].startswith("^"):
                     included = AbsPageName(pagename, item[0])
-                    add_link(new_data, pagename, included, u"gwikiinclude")
+                    _add_link(new_data, pagename, included, u"gwikiinclude")
 
             if dnode:
-                add_link(new_data, pagename, dnode, metakey)
+                _add_link(new_data, pagename, dnode, metakey)
 
     return new_data
 

@@ -541,21 +541,6 @@ def save_template(request, page, template):
 
     return msg
 
-def savetext(request, pagename, newtext, **kw):
-    """ Savetext - a function to be used by local CLI scripts that
-    modify page content directly.
-
-    """
-
-    page = PageEditor(request, pagename)
-
-    try:
-        msg = page.saveText(newtext, 0, **kw)
-    except page.Unchanged:
-        msg = u'Unchanged'
-
-    return msg
-
 def string_aton(value):
     # Regression: without this, '\d+ ' is an IP according to this func
     if not '.' in value and not ':' in value:

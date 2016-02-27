@@ -1,0 +1,172 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+    moin-meta-rehash
+     - (Re-)saves graph data from all or selected pages of a wiki.
+
+    @copyright: 2006-2016 by Juhani Eronen <exec@iki.fi>
+    @license: MIT <http://www.opensource.org/licenses/mit-license.php>
+
+    Permission is hereby granted, free of charge, to any person
+    obtaining a copy of this software and associated documentation
+    files (the "Software"), to deal in the Software without
+    restriction, including without limitation the rights to use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell copies
+    of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be
+    included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+"""
+
+import os, sys
+
+import shutil
+from codecs import getencoder
+from optparse import OptionParser
+
+from MoinMoin.wikiutil import quoteWikinameFS, unquoteWikiname, importPlugin
+from MoinMoin.script import MoinScript
+from MoinMoin.Page import Page, RootPage
+from MoinMoin import config
+
+from MoinMoin.metadata import underlay_to_pages, savegraphdata
+
+from MoinMoin.script import MinimalMoinScript
+
+def run():
+    pages = []
+    retain_shelve = False
+
+    usage = "usage: %prog [options] <path-to-wiki> [pagename(s)]\n"
+    parser = OptionParser(usage=usage)
+
+    parser.add_option("-f", "--file", dest="filename",
+                      help="write shelve to FILE")
+
+    parser.add_option("-u", "--update_underlay", dest="underlay_only", 
+                      action='store_true', default=False,
+                      help="Only update underlay pages")
+
+    (options, args) = parser.parse_args()
+    help = parser.format_help()
+
+    # Encoder from unicode to charset selected in config
+    encoder = getencoder(config.charset)
+    def _e(str):
+        return encoder(str, 'replace')[0]
+
+    class UserInputException(Exception):
+        pass
+
+    try:
+        wikipath = args[0]
+        configdir = os.path.abspath(os.path.join(wikipath, 'config'))
+
+        sys.path.insert(0, configdir)
+
+        request = MinimalMoinScript(parse=False)
+        datadir = request.cfg.data_dir
+
+        # Get a list of all pages
+        root = RootPage(request)
+        filter=None
+        if options.underlay_only:
+            retain_shelve = True
+
+            def filterStandard(name):
+                pageobj = Page(request, name)
+                return pageobj.getPageStatus()[0]
+
+            filter = filterStandard
+        if options.filename:
+            retain_shelve = True
+
+        if len(args) > 1:
+            pagelist = [unicode(x, sys.getfilesystemencoding()) for x in args[1:]]
+            pageobjs = list()
+
+            for page in pagelist:
+                pageobj = Page(request, page)
+                if not pageobj.exists():
+                    raise UserInputException(page)
+                pageobjs.append(pageobj)
+
+            pages = pageobjs
+            retain_shelve = True
+        else:
+            pages = root.getPageList(user="", include_underlay=True, filter=filter,
+                                     return_objects=True, includeBackend=False)
+
+    except IndexError:
+        print >> sys.stderr, help
+        sys.exit(3)
+    except UserInputException, page:
+        print >> sys.stderr, "page %s does not exist" % (page)
+        print >> sys.stderr, help
+        sys.exit(2)
+
+    if not retain_shelve:
+        gddir = os.path.join(datadir, 'graphdata')
+        if os.path.exists(gddir):
+            shutil.rmtree(gddir)
+            sys.stderr.write('Removed graphdata directory (%s)\n' % gddir)
+    elif not options.filename:
+        for file in os.listdir(datadir):
+            if file.startswith('read_lock') or file.startswith('write_lock'):
+                sys.stderr.write("Found lockfile (%s), \n" % file + \
+                                 "database may be corrupted. \n" + \
+                                 "Rehash entire db or remove lock " + \
+                                 "and rehash the crashed pages.\n")
+                sys.exit(1)
+
+    total = len(pages)
+    padding = len(str(total))
+    count = 1
+
+    # Just init one request
+    scriptcontext = MinimalMoinScript(parse=False)
+    scriptcontext.graphdata.clear_metas()
+    # If you want to rehash into separate shelve, ignore locks, create a
+    # new shelve from scratch
+    if options.filename:
+        from graphingwiki.backend.shelvedb import GraphData
+        scriptcontext._graphdata = GraphData(scriptcontext)
+        scriptcontext._graphdata.close()
+        if os.path.exists(options.filename):
+            if not os.path.isfile(options.filename):
+                sys.stderr.write("Destination not a file: %s\n" % 
+                                 (options.filename))
+                sys.exit(1)
+            os.unlink(options.filename)
+        scriptcontext._graphdata.db = scriptcontext._graphdata.shelveopen(options.filename, "c")
+        scriptcontext._graphdata.readlock = lambda: None
+        scriptcontext._graphdata.writelock = lambda: None
+
+    for pageobj in pages:
+        page_enc = _e(pageobj.page_name)
+        print "(%*d/%*d) Rehashing %s " % (padding, count, padding, total, page_enc)
+        count += 1
+        # Implant relevant bits for this page into our recycleable scriptcontext
+
+        scriptcontext.page = pageobj
+        pagepath = underlay_to_pages(scriptcontext, pageobj)
+        text = pageobj.get_raw_body()
+
+        # Save the page metadata
+        savegraphdata(pageobj.page_name, scriptcontext, text, pagepath, pageobj)
+
+    # Must finish the scriptcontext to ensure that metadata is saved & committed
+    scriptcontext.finish()
+    scriptcontext.graphdata.commit()
+    scriptcontext.graphdata.close()

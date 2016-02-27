@@ -666,6 +666,17 @@ class Page(object):
             elif includeBackend:
                 return False
 
+            # Look for non-deleted pages only, using get_rev
+            if not rev and self.rev:
+                rev = self.rev
+
+            if domain is None:
+                use_underlay = -1
+            else:
+                use_underlay = domain == 'underlay'
+            d, d, exists = self.get_rev(use_underlay, rev)
+            return exists
+
     def size(self, rev=0):
         """ Get Page size.
 
@@ -1796,6 +1807,22 @@ class Page(object):
         else:
             cache.remove()
 
+    def delete_caches(self):
+        # delete pagelinks
+        key = 'pagelinks'
+        cache = caching.CacheEntry(self.request, self, key, scope='item')
+        cache.remove()
+
+        # forget in-memory page text
+        self.set_raw_body(None)
+
+        self.request.graphdata.cache = dict()
+
+        # clean the cache
+        for formatter_name in self.request.cfg.caching_formats:
+            key = formatter_name
+            cache = caching.CacheEntry(self.request, self, key, scope='item')
+            cache.remove()
 
 class RootPage(Page):
     """ These functions were removed from the Page class to remove hierarchical
@@ -1832,7 +1859,7 @@ class RootPage(Page):
 
         return underlay, path
 
-    def getPageList(self, user=None, exists=1, filter=None, include_underlay=True, return_objects=False):
+    def getPageList(self, user=None, exists=1, filter=None, include_underlay=True, return_objects=False, includeBackend=True):
         """ List user readable pages under current page
 
         Currently only request.rootpage is used to list pages, but if we
@@ -1901,7 +1928,7 @@ class RootPage(Page):
                     continue
 
                 # Filter deleted pages
-                if exists and not page.exists():
+                if exists and not page.exists(includeBackend=includeBackend):
                     continue
 
                 # Filter out page user may not read.
