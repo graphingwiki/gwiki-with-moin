@@ -5,20 +5,17 @@
     @copyright: 2006-2016 by Jussi Eronen <exec@iki.fi>
 """
 import os
+import re
 import operator
 import socket
+import string
 
-from time import time
-
-from MoinMoin.wikiutil import get_processing_instructions, AbsPageName
-from MoinMoin.Page import LinkCollectingPage
-from MoinMoin import config
-from MoinMoin import caching
-from MoinMoin.parser.link_collect import Parser as lcparser
+from MoinMoin.wikiutil import parseAttributes, AbsPageName
 
 from util import (regexp_re, filter_categories, category_regex, 
                   template_regex, node_type, SPECIAL_ATTRS, NO_TYPE)
-from wikitextutil import parse_categories, parse_text
+from wikitextutil import (is_meta_link, parse_categories, parse_text, 
+                          CATEGORY_KEY)
 
 # Standard Python operators
 OPERATORS = {'<': operator.lt,
@@ -56,7 +53,7 @@ def savegraphdata(pagename, request, text, pagedir, pageitem):
             pf, rev, exists = pageitem.get_rev() 
             if rev != 99999999:
                 if not exists:
-                    _clear_page(request, pagename)
+                    request.graphdata.clear_page(request, pagename)
 
         pageitem.delete_caches()
         request.graphdata.post_save(pagename)
@@ -153,6 +150,52 @@ def inlinks_key(request, loadedPage, checkAccess=True):
 
     return inLinks
 
+def metas_to_abs_links(request, page, values):
+    new_values = list()
+    stripped = False
+    for value in values:
+        if is_meta_link(value) != 'link':
+            new_values.append(value)
+            continue
+        if ((value.startswith('[[') and value.endswith(']]')) or
+            (value.startswith('{{') and value.endswith('}}'))):
+            stripped = True
+            value = value.lstrip('[')
+            value = value.lstrip('{')
+        attachment = ''
+        for scheme in ('attachment:', 'inline:', 'drawing:'):
+            if value.startswith(scheme):
+                if len(value.split('/')) == 1:
+                    value = ':'.join(value.split(':')[1:])
+                    if not '|' in value:
+                        # If page does not have descriptive text, try
+                        # to shorten the link to the attachment name.
+                        value = "%s|%s" % (value.rstrip(']').rstrip('}'), value)
+                    value = "%s%s/%s" % (scheme, page, value)
+                else:
+                    att_page = value.split(':')[1]
+                    if (att_page.startswith('./') or
+                        att_page.startswith('/') or
+                        att_page.startswith('../')):
+                        attachment = scheme
+                        value = ':'.join(value.split(':')[1:])
+        if (value.startswith('./') or
+            value.startswith('/') or
+            value.startswith('../')):
+            value = AbsPageName(page, value)
+        if value.startswith('#'):
+            value = page + value
+
+        value = attachment + value
+        if stripped:
+            if value.endswith(']'):
+                value = '[[' + value 
+            elif value.endswith('}'):
+                value = '{{' + value 
+        new_values.append(value)
+
+    return new_values
+
 # Fetch requested metakey value for the given page.
 def get_metas(request, name, metakeys, checkAccess=True, 
               includeGenerated=True, formatLinks=False, **kw):
@@ -246,8 +289,8 @@ def add_matching_redirs(request, loadedPage, loadedOuts, loadedMeta,
 
     for indir_page in set(pages):
         # Relative pages etc
-        indir_page = wikiutil.AbsPageName(request.page.page_name,
-                                          indir_page)
+        indir_page = AbsPageName(request.page.page_name,
+                                 indir_page)
 
         if request.user.may.read(indir_page):
             pagedata = request.graphdata.getpage(indir_page)
@@ -277,8 +320,7 @@ def add_matching_redirs(request, loadedPage, loadedOuts, loadedMeta,
 
             # Handle inlinks separately
             if 'gwikiinlinks' in metakeys:
-                inLinks = inlinks_key(request, loadedPage,
-                                      checkAccess=checkAccess)
+                inLinks = inlinks_key(request, loadedPage)
 
                 loadedOuts[key] = inLinks
                 continue
@@ -398,7 +440,7 @@ def _metatable_parseargs(request, args, cat_re, temp_re):
                     continue
                 # Grab styles
                 if key.startswith('<') and '>' in key:
-                    style = wikiutil.parseAttributes(request,
+                    style = parseAttributes(request,
                                                      key[1:], '>')
                     key = key[key.index('>') + 1:].strip()
 
@@ -515,7 +557,7 @@ def _metatable_parseargs(request, args, cat_re, temp_re):
             # Fix relative links
             if (arg.startswith('/') or arg.startswith('./') or
                 arg.startswith('../')):
-                arg = wikiutil.AbsPageName(request.page.page_name, arg)
+                arg = AbsPageName(request.page.page_name, arg)
 
             argset.add(arg)
             continue
@@ -528,7 +570,7 @@ def _metatable_parseargs(request, args, cat_re, temp_re):
             # Fix relative links
             if (arg.startswith('/') or arg.startswith('./') or
                 arg.startswith('../')):
-                arg = wikiutil.AbsPageName(request.page.page_name, arg)
+                arg = AbsPageName(request.page.page_name, arg)
 
             page_re = re.compile("%s" % arg)
         except:

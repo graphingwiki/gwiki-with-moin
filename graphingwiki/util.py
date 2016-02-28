@@ -187,12 +187,6 @@ encoder = getencoder(config.charset)
 def encode(str):
     return encoder(str, 'replace')[0]
 
-
-# See also http://bugs.python.org/issue9061
-QUOTEDATTRS = {'"': '&#x22;', "'": '&#x27;', '/': '&#x2F;'}
-UNQUOTEDATTRS = dict()
-UNQUOTEDATTRS.update([(y, x) for x, y in QUOTEDATTRS.items()])
-
 def form_escape(text):
     # Deprecated, use parameter_escape() instead.
     return parameter_escape(text)

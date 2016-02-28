@@ -29,9 +29,6 @@ from graphingwiki.util import filter_categories
 from graphingwiki.util import SPECIAL_ATTRS, editable_p
 from graphingwiki.util import category_regex, template_regex
 
-CATEGORY_KEY = "gwikicategory"
-TEMPLATE_KEY = "gwikitemplate"
-
 def macro_re(macroname):
     return re.compile(r'(?<!#)\s*?\[\[(%s)\((.*?)\)\]\]' % macroname)
 
@@ -136,67 +133,6 @@ def get_links(request, name, metakeys, checkAccess=True, **kw):
             pageLinks[key].append(value)
             
     return pageLinks
-
-def is_meta_link(value):
-    from MoinMoin.parser.text_moin_wiki import Parser
-
-    vals = Parser.scan_re.search(value)
-    if not vals:
-        return str()
-
-    vals = [x for x, y in vals.groupdict().iteritems() if y]
-    for val in vals:
-        if val in ['word', 'link', 'transclude', 'url']:
-            return 'link'
-        if val in ['interwiki', 'email', 'include']:
-            return val
-    return str()
-
-def metas_to_abs_links(request, page, values):
-    new_values = list()
-    stripped = False
-    for value in values:
-        if is_meta_link(value) != 'link':
-            new_values.append(value)
-            continue
-        if ((value.startswith('[[') and value.endswith(']]')) or
-            (value.startswith('{{') and value.endswith('}}'))):
-            stripped = True
-            value = value.lstrip('[')
-            value = value.lstrip('{')
-        attachment = ''
-        for scheme in ('attachment:', 'inline:', 'drawing:'):
-            if value.startswith(scheme):
-                if len(value.split('/')) == 1:
-                    value = ':'.join(value.split(':')[1:])
-                    if not '|' in value:
-                        # If page does not have descriptive text, try
-                        # to shorten the link to the attachment name.
-                        value = "%s|%s" % (value.rstrip(']').rstrip('}'), value)
-                    value = "%s%s/%s" % (scheme, page, value)
-                else:
-                    att_page = value.split(':')[1]
-                    if (att_page.startswith('./') or
-                        att_page.startswith('/') or
-                        att_page.startswith('../')):
-                        attachment = scheme
-                        value = ':'.join(value.split(':')[1:])
-        if (value.startswith('./') or
-            value.startswith('/') or
-            value.startswith('../')):
-            value = AbsPageName(page, value)
-        if value.startswith('#'):
-            value = page + value
-
-        value = attachment + value
-        if stripped:
-            if value.endswith(']'):
-                value = '[[' + value 
-            elif value.endswith('}'):
-                value = '{{' + value 
-        new_values.append(value)
-
-    return new_values
 
 def iter_metas(request, rule, keys=None, checkAccess=True):
     from abusehelper.core import rules, events

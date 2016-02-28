@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-"
 import re
 
+from hashlib import md5
+
 from MoinMoin import config
 
 from MoinMoin.Page import LinkCollectingPage
@@ -9,9 +11,11 @@ from MoinMoin.parser.text_moin_wiki import Parser
 from MoinMoin.formatter.nullformatter import Formatter as nullformatter
 from MoinMoin.wikiutil import get_processing_instructions, AbsPageName
 
-from MoinMoin.metadata.util import filter_categories, node_type, SPECIAL_ATTRS
+from MoinMoin.metadata.util import filter_categories, SPECIAL_ATTRS
 
 DEFAULT_META_BEFORE = '^----'
+CATEGORY_KEY = "gwikicategory"
+TEMPLATE_KEY = "gwikitemplate"
 
 # Dl_re includes newlines, if available, and will replace them
 # in the sub-function
@@ -70,6 +74,19 @@ def _add_link(new_data, pagename, dnode, linktype):
     pagedata = new_data.setdefault(pagename, dict())
     pagelinks = pagedata.setdefault('out', dict())
     pagelinks.setdefault(linktype, list()).append(dnode)
+
+def is_meta_link(value):
+    vals = Parser.scan_re.search(value)
+    if not vals:
+        return str()
+
+    vals = [x for x, y in vals.groupdict().iteritems() if y]
+    for val in vals:
+        if val in ['word', 'link', 'transclude', 'url']:
+            return 'link'
+        if val in ['interwiki', 'email', 'include']:
+            return val
+    return str()
 
 def parse_text(request, page, text):
     pagename = page.page_name
