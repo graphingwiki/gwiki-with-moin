@@ -30,7 +30,7 @@ from MoinMoin.util import filesys, timefuncs, web
 from MoinMoin.util.abuse import log_attempt
 from MoinMoin.events import PageDeletedEvent, PageRenamedEvent, PageCopiedEvent, PageRevertedEvent
 from MoinMoin.events import PagePreSaveEvent, Abort, send_event
-from MoinMoin.metadata import graphdata_save, graphdata_rename, graphdata_copy
+from MoinMoin.metadata.edit import graphdata_save, graphdata_rename, graphdata_copy
 import MoinMoin.events.notification as notification
 
 # used for merging

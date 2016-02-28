@@ -5,17 +5,16 @@ from hashlib import md5
 
 from MoinMoin import config
 
-from MoinMoin.Page import LinkCollectingPage
 from MoinMoin.parser.link_collect import Parser as lcparser
 from MoinMoin.parser.text_moin_wiki import Parser
 from MoinMoin.formatter.nullformatter import Formatter as nullformatter
-from MoinMoin.wikiutil import get_processing_instructions, AbsPageName
+from MoinMoin.wikiutil import (get_processing_instructions, AbsPageName,
+                               filterCategoryPages)
+from MoinMoin.Page import LinkCollectingPage
 
-from MoinMoin.metadata.util import filter_categories, SPECIAL_ATTRS
+from constants import SPECIAL_ATTRS, CATEGORY_KEY
 
 DEFAULT_META_BEFORE = '^----'
-CATEGORY_KEY = "gwikicategory"
-TEMPLATE_KEY = "gwikitemplate"
 
 # Dl_re includes newlines, if available, and will replace them
 # in the sub-function
@@ -169,7 +168,7 @@ def parse_categories(request, text):
     Parse category names from the page. Return a list of parsed categories,
     list of the preceding text lines and a list of the lines with categories.
 
-    >>> request = _doctest_request()
+    >>> request = doctest_request()
     >>> parse_categories(request, "CategoryTest")
     (['CategoryTest'], [], ['CategoryTest'])
 
@@ -239,7 +238,7 @@ def parse_categories(request, text):
 
 def edit_categories(request, savetext, action, catlist):
     """
-    >>> request = _doctest_request()
+    >>> request = doctest_request()
     >>> s = "= @PAGE@ =\\n" + \
         "[[TableOfContents]]\\n" + \
         "[[LinkedIn]]\\n" + \
@@ -330,7 +329,7 @@ def remove_preformatted(text):
 
 def add_meta_regex(request, inclusion, newval, oldtext):
     """
-    >>> request = _doctest_request()
+    >>> request = doctest_request()
     >>> s = "= @PAGE@ =\\n" + \
         "[[TableOfContents]]\\n" + \
         "[[LinkedIn]]\\n" + \
@@ -381,7 +380,7 @@ def add_meta_regex(request, inclusion, newval, oldtext):
 
 def replace_metas(request, text, oldmeta, newmeta):
     r"""
-    >>> request = _doctest_request()
+    >>> request = doctest_request()
 
     Replacing metas:
     >>> replace_metas(request,
@@ -811,3 +810,16 @@ def format_wikitext(request, data, parser=None):
 
     request.formatter._store_pagelinks = plstore
     return out.strip()
+
+def filter_categories(request, candidates):
+    # Let through only the candidates that are both valid category
+    # names and WikiWords
+
+    # Nah, the word rules in 1.6 were not for the feint for heart,
+    # just use the wikiutil function until further notice
+    # XXX
+    return filterCategoryPages(request, candidates)
+
+if __name__ == '__main__':
+    from util import doctest_request, do_doctest
+    do_doctest()

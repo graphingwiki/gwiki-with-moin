@@ -40,7 +40,7 @@ from MoinMoin.script import MoinScript
 from MoinMoin.Page import Page, RootPage
 from MoinMoin import config
 
-from MoinMoin.metadata import underlay_to_pages, savegraphdata
+from MoinMoin.metadata.edit import underlay_to_pages, savegraphdata
 
 from MoinMoin.script import MinimalMoinScript
 

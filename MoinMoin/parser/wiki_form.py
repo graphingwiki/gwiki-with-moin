@@ -12,7 +12,7 @@ from string import rsplit
 from MoinMoin.wikiutil import parameter_escape, AbsPageName
 from MoinMoin.parser.text_moin_wiki import Parser as wikiParser
 
-from MoinMoin.metadata.util import SEPARATOR
+from MoinMoin.metadata.constants import SEPARATOR
 
 Dependencies = []
 

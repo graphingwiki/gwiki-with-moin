@@ -446,41 +446,6 @@ def list_pagecachefiles(request, pagename):
     return caching.get_cache_list(request, page, 'item')
 
 
-def _doctest_request(graphdata=dict(), mayRead=True, mayWrite=True):
-    class Request(object):
-        pass
-
-    class Config(object):
-        pass
-
-    class Object(object):
-        pass
-
-    class Cache(object):
-        pass
-
-    class GraphData(dict):
-        def getpage(self, page):
-            return self.get(page, dict())
-    
-    request = Request()
-    request.cfg = Config()
-    request.cfg.cache = Cache()
-    request.cfg.cache.page_category_regex = category_regex(request)
-    request.cfg.cache.page_category_regexact = category_regex(request, act=True)
-    request.graphdata = GraphData(graphdata)
-
-    request.user = Object()
-    request.user.may = Object()
-    request.user.may.read = lambda x: mayRead
-    request.user.may.write = lambda x: mayWrite
-
-    return request
-
-
-def _test():
-    import doctest
-    doctest.testmod()
 
 if __name__ == "__main__":
     _test()

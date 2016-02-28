@@ -20,7 +20,7 @@ from MoinMoin.Page import Page
 from MoinMoin import auth, config, i18n, user, wikiutil, xmlrpc, error
 from MoinMoin.action import get_names, get_available_actions
 from MoinMoin.util.abuse import log_attempt
-from MoinMoin.metadata import graphdata_close
+from MoinMoin.metadata.edit import graphdata_close
 
 def set_umask(new_mask=0777^config.umask):
     """ Set the OS umask value (and ignore potential failures on OSes where

@@ -10,34 +10,24 @@ import re
 from codecs import getencoder
 
 from MoinMoin import config
+from MoinMoin.config import multiconfig
 from MoinMoin import wikiutil
-from MoinMoin import caching
 
 from MoinMoin.parser.text_moin_wiki import Parser
+
+from MoinMoin.metadata.constants import SPECIAL_ATTRS
 
 import logging
 log = logging.getLogger("MoinMoin.metadata")
 
-SEPARATOR = '-gwikiseparator-'
-
+NONEDITABLE_ATTRS = ['gwikiinlinks', '-', 'gwikipagename']
 ATTACHMENT_SCHEMAS = ["attachment", "drawing"]
 
-regexp_re = re.compile('^/.+/$')
-
-# Default node attributes that should not be shown
-SPECIAL_ATTRS = ["gwikilabel", "gwikisides", "gwikitooltip", "gwikiskew",
-                 "gwikiorientation", "gwikifillcolor", 'gwikiperipheries',
-                 'gwikishapefile', "gwikishape", "gwikistyle", 
-                 'gwikicategory', 'gwikiURL', 'gwikiimage', 'gwikiinlinks',
-                 'gwikicoordinates']
 nonguaranteeds_p = lambda node: filter(lambda y: y not in
                                        SPECIAL_ATTRS, dict(node))
 
-NONEDITABLE_ATTRS = ['gwikiinlinks', '-', 'gwikipagename']
 editable_p = lambda node: filter(lambda y: y not in 
                                  NONEDITABLE_ATTRS and not '->' in y, node)
-
-NO_TYPE = u'_notype'
 
 # XXX replace by Parser's URL rule?
 _url_re = None
@@ -73,21 +63,25 @@ def node_type(request, nodename):
 
     return 'page'
 
-def category_regex(request):
+def category_regex(request, act=False):
     if hasattr(request.cfg.cache, 'page_category_regex'):
         return request.cfg.cache.page_category_regex
 
-    default = config.multiconfig.DefaultConfig.page_category_regex
+    default = multiconfig.DefaultConfig.page_category_regex
+    if act:
+        default = "^{}$".format(default)
     default = re.compile(default, re.UNICODE)
     request.cfg.cache.page_category_regex = default
 
     return default
 
-def template_regex(request):
+def template_regex(request, act=False):
     if hasattr(request.cfg.cache, 'page_template_regex'):
         return request.cfg.cache.page_template_regex
 
-    default = config.multiconfig.DefaultConfig.page_template_regex
+    default = multiconfig.DefaultConfig.page_template_regex
+    if act:
+        default = "^{}$".format(default)
     default = re.compile(default, re.UNICODE)
     request.cfg.cache.page_template_regex = default
 
@@ -117,3 +111,38 @@ def url_escape(text):
     # Escape characters that break links in html values fields, 
     # macros and urls with parameters
     return re.sub('[\]"\?#&+]', lambda mo: '%%%02x' % ord(mo.group()), text)
+
+def doctest_request(graphdata=dict(), mayRead=True, mayWrite=True):
+    class Request(object):
+        pass
+
+    class Config(object):
+        pass
+
+    class Object(object):
+        pass
+
+    class Cache(object):
+        pass
+
+    class GraphData(dict):
+        def getpage(self, page):
+            return self.get(page, dict())
+    
+    request = Request()
+    request.cfg = Config()
+    request.cfg.cache = Cache()
+    request.cfg.cache.page_category_regex = category_regex(request)
+    request.cfg.cache.page_category_regexact = category_regex(request, act=True)
+    request.graphdata = GraphData(graphdata)
+
+    request.user = Object()
+    request.user.may = Object()
+    request.user.may.read = lambda x: mayRead
+    request.user.may.write = lambda x: mayWrite
+
+    return request
+
+def do_doctest():
+    import doctest
+    doctest.testmod()

@@ -4,7 +4,7 @@
 import sys, os
 
 from optparse import OptionParser
-from MoinMoin.metadata import graphdata_close
+from MoinMoin.metadata.edit import graphdata_close
 
 from MoinMoin.Page import Page
 from MoinMoin.PageEditor import PageEditor

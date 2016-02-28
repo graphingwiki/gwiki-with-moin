@@ -37,7 +37,7 @@ from MoinMoin.PageEditor import PageEditor
 from MoinMoin.logfile import editlog
 from MoinMoin.action import AttachFile
 from MoinMoin import caching
-from MoinMoin.metadata import graphdata_close
+from MoinMoin.metadata.edit import graphdata_close
 
 def is_login_required(request):
     login_required = True

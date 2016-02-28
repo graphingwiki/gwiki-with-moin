@@ -21,7 +21,7 @@ from MoinMoin.util.clock import Clock
 from MoinMoin.web.request import Request, MoinMoinFinish
 from MoinMoin.web.utils import UniqueIDGenerator
 from MoinMoin.web.exceptions import Forbidden, SurgeProtection
-from MoinMoin.metadata import graphdata_getter
+from MoinMoin.metadata.edit import graphdata_getter
 
 from MoinMoin import log
 logging = log.getLogger(__name__)

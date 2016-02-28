@@ -15,8 +15,9 @@ import fcntl
 import os
 
 from basedb import GraphDataBase
+from MoinMoin.metadata.constants import NO_TYPE
 from MoinMoin.metadata.util import (encode_page, decode_page, 
-                                    node_type, log, NO_TYPE)
+                                    node_type, log)
 
 from time import time, sleep
 
