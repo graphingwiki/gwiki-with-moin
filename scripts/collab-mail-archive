@@ -1,0 +1,32 @@
+#!/bin/sh
+
+function err {
+    echo "$1" | mail -s "mail archiving failed" root
+    exit 1
+}
+
+YEARMONTH=`date +%Y-%m`
+
+COLLAB=$1
+GROUP=$2
+
+if [ -z "${COLLAB}" ] || [ -z "${GROUP}" ]; then
+    echo "$0 <collab> <group> < <incoming mail>"
+    exit 1
+fi
+
+MBOX="/srv/wikis/collab/email/${COLLAB}/${GROUP}/${YEARMONTH}.gz"
+
+MBOXDIR=`dirname ${MBOX}`
+if [ ! -d "${MBOXDIR}" ]; then
+    mkdir -p "${MBOXDIR}"
+
+    if [ $? -ne 0 ]; then
+	err "Error: Couldn't create directory ${MBOXDIR}"
+    fi
+fi
+
+/usr/local/bin/spamc | /usr/bin/gzip -nfc >>"${MBOX}"
+if [ $? -ne 0 ]; then
+    err "Error: Couldn't write mail to archive ${MBOX}"
+fi
