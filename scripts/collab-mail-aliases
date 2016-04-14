@@ -20,10 +20,11 @@ GROUP_RE = re.compile(r'^([A-Za-z0-9-]+)Group$')
 
 def _group_name(group):
     try:
-        g = GROUP_RE.match(group).group(1)
-        return g.lower()
-    except AttributeError:
-        return None
+        match = GROUP_RE.match(group)
+        if match:
+            return match.group(1).lower()
+    except TypeError:
+        return
 
 
 def main():
@@ -43,7 +44,7 @@ def main():
                 for user in users_by_group(request.request, group,
                                            recursive=True):
                     if request.validUser(user):
-                        emailto.add(user)
+                        emailto.add(user.lower())
 
                 if len(emailto) > 0:
                     print "{0}-{1}: {2}".format(collab, group_name,
