@@ -39,7 +39,7 @@ def main():
                 emailto = set()
 
                 archive = "\"|/usr/bin/archive.sh {0} {1}\"".format(collab, group)
-                email.add(archive)
+                emailto.add(archive)
 
                 for user in users_by_group(request.request, group,
                                            recursive=True):
