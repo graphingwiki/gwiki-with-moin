@@ -120,6 +120,7 @@ setup(
         'scripts/collab-htaccess',
         'scripts/collab-htpasswd-sync',
         'scripts/collab-mail-aliases',
+        'scripts/collab-mail-archive',
     ],
     cmdclass={
         "build": RemovingBuild,
