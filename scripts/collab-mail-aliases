@@ -38,15 +38,15 @@ def main():
 
                 emailto = set()
 
-                archive = "\"|/usr/bin/archive.sh {0} {1}\"".format(collab, group)
-                emailto.add(archive)
-
                 for user in users_by_group(request.request, group,
                                            recursive=True):
                     if request.validUser(user):
                         emailto.add(user.lower())
 
                 if len(emailto) > 0:
+                    archive = "\"|/usr/bin/collab-mail-archive {0} {1}\"".format(collab, group_name)
+                    emailto.add(archive)
+                    
                     print "{0}-{1}: {2}".format(collab, group_name,
                                                 ", ".join(emailto))
 
