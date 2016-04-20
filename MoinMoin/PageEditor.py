@@ -30,6 +30,7 @@ from MoinMoin.util import filesys, timefuncs, web
 from MoinMoin.util.abuse import log_attempt
 from MoinMoin.events import PageDeletedEvent, PageRenamedEvent, PageCopiedEvent, PageRevertedEvent
 from MoinMoin.events import PagePreSaveEvent, Abort, send_event
+from graphingwiki import graphdata_save, graphdata_rename, graphdata_copy
 import MoinMoin.events.notification as notification
 
 # used for merging
@@ -593,6 +594,8 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
             Page.__init__(self, request, newpagename)
             self._write_file(savetext, "SAVENEW", comment)
 
+            graphdata_copy(self, newpagename)
+
             event = PageCopiedEvent(request, newpage, self, comment)
             send_event(event)
 
@@ -666,6 +669,8 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
                 key = formatter_name
                 cache = caching.CacheEntry(request, arena, key, scope='item')
                 cache.remove()
+
+            graphdata_rename(self)
 
             event = PageRenamedEvent(request, newpage, self, comment)
             send_event(event)
@@ -822,6 +827,14 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
 
         for name in variables:
             text = text.replace('@%s@' % name, variables[name])
+
+        cfgvar = getattr(self.request.cfg, 'gwikivariables', dict())
+        for name in cfgvar:
+            text = text.replace('@%s@' % name, cfgvar[name])
+
+        backto = self.request.values.get('backto', '')
+        text = text.replace('@CREATORPAGE@', backto)
+
         return text
 
     def normalizeText(self, text, **kw):
@@ -1210,6 +1223,8 @@ Please review the page and save then. Do not save this page as it is!""")
             # This is needed for NewPage macro with backto because it does not
             # send the page we just saved.
             request.user.addTrail(self)
+
+            graphdata_save(self)
 
         # remove lock (forcibly if we were allowed to break it by the UI)
         # !!! this is a little fishy, since the lock owner might not notice

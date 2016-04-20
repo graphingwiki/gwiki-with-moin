@@ -21,6 +21,7 @@ from MoinMoin.util.clock import Clock
 from MoinMoin.web.request import Request, MoinMoinFinish
 from MoinMoin.web.utils import UniqueIDGenerator
 from MoinMoin.web.exceptions import Forbidden, SurgeProtection
+from graphingwiki import graphdata_getter
 
 from MoinMoin import log
 logging = log.getLogger(__name__)
@@ -97,6 +98,8 @@ class Context(object):
             self.personalities.append(cls)
             self.__class__ = cls
             return True
+
+    graphdata = property(graphdata_getter)
 
     def __repr__(self):
         return "<%s %r>" % (self.__class__.__name__, self.personalities)
