@@ -5,6 +5,7 @@
     This is the backend of the search form. Search pages and print results.
 
     @copyright: 2001 by Juergen Hermann <jh@web.de>
+                2007 by Jussi Eronen <exec@iki.fi> (metasearch)
     @license: GNU GPL, see COPYING for details.
 """
 
@@ -13,6 +14,10 @@ from MoinMoin.Page import Page
 from MoinMoin import wikiutil
 from parsedatetime.parsedatetime import Calendar
 from MoinMoin.web.utils import check_surge_protect
+
+from MoinMoin.support.werkzeug.datastructures import CombinedMultiDict, \
+    MultiDict
+from graphingwiki.action.MetaSearch import execute as ms_execute
 
 def checkTitleSearch(request):
     """ Return 1 for title search, 0 for full text search, -1 for idiot spammer
@@ -24,6 +29,7 @@ def checkTitleSearch(request):
     True (might happen with Safari) if this isn't an advanced search.
 """
     form = request.values
+    # XXX include metasearch?
     if 'titlesearch' in form and 'fullsearch' in form:
         ret = -1 # spammer / bot
     else:
@@ -63,6 +69,14 @@ def execute(pagename, request, fieldname='value', titlesearch=0, statistic=0):
     if titlesearch < 0:
         check_surge_protect(request, kick=True) # get rid of spammer
         return
+
+    if 'metasearch' in request.values: 
+        form = MultiDict(request.values)
+        form['action'] = 'MetaSearch'
+        val = form.get('value', '')
+        form['q'] = val
+        request.values = CombinedMultiDict([MultiDict(form)])
+        return ms_execute(pagename, request)
 
     advancedsearch = isAdvancedSearch(request)
 
