@@ -1,0 +1,12 @@
+= People =
+
+<<NewPage(PersonTemplate, Add a new person (Firstname Lastname))>>
+
+<<MetaTable(CategoryPerson, ||<gwikiname="Picture">gwikishapefile||Role||<gwikistyle="list">Speciality||Tel||)>>
+
+----
+ gwikishapefile:: {{attachment:people.png}}
+----
+<<LinkedIn>>
+----
+CategoryCollection
