@@ -39,9 +39,8 @@ logging.debug("collab-auth started")
 # the relative imports in MoinMoin will fail.
 import MoinMoin.web.contexts
 from MoinMoin.user import User
+from MoinMoin.script import MinimalMoinScript
 from MoinMoin.config import multiconfig
-
-from graphingwiki import RequestCLI
 
 os.chdir(myhtmldir)
 
@@ -80,7 +79,7 @@ class RequestCache(object):
         except:
             pass
 
-        request = RequestCLI(pagename)
+        request = MinimalMoinScript(pagename)
         sys.path.remove(myconfig)
         return request
 

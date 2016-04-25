@@ -42,14 +42,16 @@ except:
 sys.path.insert(0, os.path.join(wikipath, 'config'))
 from MoinMoin import wikiutil
 from MoinMoin.Page import Page
+from MoinMoin.script import MinimalMoinScript
 from MoinMoin.support.werkzeug.datastructures import CombinedMultiDict, \
     MultiDict
 
+from graphingwiki.plugin.action.ShowGraph import execute as showgraph
+
 pagename = sys.argv[1]
 
-from graphingwiki import RequestCLI
 # Make a new request for the page, get raw text
-req = RequestCLI(pagename=pagename, parse=False)
+req = MinimalMoinScript(pagename=pagename, parse=False)
 
 form = dict()
 form['action'] = ['ShowGraph']
@@ -62,5 +64,4 @@ pagedir = p.getPagePath()
 text = p.get_raw_body()
 
 # Apply the showgraph-action to the page
-showgraph = wikiutil.importPlugin(req.cfg, 'action', 'ShowGraph')
 showgraph(pagename, req)

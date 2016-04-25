@@ -20,8 +20,7 @@ log.load_config(backend.logconf)
 import MoinMoin.web.contexts
 from MoinMoin.user import User, getUserId
 from MoinMoin.config import multiconfig
-
-from graphingwiki import RequestCLI
+from MoinMoin.script import MinimalMoinScript
 
 
 class CollabRequest(object):
@@ -53,7 +52,7 @@ class CollabRequest(object):
         import farmconfig
         reload(farmconfig)
 
-        self.request = RequestCLI("FrontPage", parse=False)
+        self.request = MinimalMoinScript("FrontPage", parse=False)
         self.request.user = self.getUser(self.user)
 
     def __del__(self):

@@ -91,9 +91,9 @@ log.load_config(mylogconf)
 import MoinMoin.web.contexts
 from MoinMoin.user import User, getUserList, isValidName
 from MoinMoin.config import multiconfig
+from MoinMoin.script import MinimalMoinScript
 
 from graphingwiki.editing import get_metas
-from graphingwiki import RequestCLI
 
 def diffandstore(filename, newtext, dryrun=noop):
 
@@ -141,7 +141,7 @@ os.chdir(mybaseinstancedir)
 sys.path.insert(0, os.path.join(mybaseinstancedir, 'config'))
 
 # Make a new request for the page
-req = RequestCLI('FrontPage', parse=False)
+req = MinimalMoinScript('FrontPage', parse=False)
 
 # Auth
 req.user = User(req, auth_username=pwd.getpwuid(posix.getuid())[0])
@@ -198,7 +198,7 @@ for dent in os.listdir("."):
     import farmconfig
     reload(farmconfig)
 
-    req = RequestCLI('AccessGroup', parse=False)
+    req = MinimalMoinScript('AccessGroup', parse=False)
     req.user = User(req, auth_username=username)
 
     msg = []

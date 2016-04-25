@@ -311,8 +311,8 @@ def test_inlink(gd):
     
 def test():
     dbname = os.getenv("USER") + "dev-standalone"
-    from graphingwiki import RequestCLI
-    req = RequestCLI()
+    from MoinMoin.script import MinimalMoinScript
+    req = MinimalMoinScript()
     gd = GraphData(req, dbname)
 
     if 0:

@@ -33,9 +33,9 @@ import MoinMoin.web.contexts
 
 from MoinMoin.user import User, getUserList, isValidName
 from MoinMoin.config import multiconfig
+from MoinMoin.script import MinimalMoinScript
 
 from graphingwiki.editing import metatable_parseargs, get_metas
-from graphingwiki import RequestCLI
 
 if len(sys.argv) < 3:
     print __file__ + " <user> <tgtcollab> [srccollab] [srccollabs...]"
@@ -56,7 +56,7 @@ for dent in sys.argv[3:]:
     reload(wikiconfig)
 
     # Make a new request for the page
-    req = RequestCLI('FrontPage', parse=False)
+    req = MinimalMoinScript('FrontPage', parse=False)
     req.user = User(req, auth_username=sys.argv[1])
 
     for id in getUserList(req):
