@@ -114,9 +114,7 @@ class FarmConfig(DefaultConfig):
 
     # Use graphingwiki if installed
     try:
-        from graphingwiki import install_hooks
         from graphingwiki import __path__ as graphingwiki_dir
-        install_hooks()
         for gdir in graphingwiki_dir:
             plugin_dirs.append(os.path.join(gdir, 'plugin'))
     except ImportError:
@@ -150,7 +148,7 @@ class FarmConfig(DefaultConfig):
     # Disable collab publishing by default
     collab_allow_publish = False
 
-    gwiki_geoip_path = '/etc/local/collab/GeoIPCity.dat'
+    #gwiki_geoip_path = '/etc/local/collab/GeoIPCity.dat'
 
     gwikivariables = {'GWIKITEST': 'I am the bestest!'}
 
