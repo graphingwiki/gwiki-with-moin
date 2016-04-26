@@ -80,4 +80,3 @@ RUN su - collab -s /bin/bash -c "gwiki-rehash $COLLABS/wikis/collab"
 # Finishing touches
 EXPOSE 443
 CMD ["/usr/sbin/apache2ctl","-DFOREGROUND"]
-# lmiohrKSZESXDytiC8w1YniK39ollNx0iRQ9IYcMnDk=
