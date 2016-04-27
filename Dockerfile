@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
  libgv-python \
  graphviz \
  emacs \
- patch \
  && rm -rf /var/lib/apt/lists/*
 
 
@@ -27,8 +26,7 @@ RUN mkdir -p archive cache config docbook htdocs log underlay user wikis run
 COPY . $SRC/
 
 WORKDIR $SRC/
-RUN ls patch.d-collabbackend/* | xargs -I {} sh -c 'patch -p0 -N -t < {}' \
- && python setup-MoinMoin.py install && python setup-collabbackend.py install \
+RUN python setup-MoinMoin.py install && python setup-collabbackend.py install \
  && python setup.py install
 
 

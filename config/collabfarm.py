@@ -124,6 +124,7 @@ class FarmConfig(DefaultConfig):
         from collabbackend import __path__ as collabbackend_dir
         for cdir in collabbackend_dir:
             plugin_dirs.append(os.path.join(cdir, 'plugin'))
+        collab_mode = True
     except ImportError:
         pass
 
