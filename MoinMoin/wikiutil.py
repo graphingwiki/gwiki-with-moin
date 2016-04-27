@@ -2269,7 +2269,7 @@ def taintfilename(basename):
     """
     # note: filenames containing ../ (or ..\) are made safe by replacing
     # the / (or the \). the .. will be kept, but is harmless then.
-    basename = re.sub('[\x00-\x1f:/\\\\<>"*?%|]', '_', basename)
+    basename = re.sub('[\x00-\x1f:/\\\\<>"*?$|]', '_', basename)
     return basename
 
 
