@@ -1,0 +1,31 @@
+= Groups =
+
+{{{
+#!wiki tlp-green
+Public groups are open and anyone who has access to collab instance can join it or invite new members to it.
+
+<<NewPage(PublicGroupTemplate, Add a new public group)>>
+}}}
+
+{{{
+#!wiki tlp-amber
+Private groups are closed and only members may see others and invite new members to it.
+
+<<NewPage(PrivateGroupTemplate, Add a new private group)>>
+}}}
+
+{{{
+#!wiki tlp-red
+Facilitated groups are closed and only select facilitators may see the memberships and invite new members to it.
+
+<<NewPage(FacilitatedGroupTemplate, Add a new facilitated group)>>
+}}}
+
+<<MetaTable(CategoryGroup)>>
+
+----
+ gwikishapefile:: {{attachment:groups.png}}
+----
+<<LinkedIn>>
+----
+CategoryCollection

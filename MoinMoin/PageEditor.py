@@ -17,7 +17,7 @@
 """
 
 import os, time, codecs, errno
-
+import unicodedata
 
 from MoinMoin import caching, config, wikiutil, error
 from MoinMoin.Page import Page
@@ -30,6 +30,7 @@ from MoinMoin.util import filesys, timefuncs, web
 from MoinMoin.util.abuse import log_attempt
 from MoinMoin.events import PageDeletedEvent, PageRenamedEvent, PageCopiedEvent, PageRevertedEvent
 from MoinMoin.events import PagePreSaveEvent, Abort, send_event
+from graphingwiki import graphdata_save, graphdata_rename, graphdata_copy
 import MoinMoin.events.notification as notification
 
 # used for merging
@@ -53,6 +54,17 @@ var countdown_lock_secs = "%(lock_secs)s"
 addLoadEvent(countdown)
 </script>
 """
+
+#############################################################################
+### Filtering unprintable characters from page content
+#############################################################################
+
+ALLOWED_CONTROL_CHARS = '\t\n\r'
+
+def filter_unprintable(text):
+    return ''.join(x for x in text 
+                   if (not unicodedata.category(x) in ['Cc', 'Cn', 'Cs']
+                       or x in ALLOWED_CONTROL_CHARS))
 
 
 #############################################################################
@@ -582,6 +594,8 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
             Page.__init__(self, request, newpagename)
             self._write_file(savetext, "SAVENEW", comment)
 
+            graphdata_copy(self, newpagename)
+
             event = PageCopiedEvent(request, newpage, self, comment)
             send_event(event)
 
@@ -655,6 +669,8 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
                 key = formatter_name
                 cache = caching.CacheEntry(request, arena, key, scope='item')
                 cache.remove()
+
+            graphdata_rename(self)
 
             event = PageRenamedEvent(request, newpage, self, comment)
             send_event(event)
@@ -811,6 +827,14 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
 
         for name in variables:
             text = text.replace('@%s@' % name, variables[name])
+
+        cfgvar = getattr(self.request.cfg, 'gwikivariables', dict())
+        for name in cfgvar:
+            text = text.replace('@%s@' % name, cfgvar[name])
+
+        backto = self.request.values.get('backto', '')
+        text = text.replace('@CREATORPAGE@', backto)
+
         return text
 
     def normalizeText(self, text, **kw):
@@ -1066,6 +1090,26 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
         """
         request = self.request
         _ = self._
+
+        # Depending on the configuration, filter unprintable
+        # characters from text content or warn of them. Unprintable
+        # characters are often undesired, and result from
+        # eg. copy-pasting text from productivity tools.
+        _handle_unprintable = getattr(self.request.cfg, 
+                                      'gwiki_handle_unprintable', '')
+        if _handle_unprintable in ['warn', 'filter']:
+            _newtext = filter_unprintable(newtext)
+            if _handle_unprintable == 'filter':
+                newtext = _newtext
+            elif _newtext != newtext:
+                _pos = 0
+                for i in len(_newtext):
+                    _pos = i
+                    if _newtext[i] != newtext[i]:
+                        break
+                raise self.SaveError(_("Bad character in text at position %s.")%
+                                     (_pos))
+
         self._save_draft(newtext, rev, **kw)
         action = kw.get('action', 'SAVE')
         deleted = kw.get('deleted', False)
@@ -1179,6 +1223,8 @@ Please review the page and save then. Do not save this page as it is!""")
             # This is needed for NewPage macro with backto because it does not
             # send the page we just saved.
             request.user.addTrail(self)
+
+            graphdata_save(self)
 
         # remove lock (forcibly if we were allowed to break it by the UI)
         # !!! this is a little fishy, since the lock owner might not notice

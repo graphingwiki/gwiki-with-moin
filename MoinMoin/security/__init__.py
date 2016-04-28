@@ -449,6 +449,10 @@ class ACLStringIterator:
                 rights, self.rest = self.rest, ''
             rights = [r for r in rights.split(',') if r in self.rights]
 
+        # Expand @ME@ user variable, which can result into problems when
+        # viewing template pages with acl:s
+        entries = [x.replace('@ME@', 'All') for x in entries]
+
         return modifier, entries, rights
 
 

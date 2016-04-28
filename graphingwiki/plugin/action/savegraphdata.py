@@ -39,16 +39,14 @@ from MoinMoin import config
 from graphingwiki.util import node_type, SPECIAL_ATTRS, NO_TYPE, delete_moin_caches
 from graphingwiki.editing import parse_categories
 
+from graphingwiki.plugin.parser.link_collect import Parser as parserclass
+from graphingwiki.plugin.formatter.nullformatter import Formatter as myformatter
 
 def parse_text(request, page, text):
     pagename = page.page_name
     
     newreq = request
     newreq.page = lcpage = LinkCollectingPage(newreq, pagename, text)
-    parserclass = importPlugin(request.cfg, "parser",
-                                   'link_collect', "Parser")
-    myformatter = importPlugin(request.cfg, "formatter",
-                               'nullformatter', "Formatter")
     lcpage.formatter = myformatter(newreq)
     lcpage.formatter.page = lcpage
     p = parserclass(lcpage.get_raw_body(), newreq, formatter=lcpage.formatter)

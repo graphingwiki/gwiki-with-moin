@@ -529,6 +529,12 @@ class ZipPackage(Package, ScriptEngine):
 
 def main():
     args = sys.argv
+
+    myusername=''
+    if (len(args) > 1) and (args[1] == '-u'):
+	args.pop(1)
+	myusername = args.pop(1)
+
     if len(args)-1 not in (2, 3) or args[1] not in ('l', 'i'):
         print >> sys.stderr, """MoinMoin Package Installer v%(version)i
 
@@ -555,6 +561,8 @@ Example:
     # Setup MoinMoin environment
     from MoinMoin.web.contexts import ScriptContext
     request = ScriptContext(url=request_url)
+    if myusername:
+        request.user = user.User(request, auth_username=myusername)
 
     package = ZipPackage(request, packagefile)
     if not package.isPackage():

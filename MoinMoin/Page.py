@@ -108,8 +108,7 @@ class ItemCache:
             (for 'meta') or the complete cache ('pagelists').
             @param request: the request object
         """
-        from MoinMoin.logfile import editlog
-        elog = editlog.EditLog(request)
+        elog = request.editlog
         old_pos = self.log_pos
         new_pos, items = elog.news(old_pos)
         if items:
@@ -626,7 +625,12 @@ class Page(object):
         """
         return self.exists(domain='standard', includeDeleted=includeDeleted)
 
-    def exists(self, rev=0, domain=None, includeDeleted=False):
+    def _in_backend(self):
+        if self.page_name in self.request.graphdata:
+            return self.request.graphdata.is_saved(self.page_name)
+        return 0
+
+    def exists(self, rev=0, domain=None, includeDeleted=False, includeBackend=True):
         """ Does this page exist?
 
         This is the lower level method for checking page existence. Use
@@ -656,15 +660,21 @@ class Page(object):
                     return True
             return False
         else:
-            # Look for non-deleted pages only, using get_rev
-            if not rev and self.rev:
-                rev = self.rev
+            # If it's in the backend, it exists
+            if self._in_backend():
+                return True
+            elif includeBackend:
+                return False
 
-            if domain is None:
-                use_underlay = -1
-            else:
-                use_underlay = domain == 'underlay'
-            d, d, exists = self.get_rev(use_underlay, rev)
+            # Look for non-deleted pages only, using get_rev		
+            if not rev and self.rev:		
+               rev = self.rev		
+		
+            if domain is None:		
+                use_underlay = -1		
+            else:		
+                use_underlay = domain == 'underlay'		
+            d, d, exists = self.get_rev(use_underlay, rev)		
             return exists
 
     def size(self, rev=0):
@@ -789,13 +799,20 @@ class Page(object):
         @rtype: string
         @return: formatted link
         """
+        # Optimising closing of links
+        if kw.get('on', None) == 0:
+            formatter=getattr(self, 'formatter', None)
+            if formatter:
+                return formatter.url(0, '', None)
+
         if not text:
             text = self.split_title()
         text = wikiutil.escape(text)
 
-        # Add css class for non existing page
-        if not self.exists():
-            kw['css_class'] = 'nonexistent'
+        # Add css class for non existing page (if not done by formatter.pagelink)
+        if not kw.has_key('css_class'):
+            if not self.exists():
+                kw['css_class'] = 'nonexistent'
 
         attachment_indicator = kw.get('attachment_indicator')
         if attachment_indicator is None:
@@ -1826,7 +1843,7 @@ class RootPage(Page):
 
         return underlay, path
 
-    def getPageList(self, user=None, exists=1, filter=None, include_underlay=True, return_objects=False):
+    def getPageList(self, user=None, exists=1, filter=None, include_underlay=True, return_objects=False, includeBackend=True):
         """ List user readable pages under current page
 
         Currently only request.rootpage is used to list pages, but if we
@@ -1895,7 +1912,7 @@ class RootPage(Page):
                     continue
 
                 # Filter deleted pages
-                if exists and not page.exists():
+                if exists and not page.exists(includeBackend=includeBackend):
                     continue
 
                 # Filter out page user may not read.

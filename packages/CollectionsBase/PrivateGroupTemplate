@@ -1,0 +1,12 @@
+#acl @PAGE@,FacilitatorGroup:admin,revert,delete,read,write,invite All:none
+
+ * [[FacilitatorGroup]]
+ * @USERNAME@
+
+----
+ Privacy:: private
+----
+<<LinkedIn>>
+----
+CategoryGroup
+

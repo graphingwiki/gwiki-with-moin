@@ -37,7 +37,34 @@ from MoinMoin.PageEditor import PageEditor
 from MoinMoin.logfile import editlog
 from MoinMoin.action import AttachFile
 from MoinMoin import caching
+from graphingwiki import graphdata_close
 
+def is_login_required(request):
+    login_required = True
+    env = request.environ
+
+    from MoinMoin.auth import GivenAuth
+    from MoinMoin.auth.sslclientcert import SSLClientCertAuth
+
+    # Get all the authentication methods used in the config
+    auth = getattr(request.cfg, 'auth', [])
+
+    for method in auth:
+        # If we're using HTTP auth, and the server has authenticated
+        # the user successfully, do not require another login
+        if isinstance(method, GivenAuth):
+            if env.get('REMOTE_USER', ''):
+               login_required = False
+               break
+        # If we're using SSL client certificate auth, and the server
+        # has authenticated the user successfully, do not require
+        # another login
+        elif isinstance(method, SSLClientCertAuth):
+            if env.get('SSL_CLIENT_VERIFY', 'FAILURE') == 'SUCCESS':
+               login_required = False
+               break
+
+    return login_required
 
 logging_tearline = '- XMLRPC %s ' + '-' * 40
 
@@ -133,7 +160,12 @@ class XmlRpcBase:
                 # overwrite any user there might be, if you need a valid user for
                 # xmlrpc, you have to use multicall and getAuthToken / applyAuthToken
                 if request.cfg.xmlrpc_overwrite_user:
-                    request.user = user.User(request, auth_method='xmlrpc:invalid')
+                    login_required = is_login_required(self.request)
+                    if (not self.request.user or
+                        not self.request.user.valid or
+                        login_required):
+                        self.request.user = user.User(self.request, 
+                                                      auth_method='xmlrpc:invalid')
 
                 data = request.read()
 
@@ -768,7 +800,14 @@ class XmlRpcBase:
         request.session = request.cfg.session_service.get_session(request)
 
         u = auth.setup_from_session(request, request.session)
-        u = auth.handle_login(request, u, username=username, password=password)
+
+        login_required = is_login_required(request)
+
+        if login_required:
+            u = auth.handle_login(request, u, username=username, 
+                                  password=password)
+        else:
+            u = request.user
 
         if u and u.valid:
             request.user = u
@@ -1194,8 +1233,14 @@ class XmlRpc2(XmlRpcBase):
 
 
 def xmlrpc(request):
-    return XmlRpc1(request).process()
+    try:
+        return XmlRpc1(request).process()
+    finally:
+        graphdata_close(request)
 
 def xmlrpc2(request):
-    return XmlRpc2(request).process()
+    try:
+        return XmlRpc2(request).process()
+    finally:
+        graphdata_close(request)
 
