@@ -7,9 +7,8 @@
     @license: MIT <http://www.opensource.org/licenses/mit-license.php>
 """
 from MoinMoin.Page import Page
-
-from graphingwiki.editing import metatable_parseargs, get_metas
-from graphingwiki.util import format_wikitext
+from MoinMoin.metadata.query import get_metas, metatable_parseargs
+from MoinMoin.metadata.wikitextutil import format_wikitext
 
 Dependencies = ['metadata']
 

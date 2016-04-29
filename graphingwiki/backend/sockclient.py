@@ -3,8 +3,8 @@ import json
 from time import time
 from socket import socket, AF_UNIX, SOCK_STREAM, SHUT_RDWR
 
-from graphingwiki.backend.basedb import GraphDataBase
-from graphingwiki.util import NO_TYPE
+from MoinMoin.metadata.backend.basedb import GraphDataBase
+from MoinMoin.metadata.constants import NO_TYPE
 
 
 class SockClientError(Exception):

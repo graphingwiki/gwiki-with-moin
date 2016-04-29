@@ -7,7 +7,7 @@ from durus.persistent_list import PersistentList
 from durus.btree import BTree as DurusBTree
 from durus.persistent import Persistent
 
-from graphingwiki.util import log
+from MoinMoin.metadata.util import log
 
 
 class PageMeta(Persistent):

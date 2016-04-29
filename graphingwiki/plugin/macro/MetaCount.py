@@ -39,8 +39,8 @@
     DEALINGS IN THE SOFTWARE.
 
 """
-from graphingwiki.util import text_escape
-from graphingwiki.editing import metatable_parseargs
+from MoinMoin.metadata.query import metatable_parseargs
+from MoinMoin.wikiutil import text_escape
 
 Dependencies = ['metadata']
 

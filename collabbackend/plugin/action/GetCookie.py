@@ -4,10 +4,10 @@ import xmlrpclib
 from MoinMoin import wikiutil
 from MoinMoin.Page import Page
 from MoinMoin.action import ActionBase
+from MoinMoin.metadata.query import get_metas
 
 from collabbackend.plugin.xmlrpc.ClarifiedCookie import execute as generateCookie
 
-from graphingwiki.editing import get_metas
 from graphingwiki import values_to_form
 
 SECONDS_IN_DAY = 24 * 60 * 60

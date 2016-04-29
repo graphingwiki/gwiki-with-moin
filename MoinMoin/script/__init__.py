@@ -182,7 +182,6 @@ class MoinScript(Script):
 
     def init_request(self):
         """ create request """
-        from MoinMoin.web.contexts import ScriptContext
         url = self.options.wiki_url or None
         self.request = ScriptContext(url, self.options.page)
 
@@ -271,9 +270,9 @@ def MinimalMoinScript(pagename='', parse=True):
     """
     The MoinScript class does command line argument parsing, which
     might not be what is desired, as it will complain about custom
-    arguments in gwiki scripts. MoinScript initialises the request
-    by calling up ScriptContext, which is then assigned to the
-    script.request.
+    arguments in graphingwiki-based scripts. MoinScript initialises
+    the request by calling up ScriptContext, which is then assigned to
+    the script.request.
 
     If a gwiki script uses non-MoinScript command line arguments,
     the ScriptContext is initialized with minimum sane default.

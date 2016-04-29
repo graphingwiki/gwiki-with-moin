@@ -29,9 +29,10 @@
 """
 import math
 
+from MoinMoin.metadata.constants import SPECIAL_ATTRS
+
 from graphingwiki import cairo, cairo_found, cairo_surface_to_png
-from graphingwiki.editing import metatable_parseargs, get_metas, ordervalue
-from graphingwiki.util import SPECIAL_ATTRS
+from MoinMoin.metadata.query import get_metas, metatable_parseargs, ordervalue
 
 def _calculate_textlen(text):
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 0, 0)

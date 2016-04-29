@@ -32,11 +32,12 @@ from tempfile import mkstemp
 from MoinMoin import wikiutil
 from MoinMoin.action import AttachFile
 from MoinMoin.action import cache
+from MoinMoin.metadata.util import encode_page
 
 from graphingwiki import gv_found, actionname, values_to_form
 from graphingwiki.graphrepr import Graphviz
 from graphingwiki.util import enter_page, exit_page, url_parameters, \
-    encode_page, cache_exists, cache_key, form_escape
+    cache_exists, cache_key, form_escape
 
 class ViewDot(object):
     def __init__(self, pagename, request, **kw):

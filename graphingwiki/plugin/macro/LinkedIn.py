@@ -27,7 +27,7 @@
     DEALINGS IN THE SOFTWARE.
 
 """
-from graphingwiki.util import NO_TYPE
+from MoinMoin.metadata.constants import NO_TYPE
 
 Dependencies = ['pagelinks']
 

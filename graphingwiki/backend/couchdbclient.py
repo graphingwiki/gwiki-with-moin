@@ -52,8 +52,8 @@ distributed edit model."
 
 import os
 
-from graphingwiki.backend.basedb import GraphDataBase
-from graphingwiki.util import log
+from MoinMoin.metadata.util import log
+from MoinMoin.metadata.backend.basedb import GraphDataBase
 
 import couchdb
 import couchdb.mapping

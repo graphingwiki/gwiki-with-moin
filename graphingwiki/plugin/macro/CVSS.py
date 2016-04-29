@@ -7,8 +7,10 @@
                              Lari Huttunen <debian@huttu.net>
     @license: MIT <http://www.opensource.org/licenses/mit-license.php>
 """
-from graphingwiki.editing import get_metas
-from graphingwiki.util import format_wikitext, render_error
+from MoinMoin.metadata.query import get_metas
+from MoinMoin.metadata.wikitextutil import format_wikitext
+
+from graphingwiki.util import render_error
 
 Dependencies = ['metadata']
 

@@ -9,7 +9,7 @@ import struct
 import base64
 import shelve
 
-from graphingwiki.editing import get_metas, metatable_parseargs
+from MoinMoin.metadata.query import get_metas, metatable_parseargs
 
 from MoinMoin.util.lock import WriteLock
 from MoinMoin.Page import Page

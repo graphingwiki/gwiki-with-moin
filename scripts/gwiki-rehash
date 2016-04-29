@@ -40,8 +40,7 @@ from MoinMoin.script import MinimalMoinScript
 from MoinMoin.Page import Page, RootPage
 from MoinMoin import config
 
-from graphingwiki import underlay_to_pages
-from graphingwiki.plugin.action.savegraphdata import execute as graphsaver
+from MoinMoin.metadata.edit import underlay_to_pages, savegraphdata
 
 pages = []
 retain_shelve = False
@@ -96,7 +95,7 @@ try:
 
         for page in pagelist:
             pageobj = Page(request, page)
-            if not pageobj.exists():
+            if not pageobj.exists(includeBackend=False):
                 raise UserInputException(page)
             pageobjs.append(pageobj)
 
@@ -158,8 +157,8 @@ for pageobj in pages:
     pagepath = underlay_to_pages(scriptcontext, pageobj)
     text = pageobj.get_raw_body()
 
-    # Apply the graphsaver action to the page
-    graphsaver(pageobj.page_name, scriptcontext, text, pagepath, pageobj)
+    # Save the page metadata
+    savegraphdata(pageobj.page_name, scriptcontext, text, pagepath, pageobj)
 
 # Must finish the scriptcontext to ensure that metadata is saved & committed
 scriptcontext.finish()

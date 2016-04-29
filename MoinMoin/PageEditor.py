@@ -30,7 +30,7 @@ from MoinMoin.util import filesys, timefuncs, web
 from MoinMoin.util.abuse import log_attempt
 from MoinMoin.events import PageDeletedEvent, PageRenamedEvent, PageCopiedEvent, PageRevertedEvent
 from MoinMoin.events import PagePreSaveEvent, Abort, send_event
-from graphingwiki import graphdata_save, graphdata_rename, graphdata_copy
+from MoinMoin.metadata.edit import graphdata_save, graphdata_rename, graphdata_copy
 import MoinMoin.events.notification as notification
 
 # used for merging
@@ -657,18 +657,7 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
             # Save page text with a comment about the old name
             savetext = u"## page was renamed from %s\n%s" % (self.page_name, savetext)
             newpage.saveText(savetext, 0, comment=comment, extra=self.page_name, action='SAVE/RENAME', notify=False)
-            # delete pagelinks
-            arena = newpage
-            key = 'pagelinks'
-            cache = caching.CacheEntry(request, arena, key, scope='item')
-            cache.remove()
-
-            # clean the cache
-            for formatter_name in self.cfg.caching_formats:
-                arena = newpage
-                key = formatter_name
-                cache = caching.CacheEntry(request, arena, key, scope='item')
-                cache.remove()
+            newpage.delete_caches()
 
             graphdata_rename(self)
 
@@ -750,18 +739,7 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
             success = False
             msg = "SaveError has occurred in PageEditor.deletePage. We need locking there."
 
-        # delete pagelinks
-        arena = self
-        key = 'pagelinks'
-        cache = caching.CacheEntry(request, arena, key, scope='item')
-        cache.remove()
-
-        # clean the cache
-        for formatter_name in self.cfg.caching_formats:
-            arena = self
-            key = formatter_name
-            cache = caching.CacheEntry(request, arena, key, scope='item')
-            cache.remove()
+        self.delete_caches()
         return success, msg
 
     def _get_local_timestamp(self):
@@ -1233,7 +1211,6 @@ Please review the page and save then. Do not save this page as it is!""")
 
         return msg
 
-
 class PageLock:
     """ PageLock - Lock pages """
     # TODO: race conditions throughout, need to lock file during queries & update
@@ -1384,4 +1361,3 @@ To leave the editor, press the Cancel button.""", wiki=True) % {
             os.remove(self._filename())
         except OSError:
             pass
-

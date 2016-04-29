@@ -50,21 +50,16 @@ from MoinMoin.action import AttachFile
 from MoinMoin.Page import Page
 from MoinMoin.PageEditor import PageEditor
 from MoinMoin.logfile import editlog
+from MoinMoin.metadata.constants import SEPARATOR, SPECIAL_ATTRS, \
+    NO_TYPE, ATTACHMENT_SCHEMAS
+from MoinMoin.metadata.util import node_type, category_regex, template_regex, \
+    nonguaranteeds_p
+from MoinMoin.metadata.wikitextutil import format_wikitext, filter_categories
 
-from graphingwiki import geoip_found, GeoIP, id_escape, SEPARATOR
+from graphingwiki import geoip_found, GeoIP, id_escape
 from graphingwiki.graph import Graph
 
 MOIN_VERSION = float('.'.join(MoinVersion.release.split('.')[:2]))
-
-
-import logging
-log = logging.getLogger("graphingwiki")
-
-# configure default logger as advised in logger docs
-class NullHandler(logging.Handler):
-    def emit(self, record):
-        pass
-log.addHandler(NullHandler())
 
 # Some XML output helpers
 def xml_document(top):
@@ -190,41 +185,13 @@ encoder = getencoder(config.charset)
 def encode(str):
     return encoder(str, 'replace')[0]
 
-
-# See also http://bugs.python.org/issue9061
-QUOTEDATTRS = {'"': '&#x22;', "'": '&#x27;', '/': '&#x2F;'}
-UNQUOTEDATTRS = dict()
-UNQUOTEDATTRS.update([(y, x) for x, y in QUOTEDATTRS.items()])
-
 def form_escape(text):
     # Deprecated, use parameter_escape() instead.
-    return parameter_escape(text)
+    return wikiutil.parameter_escape(text)
 
 def form_unescape(text):
     # Deprecated, use parameter_unescape() instead.
-    return parameter_unescape(text)
-
-def text_escape(text):
-    """Escape function to be used for content going to HTML text body.
-
-       Entity encodes "<", ">" and "&".
-    """
-    return cgi.escape(text)
-
-def parameter_escape(text):
-    """Escape function to be used for content going to HTML parameter values.
-
-       This is not enough for style and on* parameters.
-       This is not enough for URLs.
-    """
-    return saxutils.escape(text, QUOTEDATTRS)
-
-def parameter_unescape(text):
-    return saxutils.unescape(text, UNQUOTEDATTRS)
-
-def form_writer(fmt, *args):
-    args = tuple(map(form_escape, args))
-    return fmt % args
+    return wikiutil.parameter_unescape(text)
 
 def _as_str(string):
     if isinstance(string, unicode):
@@ -288,73 +255,6 @@ def make_tooltip(request, pagename, format=''):
 
     return tooldata
 
-# Default node attributes that should not be shown
-SPECIAL_ATTRS = ["gwikilabel", "gwikisides", "gwikitooltip", "gwikiskew",
-                 "gwikiorientation", "gwikifillcolor", 'gwikiperipheries',
-                 'gwikishapefile', "gwikishape", "gwikistyle", 
-                 'gwikicategory', 'gwikiURL', 'gwikiimage', 'gwikiinlinks',
-                 'gwikicoordinates']
-nonguaranteeds_p = lambda node: filter(lambda y: y not in
-                                       SPECIAL_ATTRS, dict(node))
-
-NONEDITABLE_ATTRS = ['gwikiinlinks', '-', 'gwikipagename']
-editable_p = lambda node: filter(lambda y: y not in 
-                                 NONEDITABLE_ATTRS and not '->' in y, node)
-
-NO_TYPE = u'_notype'
-
-ATTACHMENT_SCHEMAS = ["attachment", "drawing"]
-
-def encode_page(page):
-    return encode(page)
-
-def decode_page(page):
-    return unicode(page, config.charset)
-
-
-_url_re = None
-def get_url_re():
-    global _url_re
-    if not _url_re:
-        # Ripped off from Parser
-        url_pattern = u'|'.join(config.url_schemas)
-        url_rule = ur'%(url_guard)s(%(url)s)\:([^\s\<%(punct)s]|([%(punct)s][^\s\<%(punct)s]))+' % {
-            'url_guard': u'(^|(?<!\w))',
-            'url': url_pattern,
-            'punct': Parser.punct_pattern,
-        }
-        _url_re = re.compile(url_rule)
-    return _url_re
-
-def node_type(request, nodename):
-    if ':' in nodename:
-        if get_url_re().search(nodename):
-            return 'url'
-
-        start = nodename.split(':')[0]
-        if start in ATTACHMENT_SCHEMAS:
-            return 'attachment'
-
-        # Check if we know of the wiki an interwiki-style link is
-        # trying to refer to. If not, assume that this should not be a
-        # link.
-        iw_list = wikiutil.load_wikimap(request)
-        if iw_list.has_key(start):
-            return 'interwiki'
-        elif start:
-            return 'none'
-
-    return 'page'
-
-def filter_categories(request, candidates):
-    # Let through only the candidates that are both valid category
-    # names and WikiWords
-
-    # Nah, the word rules in 1.6 were not for the feint for heart,
-    # just use the wikiutil function until further notice
-
-    return wikiutil.filterCategoryPages(request, candidates)
-
 def get_url_ns(request, pagename, link):
     # Find out subpage level to adjust URL:s accordingly
     subrank = pagename.count('/')
@@ -372,37 +272,6 @@ def get_url_ns(request, pagename, link):
         return '../' * subrank + './' + link
     else:
         return '../' * subrank + './%sProperty' % (link)
-
-def format_wikitext(request, data, parser=None):
-    request.page.formatter = request.formatter
-    request.formatter.page = request.page
-
-    if not parser:
-        parser = Parser(data, request)
-    else:
-        parser.raw = data
-    parser.request = request
-
-    # Do not store pagelinks for values in metadata listings
-    plstore = getattr(request.formatter, '_store_pagelinks', 0)
-    request.formatter._store_pagelinks = 0
-
-    parser.formatter = request.formatter
-    # No line anchors of any type to table cells
-    request.page.formatter.in_p = 1
-    parser._line_anchordef = lambda: ''
-
-    # Do not parse macros from revision pages. For some reason,
-    # it spawns multiple requests, which are not finished properly,
-    # thus littering a number of readlocks. Besides, the macros do not
-    # return anything useful anyway for pages they don't recognize
-    if '?action=recall' in request.page.page_name:
-        parser._macro_repl = lambda x: x
-
-    out = parser.scan(data, inhibit_p=True)
-
-    request.formatter._store_pagelinks = plstore
-    return out.strip()
 
 def wrap_span(request, key, data, id):
     if not key:
@@ -521,74 +390,7 @@ def load_parents(request, graph, child, urladd):
 
     return parents
 
-def delete_moin_caches(request, pageitem):
-    # Clear cache
-    arena = PageEditor(request, pageitem.page_name)
 
-    # delete pagelinks
-    key = 'pagelinks'
-    cache = caching.CacheEntry(request, arena, key, scope='item')
-    cache.remove()
-
-    # forget in-memory page text
-    pageitem.set_raw_body(None)
-
-    # clean the in memory acl cache
-    # XXX gone in moin 1.9
-    # pageitem.clean_acl_cache()
-
-    request.graphdata.cache = dict()
-
-    # clean the cache
-    for formatter_name in request.cfg.caching_formats:
-        key = formatter_name
-        cache = caching.CacheEntry(request, arena, key, scope='item')
-        cache.remove()
-
-def template_regex(request, act=False):
-    if act and hasattr(request.cfg.cache, 'page_template_regexact'):
-        return request.cfg.cache.page_template_regexact
-
-    if hasattr(request.cfg.cache, 'page_template_regex'):
-        return request.cfg.cache.page_template_regex
-
-    if MOIN_VERSION > 1.6:
-        if not hasattr(request.cfg, 'page_template_regex'):
-            request.cfg.page_template_regex = ur'(?P<all>(?P<key>\S+)Template)'
-        if act:
-            request.cfg.page_template_regexact = \
-                re.compile(u'^%s$' % request.cfg.page_template_regex, 
-                           re.UNICODE)
-            return re.compile(request.cfg.page_template_regexact, re.UNICODE)
-    else:
-        # For editing.py unittests
-        if not hasattr(request.cfg, 'page_template_regex'):
-            request.cfg.page_template_regex = u'[a-z]Template$'
-
-    return re.compile(request.cfg.page_template_regex, re.UNICODE)
-
-def category_regex(request, act=False):
-    if act and hasattr(request.cfg.cache, 'page_category_regexact'):
-        return request.cfg.cache.page_category_regexact
-
-    if hasattr(request.cfg.cache, 'page_category_regex'):
-        return request.cfg.cache.page_category_regex
-
-    if MOIN_VERSION > 1.6:
-        if not hasattr(request.cfg, 'page_category_regex'):
-            request.cfg.page_category_regex = \
-                ur'(?P<all>Category(?P<key>(?!Template)\S+))'
-        if act:
-            request.cfg.page_category_regexact = \
-                re.compile(u'^%s$' % request.cfg.page_category_regex, 
-                           re.UNICODE)
-            return re.compile(request.cfg.page_category_regexact, re.UNICODE)
-    else:
-        # For editing.py unittests
-        if not hasattr(request.cfg, 'page_category_regex'):
-            request.cfg.page_category_regex = u'^Category[A-Z]'
-
-    return re.compile(request.cfg.page_category_regex, re.UNICODE)
 
 
 def _add_node(request, pagename, graph, urladd="", nodetype=""):

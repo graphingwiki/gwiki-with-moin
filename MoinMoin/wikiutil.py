@@ -17,12 +17,14 @@ import re
 import time
 import urllib
 
+from inspect import getargspec, isfunction, isclass, ismethod
+from xml.sax import saxutils
+
 from MoinMoin import log
 logging = log.getLogger(__name__)
 
 from MoinMoin import config
 from MoinMoin.support.python_compatibility import rsplit
-from inspect import getargspec, isfunction, isclass, ismethod
 
 from MoinMoin import web # needed so that next lines work:
 import werkzeug
@@ -43,6 +45,33 @@ CHILD_PREFIX_LEN = len(CHILD_PREFIX)
 #############################################################################
 ### Getting data from user/Sending data to user
 #############################################################################
+
+def text_escape(text):
+    """Escape function to be used for content going to HTML text body.
+
+       Entity encodes "<", ">" and "&".
+    """
+    return cgi.escape(text)
+
+# See also http://bugs.python.org/issue9061
+QUOTEDATTRS = {'"': '&#x22;', "'": '&#x27;', '/': '&#x2F;'}
+UNQUOTEDATTRS = dict()
+UNQUOTEDATTRS.update([(y, x) for x, y in QUOTEDATTRS.items()])
+
+def parameter_escape(text):
+    """Escape function to be used for content going to HTML parameter values.
+
+       This is not enough for style and on* parameters.
+       This is not enough for URLs.
+    """
+    return saxutils.escape(text, QUOTEDATTRS)
+
+def parameter_unescape(text):
+    return saxutils.unescape(text, UNQUOTEDATTRS)
+
+def form_writer(fmt, *args):
+    args = tuple(map(parameter_escape, args))
+    return fmt % args
 
 def decodeUnknownInput(text):
     """ Decode unknown input, like text attachments

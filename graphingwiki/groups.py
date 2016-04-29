@@ -19,8 +19,7 @@ from MoinMoin.wikiutil import isGroupPage, normalize_pagename
 from MoinMoin.PageEditor import PageEditor
 from MoinMoin.datastruct.backends.wiki_groups import WikiGroup
 from MoinMoin.datastruct.backends import GroupDoesNotExistError
-
-from editing import _test, _doctest_request
+from MoinMoin.metadata.util import do_doctest, doctest_request
 
 user_re = re.compile('(^ +\*\s*(.+)$\n?)', re.M)
 
@@ -101,7 +100,7 @@ def check_users(request, accounts):
 
 def _group_add(request, pagetext, userlist):
     """
-    >>> request = _doctest_request()
+    >>> request = doctest_request()
     >>> s = u"= @PAGE@ =\\n" + \
         u" * [[user2]]\\n" + \
         u" * [[user1]]\\n"
@@ -140,7 +139,7 @@ def _group_add(request, pagetext, userlist):
 
 def _group_rename(request, pagetext, userlist):
     """
-    >>> request = _doctest_request()
+    >>> request = doctest_request()
     >>> s = u"= @PAGE@ =\\n" + \
         u" * [[user2]]\\n" + \
         u" * [[user1]]\\n"
@@ -173,7 +172,7 @@ def _group_rename(request, pagetext, userlist):
 
 def _group_del(request, pagetext, userlist):
     """
-    >>> request = _doctest_request()
+    >>> request = doctest_request()
     >>> s = u"= @PAGE@ =\\n" + \
         u" * [[user2]]\\n" + \
         u" * [[user1]]\\n"
@@ -311,4 +310,4 @@ def group_rename(request, grouppage, accounts):
     return True, msg
 
 if __name__ == "__main__":
-    _test()
+    do_doctest()

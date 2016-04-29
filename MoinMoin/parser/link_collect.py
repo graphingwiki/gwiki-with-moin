@@ -2,13 +2,11 @@
 """
      Link harvesting "parser"
 """
-
-from MoinMoin.wikiutil import resolve_interwiki, join_wiki
-from MoinMoin.parser.text_moin_wiki import Parser as WikiParser
-from MoinMoin import macro, wikiutil
 from string import rsplit
 
-from graphingwiki.util import category_regex
+from MoinMoin.wikiutil import resolve_interwiki, join_wiki, AbsPageName
+
+from text_moin_wiki import Parser as WikiParser
 from wiki_form import Parser as listParser
 
 Dependencies = []
@@ -26,7 +24,7 @@ class Parser(WikiParser):
         
         self.currentitems = []
         self.in_dd = 0
-        self.cat_re=category_regex(request)
+        self.cat_re = request.cfg.cache.page_category_regex
 
     def __add_textmeta(self, word, groups):
         val = ''
@@ -84,7 +82,7 @@ class Parser(WikiParser):
 
         name = groups.get('word_name')
         current_page = self.formatter.page.page_name
-        abs_name = wikiutil.AbsPageName(current_page, name)
+        abs_name = AbsPageName(current_page, name)
         if abs_name == current_page:
             self.currentitems.append(('wikilink', (abs_name, abs_name)))
             self.__add_meta(abs_name, groups)

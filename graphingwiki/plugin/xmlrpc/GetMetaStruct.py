@@ -7,7 +7,7 @@
     @copyright: 2009 by Erno Kuusela <erno@iki.fi>
     @license: MIT <http://www.opensource.org/licenses/mit-license.php>
 """
-from graphingwiki.editing import metatable_parseargs, get_metas
+from MoinMoin.metadata.query import metatable_parseargs, get_metas
 
 #Used by action/getMetaJSON.py
 def do_action(request, args):

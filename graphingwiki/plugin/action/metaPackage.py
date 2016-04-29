@@ -11,10 +11,10 @@ from MoinMoin.Page import Page
 from MoinMoin.packages import MOIN_PACKAGE_FILE, packLine
 from MoinMoin.action.AttachFile import _get_files
 from MoinMoin.action import AttachFile
+from MoinMoin.metadata.query import get_metas, metatable_parseargs
+from MoinMoin.metadata.util import log
 
 from graphingwiki import values_to_form
-from graphingwiki.editing import metatable_parseargs, get_metas
-from graphingwiki.util import log
 
 def execute(pagename, request):
     pagename_header = '%s-%s.zip' % (pagename, datetime.now().isoformat()[:10])

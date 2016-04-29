@@ -30,8 +30,8 @@
 import StringIO
 
 from MoinMoin.macro.Include import _sysmsg
+from MoinMoin.metadata.query import get_metas, metatable_parseargs, ordervalue
 
-from graphingwiki.editing import metatable_parseargs, get_metas, ordervalue
 from graphingwiki.util import url_construct
 from graphingwiki import cairo_found
 
