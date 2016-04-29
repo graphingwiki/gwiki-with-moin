@@ -6,8 +6,8 @@ import xmlrpclib
 from MoinMoin import config
 from MoinMoin.Page import Page
 from MoinMoin.PageEditor import PageEditor
+from MoinMoin.metadata.query import get_metas, metatable_parseargs
 
-from graphingwiki.editing import metatable_parseargs, get_metas
 from graphingwiki.editing import set_metas
 
 from collabbackend.plugin.macro.spanner import Spanner

@@ -8,8 +8,7 @@ from urllib import quote as url_quote
 from MoinMoin import config
 from MoinMoin.parser.text_moin_wiki import Parser
 from MoinMoin.Page import Page
-
-from graphingwiki.editing import metatable_parseargs, get_metas
+from MoinMoin.metadata.query import get_metas, metatable_parseargs
 
 Dependencies = ['metadata']
 
