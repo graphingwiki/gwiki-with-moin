@@ -12,14 +12,13 @@ import StringIO
 from MoinMoin import wikiutil
 from MoinMoin.PageEditor import PageEditor
 from MoinMoin.Page import Page
+from MoinMoin.metadata.constants import SEPARATOR
+from MoinMoin.metadata.query import get_properties
+from MoinMoin.metadata.wikitextutil import parse_text, format_wikitext
+from MoinMoin.wikiutil import form_writer as wr
 
-from graphingwiki import actionname, SEPARATOR, values_to_form
-from graphingwiki.util import format_wikitext, form_unescape
-from graphingwiki.util import form_writer as wr
-
-from graphingwiki.editing import get_properties
-
-from savegraphdata import parse_text
+from graphingwiki import actionname, values_to_form
+from graphingwiki.util import form_unescape
 
 value_re = re.compile(
     '(<dt>.+?</dt>\s*<dd>\s*)<input class="metavalue" type="text" ' +

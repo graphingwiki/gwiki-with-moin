@@ -50,18 +50,16 @@ from MoinMoin.action import AttachFile
 from MoinMoin.Page import Page
 from MoinMoin.PageEditor import PageEditor
 from MoinMoin.logfile import editlog
+from MoinMoin.metadata.constants import SEPARATOR, SPECIAL_ATTRS, \
+    NO_TYPE, ATTACHMENT_SCHEMAS
+from MoinMoin.metadata.util import node_type, category_regex, template_regex, \
+    nonguaranteeds_p
+from MoinMoin.metadata.wikitextutil import format_wikitext, filter_categories
 
-from graphingwiki import geoip_found, GeoIP, id_escape, SEPARATOR
+from graphingwiki import geoip_found, GeoIP, id_escape
 from graphingwiki.graph import Graph
 
 MOIN_VERSION = float('.'.join(MoinVersion.release.split('.')[:2]))
-
-
-# configure default logger as advised in logger docs
-class NullHandler(logging.Handler):
-    def emit(self, record):
-        pass
-log.addHandler(NullHandler())
 
 # Some XML output helpers
 def xml_document(top):
@@ -189,11 +187,11 @@ def encode(str):
 
 def form_escape(text):
     # Deprecated, use parameter_escape() instead.
-    return parameter_escape(text)
+    return wikiutil.parameter_escape(text)
 
 def form_unescape(text):
     # Deprecated, use parameter_unescape() instead.
-    return parameter_unescape(text)
+    return wikiutil.parameter_unescape(text)
 
 def _as_str(string):
     if isinstance(string, unicode):

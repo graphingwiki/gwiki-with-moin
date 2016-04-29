@@ -12,18 +12,22 @@ action_name = 'MetaEdit'
 from urllib import unquote as url_unquote
 
 from MoinMoin.Page import Page
+from MoinMoin.wikiutil import form_writer
 from MoinMoin.action.AttachFile import add_attachment, AttachmentAlreadyExists
+from MoinMoin.metadata.constants import SEPARATOR
+from MoinMoin.metadata.query import get_metas, metatable_parseargs
+from MoinMoin.metadata.util import editable_p
 
-from graphingwiki import actionname, SEPARATOR, values_to_form
-from graphingwiki.editing import get_metas, set_metas, editable_p
-from graphingwiki.editing import metatable_parseargs, edit_meta, save_template
-from graphingwiki.util import (form_writer, enter_page, exit_page,
+from graphingwiki import actionname, values_to_form
+from graphingwiki.editing import (set_metas, 
+                                  edit_meta, save_template)
+from graphingwiki.util import (enter_page, exit_page,
                                render_error, render_warning)
 
 def parse_editform(request, form):
     r"""
-    >>> from graphingwiki.editing import _doctest_request
-    >>> request = _doctest_request()
+    >>> from MoinMoin.metadata.util import doctest_request
+    >>> request = doctest_request()
 
     >>> parse_editform(request, {"Test-gwikiseparator-" : ["1", "2"], ":: " : ["a"]})
     {'Test': ({}, {'a': ['1', '2']})}

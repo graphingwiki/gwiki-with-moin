@@ -52,8 +52,8 @@ distributed edit model."
 
 import os
 
-from graphingwiki.backend.basedb import GraphDataBase
-from graphingwiki.util import log
+from MoinMoin.metadata.util import log
+from MoinMoin.metadata.backend.basedb import GraphDataBase
 
 import couchdb
 import couchdb.mapping
@@ -311,8 +311,8 @@ def test_inlink(gd):
     
 def test():
     dbname = os.getenv("USER") + "dev-standalone"
-    from graphingwiki import RequestCLI
-    req = RequestCLI()
+    from MoinMoin.script import MinimalMoinScript
+    req = MinimalMoinScript()
     gd = GraphData(req, dbname)
 
     if 0:

@@ -29,7 +29,8 @@
 
 """
 
-from graphingwiki.util import format_wikitext
+from MoinMoin.metadata.wikitextutil import format_wikitext
+
 from graphingwiki import values_to_form
 from graphingwiki.editing import get_metas2
 

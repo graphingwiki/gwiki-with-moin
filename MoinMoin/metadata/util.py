@@ -15,13 +15,16 @@ from MoinMoin import wikiutil
 
 from MoinMoin.parser.text_moin_wiki import Parser
 
-from MoinMoin.metadata.constants import SPECIAL_ATTRS
+from MoinMoin.metadata.constants import SPECIAL_ATTRS, NONEDITABLE_ATTRS, \
+    ATTACHMENT_SCHEMAS
 
 import logging
 log = logging.getLogger("MoinMoin.metadata")
-
-NONEDITABLE_ATTRS = ['gwikiinlinks', '-', 'gwikipagename']
-ATTACHMENT_SCHEMAS = ["attachment", "drawing"]
+# configure default logger as advised in logger docs
+class NullHandler(logging.Handler):
+    def emit(self, record):
+        pass
+log.addHandler(NullHandler())
 
 nonguaranteeds_p = lambda node: filter(lambda y: y not in
                                        SPECIAL_ATTRS, dict(node))

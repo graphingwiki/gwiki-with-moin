@@ -1,0 +1,70 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import sys, os
+
+from optparse import OptionParser
+
+from MoinMoin.script import MinimalMoinScript
+from MoinMoin.Page import Page
+from MoinMoin.PageEditor import PageEditor
+
+from MoinMoin.metadata.edit import graphdata_close
+
+def savetext(request, pagename, newtext, **kw):
+    page = PageEditor(request, pagename)
+
+    try:
+        msg = page.saveText(newtext, 0, **kw)
+    except page.Unchanged:
+        msg = u'Unchanged'
+
+    return msg
+
+if __name__ == '__main__':
+    usage = "usage: %prog [options] <path to wiki> <pagename>"
+    parser = OptionParser(usage=usage)
+    parser.add_option("-v", "--verbose", action="store_true", dest="verbose",
+                      help="Report success")
+    parser.add_option("-a", "--auth", action="store_true", dest="auth",
+                      help="Use local user-based wiki authentication")
+    parser.add_option("-c", "--comment", dest="comment",
+                      help="Optional change comment for the edit")
+
+    (options, args) = parser.parse_args()
+
+    if len(args) != 2:
+        print parser.get_usage()
+        sys.exit(2)
+
+    # Configdir to path, so wikiconfig can be imported by Request
+    cp = args[0]
+    cp2 = os.path.join(cp, 'config')
+    if os.path.isdir(cp2):
+        cp = cp2
+    sys.path.insert(0, cp)
+
+    pagename = unicode(args[1], sys.getfilesystemencoding())
+
+    # Make a new request for the page
+    req = MinimalMoinScript(pagename, parse=False)
+    req.page = Page(req, pagename)
+
+    # Auth
+    if options.auth:
+        import posix, pwd
+        # We need to import contexts before importing users, because otherwise
+        # the relative imports in MoinMoin will fail.
+        import MoinMoin.web.contexts
+        from MoinMoin.user import User
+        req.user = User(req, auth_username=pwd.getpwuid(posix.getuid())[0])
+
+    mytext = unicode(sys.stdin.read(), sys.getfilesystemencoding())
+
+    if options.comment:
+        savetext(req, pagename, mytext, comment=unicode(options.comment))
+    else:
+        savetext(req, pagename, mytext)
+
+    # Must finish the request to ensure that metadata is saved
+    graphdata_close(req)

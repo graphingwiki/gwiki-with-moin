@@ -30,8 +30,10 @@
 
 import sys
 
-from graphingwiki.util import encode_page, decode_page, get_url_ns
-from graphingwiki.editing import ordervalue
+from MoinMoin.metadata.util import encode_page, decode_page
+from MoinMoin.metadata.query import ordervalue
+
+from graphingwiki.util import get_url_ns
 
 # Checking whether these exist and can be used should be done by
 # actions and macros using this library.

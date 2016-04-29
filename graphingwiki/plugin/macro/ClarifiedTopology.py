@@ -33,13 +33,13 @@ import csv
 
 from MoinMoin.action import cache
 from MoinMoin.action import AttachFile
+from MoinMoin.metadata.query import get_metas, metatable_parseargs
+from MoinMoin.metadata.util import encode_page, decode_page, 
 
 from graphingwiki import cairo, cairo_surface_to_png
 from graphingwiki.plugin.action.ShowGraph import GraphShower
-from graphingwiki.editing import metatable_parseargs, get_metas
 from graphingwiki.util import (form_escape, make_tooltip, cache_key,
-                               cache_exists, latest_edit, encode_page,
-                               decode_page, render_error)
+                               cache_exists, latest_edit, render_error)
 
 Dependencies = ['metadata']
 

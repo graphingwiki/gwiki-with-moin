@@ -1,0 +1,16 @@
+<<NewPage(JournalEntryTemplate, Add a new journal entry, @SELF, %Y%m%d%H%M%S)>>
+
+<<TableOfContents>>
+
+= Latest Entry =
+
+<<Include(^@PAGE@/2.*,,to="^----$",sort=descending,items=1,editlink)>>
+
+= Past Topics =
+
+<<MetaTable(Journal=@PAGE@, >>Date, ||Date||Topic||Who||)>>
+
+----
+<<LinkedIn>>
+----
+CategoryJournal

@@ -20,7 +20,7 @@ from graphingwiki.editing import dl_proto_re
 
 import MetaEdit
 
-from savegraphdata import parse_text
+from MoinMoin.metadata.wikitextutil import parse_text
 
 def execute(pagename, request):
     form = values_to_form(request.values)

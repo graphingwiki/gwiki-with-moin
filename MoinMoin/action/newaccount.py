@@ -14,6 +14,7 @@ from MoinMoin.auth import MoinAuth
 
 
 def _create_user(request):
+    collab_mode = getattr(request.cfg, 'collab_mode', False)
     _ = request.getText
     form = request.form
 
@@ -31,7 +32,11 @@ def _create_user(request):
 
     # Require non-empty name
     try:
-        theuser.name = form['name']
+        if collab_mode:
+            name = wikiutil.clean_input(form.get('email', ['']))
+            theuser.name = name.strip()
+        else:
+            theuser.name = form['name']
     except KeyError:
         return _("Empty user name. Please enter a user name.")
 
@@ -88,6 +93,7 @@ space between words. Group page name is not allowed.""", wiki=True) % wikiutil.e
 
 
 def _create_form(request):
+    collab_mode = getattr(request.cfg, 'collab_mode', False)
     _ = request.getText
     url = request.page.url(request)
     ret = html.FORM(action=url)
@@ -104,12 +110,17 @@ def _create_form(request):
 
     row = html.TR()
     tbl.append(row)
-    row.append(html.TD().append(html.STRONG().append(
-                                  html.Text(_("Name")))))
-    cell = html.TD()
-    row.append(cell)
-    cell.append(html.INPUT(type="text", size="36", name="name"))
-    cell.append(html.Text(' ' + _("(Use FirstnameLastname)")))
+    if collab_mode:
+        row.append(html.TD().append(html.STRONG().append(html.Text(_("Email")))))
+        row.append(html.TD().append(html.INPUT(type="text", size="36",
+                                               name="email")))
+    else:
+        row.append(html.TD().append(html.STRONG().append(
+                                      html.Text(_("Name")))))
+        cell = html.TD()
+        row.append(cell)
+        cell.append(html.INPUT(type="text", size="36", name="name"))
+        cell.append(html.Text(' ' + _("(Use FirstnameLastname)")))
 
     row = html.TR()
     tbl.append(row)
@@ -125,11 +136,12 @@ def _create_form(request):
     row.append(html.TD().append(html.INPUT(type="password", size="36",
                                            name="password2")))
 
-    row = html.TR()
-    tbl.append(row)
-    row.append(html.TD().append(html.STRONG().append(html.Text(_("Email")))))
-    row.append(html.TD().append(html.INPUT(type="text", size="36",
-                                           name="email")))
+    if not collab_mode:
+        row = html.TR()
+        tbl.append(row)
+        row.append(html.TD().append(html.STRONG().append(html.Text(_("Email")))))
+        row.append(html.TD().append(html.INPUT(type="text", size="36",
+                                               name="email")))
 
     textcha = TextCha(request)
     if textcha.is_enabled():
@@ -153,13 +165,15 @@ def _create_form(request):
     return unicode(ret)
 
 def execute(pagename, request):
+    collab_mode = getattr(request.cfg, 'collab_mode', False)
+
     found = False
     for auth in request.cfg.auth:
         if isinstance(auth, MoinAuth):
             found = True
             break
 
-    if not found:
+    if not found and not collab_mode:
         # we will not have linked, so forbid access
         request.makeForbidden(403, 'No MoinAuth in auth list')
         return

@@ -58,6 +58,7 @@ Contact the owner of the wiki, who can enable email.""")
 
 
 def _create_form(request):
+    collab_mode = getattr(request.cfg, 'collab_mode', False)
     _ = request.getText
     url = request.page.url(request)
     ret = html.FORM(action=url)
@@ -70,15 +71,20 @@ def _create_form(request):
 
     row = html.TR()
     tbl.append(row)
-    row.append(html.TD().append(html.STRONG().append(html.Text(_("Username")))))
-    row.append(html.TD().append(html.INPUT(type="text", size="36",
-                                           name="name")))
+    if not collab_mode:
+        row.append(html.TD().append(html.STRONG().append(html.Text(_("Username")))))
+        row.append(html.TD().append(html.INPUT(type="text", size="36",
+                                               name="name")))
 
-    row = html.TR()
-    tbl.append(row)
+        row = html.TR()
+        tbl.append(row)
     row.append(html.TD().append(html.STRONG().append(html.Text(_("Email")))))
-    row.append(html.TD().append(html.INPUT(type="text", size="36",
-                                           name="email")))
+    if collab_mode:
+        row.append(html.TD().append(html.INPUT(type="text", size="36",
+                                               name="name")))
+    else:
+        row.append(html.TD().append(html.INPUT(type="text", size="36",
+                                               name="email")))
 
     row = html.TR()
     tbl.append(row)
@@ -92,6 +98,7 @@ def _create_form(request):
 
 
 def _create_token_form(request, name=None, token=None):
+    collab_mode = getattr(request.cfg, 'collab_mode', False)
     _ = request.getText
     url = request.page.url(request)
     ret = html.FORM(action=url)
@@ -111,7 +118,10 @@ def _create_token_form(request, name=None, token=None):
 
     row = html.TR()
     tbl.append(row)
-    row.append(html.TD().append(html.STRONG().append(html.Text(_("Username")))))
+    if collab_mode:
+        row.append(html.TD().append(html.STRONG().append(html.Text(_("Email")))))
+    else:
+        row.append(html.TD().append(html.STRONG().append(html.Text(_("Username")))))
     value = name or ''
     row.append(html.TD().append(html.INPUT(type='text', size="36",
                                            name="name", value=value)))

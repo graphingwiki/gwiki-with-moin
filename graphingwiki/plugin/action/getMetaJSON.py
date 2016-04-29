@@ -27,8 +27,9 @@
 
 """
 
-import MoinMoin.wikiutil as wikiutil
-from graphingwiki.util import format_wikitext
+from MoinMoin import wikiutil
+from MoinMoin.metadata.wikitextutil import format_wikitext
+
 from graphingwiki import values_to_form
 
 try:

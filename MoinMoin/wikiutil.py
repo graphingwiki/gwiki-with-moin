@@ -494,21 +494,30 @@ def get_max_mtime(file_list, page):
 def load_wikimap(request):
     """ load interwiki map (once, and only on demand) """
     from MoinMoin.Page import Page
+    collab_mode = getattr(request.cfg, 'collab_mode', False)
 
     now = int(time.time())
     if getattr(request.cfg, "shared_intermap_files", None) is None:
         generate_file_list(request)
 
     try:
-        _interwiki_list = request.cfg.cache.interwiki_list
-        old_mtime = request.cfg.cache.interwiki_mtime
-        if request.cfg.cache.interwiki_ts + (1*60) < now: # 1 minutes caching time
+        if collab_mode:
+            _interwiki_list = request.cfg.cache.interwiki_list[request.user.id]
+            old_mtime = request.cfg.cache.interwiki_mtime[request.user.id]
+            _iw_ts = request.cfg.cache.interwiki_ts[request.user.id]
+        else:
+            _interwiki_list = request.cfg.cache.interwiki_list
+            old_mtime = request.cfg.cache.interwiki_mtime
+            _iw_ts = request.cfg.cache.interwiki_ts
+        if _iw_ts + (1*60) < now: # 1 minutes caching time
             max_mtime = get_max_mtime(request.cfg.shared_intermap_files, Page(request, INTERWIKI_PAGE))
             if max_mtime > old_mtime:
                 raise AttributeError # refresh cache
+            elif collab_mode:
+                request.cfg.cache.interwiki_ts[request.user.id] = now
             else:
                 request.cfg.cache.interwiki_ts = now
-    except AttributeError:
+    except (AttributeError, KeyError):
         _interwiki_list = {}
         lines = []
 
@@ -537,11 +546,35 @@ def load_wikimap(request):
         _interwiki_list['Self'] = request.script_root + '/'
         if request.cfg.interwikiname:
             _interwiki_list[request.cfg.interwikiname] = request.script_root + '/'
+        # collab list
+        if collab_mode and hasattr(request.cfg, 'collab_basedir'):
+            from collabbackend import listCollabs
+            user = request.user.name
+            active = request.cfg.interwikiname
+            path = request.cfg.collab_basedir
+            baseurl = request.cfg.collab_baseurl
+            collablist = listCollabs(baseurl, user, path, active)
+            
+            for collab in collablist:
+                _interwiki_list[collab[0]] = collab[3]
 
-        # save for later
-        request.cfg.cache.interwiki_list = _interwiki_list
-        request.cfg.cache.interwiki_ts = now
-        request.cfg.cache.interwiki_mtime = get_max_mtime(request.cfg.shared_intermap_files, Page(request, INTERWIKI_PAGE))
+            if not getattr(request.cfg.cache, 'interwiki_list', None):
+                request.cfg.cache.interwiki_list = dict()
+            if not getattr(request.cfg.cache, 'interwiki_ts', None):
+                request.cfg.cache.interwiki_ts = dict()
+            if not getattr(request.cfg.cache, 'interwiki_mtime', None):
+                request.cfg.cache.interwiki_mtime = dict()
+            request.cfg.cache.interwiki_list[request.user.id] = _interwiki_list
+            request.cfg.cache.interwiki_ts[request.user.id] = now
+            request.cfg.cache.interwiki_mtime[request.user.id] = \
+                get_max_mtime(request.cfg.shared_intermap_files, 
+                              Page(request, INTERWIKI_PAGE))
+        else:
+            request.cfg.cache.interwiki_list = _interwiki_list
+            request.cfg.cache.interwiki_ts = now
+            request.cfg.cache.interwiki_mtime = \
+                get_max_mtime(request.cfg.shared_intermap_files, 
+                              Page(request, INTERWIKI_PAGE))
 
     return _interwiki_list
 
@@ -2298,7 +2331,7 @@ def taintfilename(basename):
     """
     # note: filenames containing ../ (or ..\) are made safe by replacing
     # the / (or the \). the .. will be kept, but is harmless then.
-    basename = re.sub('[\x00-\x1f:/\\\\<>"*?%|]', '_', basename)
+    basename = re.sub('[\x00-\x1f:/\\\\<>"*?|]', '_', basename)
     return basename
 
 

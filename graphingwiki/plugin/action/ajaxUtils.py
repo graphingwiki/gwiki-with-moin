@@ -26,13 +26,13 @@
     DEALINGS IN THE SOFTWARE.
 
 """
-from graphingwiki import values_to_form
-from graphingwiki.util import format_wikitext
-from graphingwiki.editing import get_properties
-
 from MoinMoin import wikiutil
 from MoinMoin.PageEditor import PageEditor
 from MoinMoin.Page import Page
+from MoinMoin.metadata.query import get_properties
+from MoinMoin.metadata.wikitextutil import format_wikitext
+
+from graphingwiki import values_to_form
 
 try:
     import simplejson as json

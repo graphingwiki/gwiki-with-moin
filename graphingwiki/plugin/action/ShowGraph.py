@@ -40,24 +40,25 @@ from random import choice, seed
 
 from MoinMoin.action import cache
 from MoinMoin import config
+from MoinMoin.wikiutil import form_writer
 from MoinMoin.formatter.text_plain import Formatter as TextFormatter
+from MoinMoin.metadata.constants import SPECIAL_ATTRS, NO_TYPE
+from MoinMoin.metadata.query import ordervalue
+from MoinMoin.metadata.util import nonguaranteeds_p, category_regex, \
+    template_regex, encode_page, decode_page, url_escape
 
 from graphingwiki import gv_found, igraph_found, actionname, \
-    url_escape, values_to_form, pil_found, pil_image
+    values_to_form, pil_found, pil_image
 
 from graphingwiki.graph import Graph
 from graphingwiki.graphrepr import GraphRepr, Graphviz, IGraphRepr
 
-from graphingwiki.util import (attachment_file, attachment_url, url_parameters,
-                               get_url_ns, load_parents, load_children,
-                               nonguaranteeds_p, NO_TYPE, form_escape,
-                               form_writer, load_node, decode_page,
-                               template_regex, category_regex, encode_page,
-                               make_tooltip, cache_exists, SPECIAL_ATTRS,
-                               cache_key, xml_document, xml_node_id_and_text,
-                               geoip_init, geoip_get_coords,
-                               render_error, render_warning)
-from graphingwiki.editing import ordervalue, verify_coordinates
+from graphingwiki.util import attachment_file, attachment_url, \
+    url_parameters, get_url_ns, load_parents, load_children, \
+    form_escape, load_node, make_tooltip, cache_exists, cache_key, \
+    xml_document, xml_node_id_and_text, geoip_init, \
+    geoip_get_coords, render_error, render_warning
+from graphingwiki.editing import verify_coordinates
 
 import math
 import colorsys

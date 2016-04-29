@@ -15,3 +15,6 @@ TEMPLATE_KEY = "gwikitemplate"
 PROPERTIES = ['constraint', 'description', 'hint', 'hidden', 'default']
 
 NO_TYPE = u'_notype'
+
+NONEDITABLE_ATTRS = ['gwikiinlinks', '-', 'gwikipagename']
+ATTACHMENT_SCHEMAS = ["attachment", "drawing"]

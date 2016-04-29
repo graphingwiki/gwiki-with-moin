@@ -4,9 +4,9 @@ action_name = 'metaCSV'
 import csv
 
 from MoinMoin import wikiutil
+from MoinMoin.metadata.util import encode_page
 
 from graphingwiki.editing import getmeta_to_table
-from graphingwiki.util import encode_page
 from graphingwiki import values_to_form
 
 def execute(pagename, request):

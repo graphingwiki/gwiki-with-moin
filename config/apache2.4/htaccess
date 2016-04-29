@@ -1,0 +1,13 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ wsgi/$1 [QSA,PT,L]
+
+<Files wsgi>
+  SetHandler wsgi-script
+</Files>
+
+AuthType        Basic
+AuthName        "Password Required (cancel for help)"
+AuthUserFile    /srv/wikis/collab/run/.htpasswd
+
+Require valid-user

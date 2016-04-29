@@ -15,8 +15,8 @@ import time
 from MoinMoin.Page import Page
 from MoinMoin.util.abuse import log_attempt
 
-import MetaFormEdit
-import editmeta
+from graphingwiki.plugin.action import MetaFormEdit
+from graphingwiki.plugin.action import editmeta
 
 class NewPage:
     """ Open editor for a new page, using template """

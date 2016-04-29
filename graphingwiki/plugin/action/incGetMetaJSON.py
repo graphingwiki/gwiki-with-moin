@@ -26,11 +26,11 @@
 
 """
 
-import MoinMoin.wikiutil as wikiutil
+from MoinMoin import wikiutil
+from MoinMoin.Page import Page
+from MoinMoin.metadata.wikitextutil import format_wikitext
 
 from graphingwiki import values_to_form
-from MoinMoin.Page import Page
-from graphingwiki.util import format_wikitext
 
 try:
     import simplejson as json

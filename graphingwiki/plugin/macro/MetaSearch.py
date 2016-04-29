@@ -28,8 +28,7 @@
 
 """
 from MoinMoin.Page import Page
-
-from graphingwiki.editing import metatable_parseargs, get_metas
+from MoinMoin.metadata.query import get_metas, metatable_parseargs
 
 
 def execute(macro, args):

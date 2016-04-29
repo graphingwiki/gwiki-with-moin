@@ -156,6 +156,8 @@ class RemoteWiki(object):
         return NotImplemented
 
 
+# HTTP Auth support to wikisync:
+# http://moinmo.in/FeatureRequests/WikiSyncWithHttpAuth
 class MoinRemoteWiki(RemoteWiki):
     """ Used for MoinMoin wikis reachable via XMLRPC. """
     def __init__(self, request, interwikiname, prefix, pagelist, user, password, verbose=False):
@@ -173,6 +175,9 @@ class MoinRemoteWiki(RemoteWiki):
             self.connection = None
             return
 
+        httpauth = False
+        notallowed = _("Invalid username or password.")
+
         self.connection = self.createConnection()
 
         try:
@@ -181,11 +186,47 @@ class MoinRemoteWiki(RemoteWiki):
             raise UnsupportedWikiException(_("The wiki is currently not reachable."))
         except xmlrpclib.Fault, err:
             raise UnsupportedWikiException("xmlrpclib.Fault: %s" % str(err))
+        except xmlrpclib.ProtocolError, err:
+            if err.errmsg != "Authorization Required":
+                raise
+
+            if user and password:
+                try:
+                    import urlparse
+                    import urllib
+
+                    def urlQuote(string):
+                        if isinstance(string, unicode):
+                            string = string.encode("utf-8")
+                        return urllib.quote(string, "/:")
+
+                    scheme, netloc, path, a, b, c = \
+                        urlparse.urlparse(self.wiki_url)
+                    action = "action=xmlrpc2"
+
+                    user, password = map(urlQuote, [user, password])
+                    netloc = "%s:%s@%s" % (user, password, netloc)
+                    self.xmlrpc_url = urlparse.urlunparse((scheme, netloc, 
+                                                           path, "", 
+                                                           action, ""))
+
+                    self.connection = self.createConnection()
+                    iw_list = self.connection.interwikiName()
+
+                    httpauth = True
+                except:
+                    raise MoinMoin.wikisync.NotAllowedException(notallowed)
+            elif user:
+                return
+            else:
+                raise MoinMoin.wikisync.NotAllowedException(notallowed)
 
         if user and password:
             token = self.connection.getAuthToken(user, password)
             if token:
                 self.token = token
+            elif httpauth:
+                self.token = None
             else:
                 raise NotAllowedException(_("Invalid username or password."))
         else:

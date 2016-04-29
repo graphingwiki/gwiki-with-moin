@@ -10,8 +10,10 @@
 
 """
 from MoinMoin import wikiutil
-from graphingwiki.editing import metatable_parseargs
-from graphingwiki.util import NO_TYPE, form_escape, url_construct
+from MoinMoin.metadata.constants import NO_TYPE
+from MoinMoin.metadata.query import metatable_parseargs
+
+from graphingwiki.util import form_escape, url_construct
 
 Dependencies = ["namespace"]
 

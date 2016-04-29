@@ -10,6 +10,8 @@
 import os, sys, time
 from StringIO import StringIO
 
+from MoinMoin.web.contexts import ScriptContext
+
 flag_quiet = 0
 
 # ScriptRequest -----------------------------------------------------------
@@ -180,7 +182,6 @@ class MoinScript(Script):
 
     def init_request(self):
         """ create request """
-        from MoinMoin.web.contexts import ScriptContext
         url = self.options.wiki_url or None
         self.request = ScriptContext(url, self.options.page)
 
@@ -284,7 +285,5 @@ def MinimalMoinScript(pagename='', parse=True):
         script.init_request()
         return script.request
 
-    from MoinMoin.web.contexts import ScriptContext
     # Default values
     return ScriptContext(None, pagename)
-

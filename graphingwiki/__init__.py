@@ -1,20 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import MoinMoin.wsgiapp
-import MoinMoin.wikisync  
-import MoinMoin.wikiutil as wikiutil
-import MoinMoin.web.contexts
-import MoinMoin.xmlrpc
-
 from MoinMoin import config
-from MoinMoin.Page import Page
-from MoinMoin.PageEditor import PageEditor
-from MoinMoin.action import AttachFile
-from MoinMoin.wikiutil import importPlugin, PluginMissingError
-from MoinMoin.security import ACLStringIterator
-from MoinMoin.script import MoinScript
-from MoinMoin.web.request import Request
-from MoinMoin.web.contexts import ScriptContext
 
 import sys
 import os
@@ -114,112 +100,6 @@ try:
 except ImportError:
     geoip_found = False
     pass
-
-# HTTP Auth support to wikisync:
-# http://moinmo.in/FeatureRequests/WikiSyncWithHttpAuth
-class MoinRemoteWikiHttpAuth(MoinMoin.wikisync.MoinRemoteWiki):
-    """ Used for MoinMoin wikis reachable via XMLRPC. """
-    def __init__(self, request, interwikiname, prefix, pagelist, user, password, verbose=False):
-        self.request = request
-        self.prefix = prefix
-        self.pagelist = pagelist
-        self.verbose = verbose
-        _ = self.request.getText
-
-        wikitag, wikiurl, wikitail, wikitag_bad = wikiutil.resolve_interwiki(self.request, interwikiname, '')
-        self.wiki_url = wikiutil.mapURL(self.request, wikiurl)
-        self.valid = not wikitag_bad
-        self.xmlrpc_url = self.wiki_url + "?action=xmlrpc2"
-        if not self.valid:
-            self.connection = None
-            return
-
-        httpauth = False
-        notallowed = _("Invalid username or password.")
-
-        self.connection = self.createConnection()
-
-        try:
-            iw_list = self.connection.interwikiName()
-        except socket.error:
-            raise MoinMoin.wikisync.UnsupportedWikiException(_("The wiki is currently not reachable."))
-        except xmlrpclib.Fault, err:
-            raise MoinMoin.wikisync.UnsupportedWikiException("xmlrpclib.Fault: %s" % str(err))
-        except xmlrpclib.ProtocolError, err:
-            if err.errmsg != "Authorization Required":
-                raise
-
-            if user and password:
-                try:
-                    import urlparse
-                    import urllib
-
-                    def urlQuote(string):
-                        if isinstance(string, unicode):
-                            string = string.encode("utf-8")
-                        return urllib.quote(string, "/:")
-
-                    scheme, netloc, path, a, b, c = \
-                        urlparse.urlparse(self.wiki_url)
-                    action = "action=xmlrpc2"
-
-                    user, password = map(urlQuote, [user, password])
-                    netloc = "%s:%s@%s" % (user, password, netloc)
-                    self.xmlrpc_url = urlparse.urlunparse((scheme, netloc, 
-                                                           path, "", 
-                                                           action, ""))
-
-                    self.connection = self.createConnection()
-                    iw_list = self.connection.interwikiName()
-
-                    httpauth = True
-                except:
-                    raise MoinMoin.wikisync.NotAllowedException(notallowed)
-            elif user:
-                return
-            else:
-                raise MoinMoin.wikisync.NotAllowedException(notallowed)
-
-        if user and password:
-            token = self.connection.getAuthToken(user, password)
-            if token:
-                self.token = token
-            elif httpauth:
-                self.token = None
-            else:
-                raise MoinMoin.wikisync.NotAllowedException(_("Invalid username or password."))
-        else:
-            self.token = None
-
-        self.remote_interwikiname = remote_interwikiname = iw_list[0]
-        self.remote_iwid = remote_iwid = iw_list[1]
-        self.is_anonymous = remote_interwikiname is None
-        if not self.is_anonymous and interwikiname != remote_interwikiname:
-            raise MoinMoin.wikisync.UnsupportedWikiException(_("The remote wiki uses a different InterWiki name (%(remotename)s)"
-                                             " internally than you specified (%(localname)s).") % {
-                "remotename": wikiutil.escape(remote_interwikiname), "localname": wikiutil.escape(interwikiname)})
-
-        if self.is_anonymous:
-            self.iwid_full = MoinMoin.wikisync.packLine([remote_iwid])
-        else:
-            self.iwid_full = MoinMoin.wikisync.packLine([remote_iwid, 
-                                                         interwikiname])
-
-MoinMoin.wikisync.MoinRemoteWiki = MoinRemoteWikiHttpAuth
-
-# Main function for injecting graphingwiki extensions straight into
-# Moin's beating heart.
-
-_hooks_installed = False
-
-def install_hooks(rehashing=False):
-    global _hooks_installed, _is_rehashing
-    if _hooks_installed:
-        return
-    _is_rehashing = rehashing
-
-    _hooks_installed = True
-
 
 def cairo_surface_to_png(surface):
     stringio = StringIO()

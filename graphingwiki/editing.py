@@ -25,9 +25,11 @@ from MoinMoin import config
 from MoinMoin import caching
 from MoinMoin.wikiutil import importPlugin, AbsPageName
 
-from graphingwiki.util import filter_categories
-from graphingwiki.util import SPECIAL_ATTRS, editable_p
-from graphingwiki.util import category_regex, template_regex
+from MoinMoin.metadata.wikitextutil import parse_text
+from MoinMoin.metadata.constants import SPECIAL_ATTRS, TEMPLATE_KEY
+from MoinMoin.metadata.query import get_metas
+from MoinMoin.metadata.util import editable_p
+from MoinMoin.metadata.wikitextutil import replace_metas
 
 def macro_re(macroname):
     return re.compile(r'(?<!#)\s*?\[\[(%s)\((.*?)\)\]\]' % macroname)
@@ -43,11 +45,6 @@ def get_revisions(request, page, checkAccess=True):
     pagename = page.page_name
     if checkAccess and not request.user.may.read(pagename):
         return [], []
-
-    parse_text = importPlugin(request.cfg,
-                              'action',
-                              'savegraphdata',
-                              'parse_text')
 
     alldata = dict()
     revisions = dict()

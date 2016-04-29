@@ -8,11 +8,9 @@
 """
 from MoinMoin.Page import Page
 from MoinMoin.macro.Include import _sysmsg
-
-from graphingwiki.editing import metatable_parseargs, get_metas, \
-    metas_to_abs_links
-from graphingwiki.util import format_wikitext
-from graphingwiki.editing import ordervalue
+from MoinMoin.metadata.query import metas_to_abs_links, \
+    metatable_parseargs, get_metas, ordervalue
+from MoinMoin.metadata.wikitextutil import format_wikitext
 
 Dependencies = ['metadata']
 

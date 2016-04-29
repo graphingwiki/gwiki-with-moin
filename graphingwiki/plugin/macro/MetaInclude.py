@@ -32,9 +32,8 @@
 """
 
 from MoinMoin.macro import Include as moinInclude
-
-from graphingwiki.util import text_escape
-from graphingwiki.editing import metatable_parseargs
+from MoinMoin.wikiutil import text_escape
+from MoinMoin.metadata.query import metatable_parseargs
 
 
 def make_pagelist(pagelist):

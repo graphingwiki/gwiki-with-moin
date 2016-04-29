@@ -17,7 +17,7 @@ from MoinMoin.web.utils import check_surge_protect
 
 from MoinMoin.support.werkzeug.datastructures import CombinedMultiDict, \
     MultiDict
-from MetaSearch import execute as ms_execute
+from graphingwiki.plugin.action.MetaSearch import execute as ms_execute
 
 def checkTitleSearch(request):
     """ Return 1 for title search, 0 for full text search, -1 for idiot spammer

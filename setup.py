@@ -110,10 +110,12 @@ setup(
     ],
     data_files=makeDataFiles('share/moin/htdocs', 'htdocs'),
     scripts=[
-        'gwikiscripts/gwiki-showgraph',
-        'gwikiscripts/gwiki-showpage',
-        'gwikiscripts/mm2gwiki.py',
-        'gwikiscripts/gwiki-get-tgz'
+        'scripts/gwiki-rehash',
+        'scripts/gwiki-showgraph',
+        'scripts/gwiki-showpage',
+        'scripts/mm2gwiki.py',
+        'scripts/gwiki-editpage',
+        'scripts/gwiki-get-tgz'
     ],
     cmdclass={
         "build": RemovingBuild,
