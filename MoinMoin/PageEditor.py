@@ -661,8 +661,6 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
 
             graphdata_rename(self)
 
-            graphdata_rename(self)
-
             event = PageRenamedEvent(request, newpage, self, comment)
             send_event(event)
 
