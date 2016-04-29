@@ -197,7 +197,6 @@ def scriptname(path):
 
 # build list of scripts from their implementation modules
 moin_scripts = [scriptname(fn) for fn in glob.glob('MoinMoin/script/[!_]*.py')]
-gwiki_scripts = ['scripts/moin-meta-rehash', 'scripts/moin-editpage']
 
 #############################################################################
 ### Call setup()
@@ -338,7 +337,7 @@ Topic :: Text Processing :: Markup""".splitlines(),
         'build_scripts': build_scripts_moin,
     },
 
-    'scripts': moin_scripts + gwiki_scripts,
+    'scripts': moin_scripts
 
     # This copies the contents of wiki dir under sys.prefix/share/moin
     # Do not put files that should not be installed in the wiki dir, or
