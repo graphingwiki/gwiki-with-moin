@@ -29,10 +29,9 @@
 
 """
 from MoinMoin.Page import Page
+from MoinMoin.macro.MetaTable import construct_table
 
 from graphingwiki.editing import get_revisions
-
-from MetaTable import construct_table
 
 Dependencies = ['metadata']
 

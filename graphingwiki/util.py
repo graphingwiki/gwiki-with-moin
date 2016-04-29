@@ -56,7 +56,7 @@ from MoinMoin.metadata.util import node_type, category_regex, template_regex, \
     nonguaranteeds_p
 from MoinMoin.metadata.wikitextutil import format_wikitext, filter_categories
 
-from graphingwiki import geoip_found, GeoIP, id_escape
+from graphingwiki import geoip_found, GeoIP, id_escape, actionname
 from graphingwiki.graph import Graph
 
 MOIN_VERSION = float('.'.join(MoinVersion.release.split('.')[:2]))

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from MoinMoin import config
+from MoinMoin.Page import Page
 
 import sys
 import os

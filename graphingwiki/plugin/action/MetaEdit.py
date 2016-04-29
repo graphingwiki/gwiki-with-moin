@@ -32,15 +32,15 @@ def parse_editform(request, form):
     >>> parse_editform(request, {"Test-gwikiseparator-" : ["1", "2"], ":: " : ["a"]})
     {'Test': ({}, {'a': ['1', '2']})}
 
-    >>> request = _doctest_request({"Test" : {"meta" : {"a" : ["x"]}}})
+    >>> request = doctest_request({"Test" : {"meta" : {"a" : ["x"]}}})
     >>> parse_editform(request, {"Test-gwikiseparator-a" : ["1", "2"], ":: a" : ["a"]})
     {'Test': ({'a': ['x']}, {'a': ['1', '2']})}
 
-    >>> request = _doctest_request({"Test" : {"meta" : {"a" : ["x"]}}})
+    >>> request = doctest_request({"Test" : {"meta" : {"a" : ["x"]}}})
     >>> parse_editform(request, {"Test-gwikiseparator-a" : ["x"], ":: a" : [""]})
     {'Test': ({'a': ['x']}, {'a': ['']})}
 
-    >>> request = _doctest_request({"Test" : {"meta" : {"a" : ["1", "2"]}}})
+    >>> request = doctest_request({"Test" : {"meta" : {"a" : ["1", "2"]}}})
     >>> parse_editform(request, {"Test-gwikiseparator-a" : ["1"], ":: a" : ["a"]})
     {'Test': ({'a': ['1', '2']}, {'a': ['1', '']})}
     """

@@ -34,7 +34,7 @@ import csv
 from MoinMoin.action import cache
 from MoinMoin.action import AttachFile
 from MoinMoin.metadata.query import get_metas, metatable_parseargs
-from MoinMoin.metadata.util import encode_page, decode_page, 
+from MoinMoin.metadata.util import encode_page, decode_page
 
 from graphingwiki import cairo, cairo_surface_to_png
 from graphingwiki.plugin.action.ShowGraph import GraphShower

@@ -27,7 +27,7 @@ from MoinMoin.wikiutil import importPlugin, AbsPageName
 
 from MoinMoin.metadata.wikitextutil import parse_text
 from MoinMoin.metadata.constants import SPECIAL_ATTRS, TEMPLATE_KEY
-from MoinMoin.metadata.query import get_metas
+from MoinMoin.metadata.query import get_metas, ordervalue
 from MoinMoin.metadata.util import editable_p
 from MoinMoin.metadata.wikitextutil import replace_metas
 
@@ -442,7 +442,3 @@ def list_pagecachefiles(request, pagename):
     page = Page(request, pagename)
     return caching.get_cache_list(request, page, 'item')
 
-
-
-if __name__ == "__main__":
-    _test()
