@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
 RUN add-apt-repository ppa:igraph/ppa
 RUN apt-get update && apt-get install -y \
  python-igraph \
+ python-cairo \
  libapache2-mod-wsgi \
  apache2 \
  apache2-mpm-worker \
