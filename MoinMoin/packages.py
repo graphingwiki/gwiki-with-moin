@@ -129,13 +129,13 @@ class ScriptEngine:
         if self.request.user.may.write(pagename):
             _ = self.request.getText
 
-            attachments = Page(self.request, pagename).getPagePath("attachments", check_create=1)
+            attachments = Page(self.request, pagename).getPagePath("attachments", check_create=True)
             filename = wikiutil.taintfilename(filename)
             zipname = wikiutil.taintfilename(zipname)
             target = os.path.join(attachments, filename)
             page = PageEditor(self.request, pagename, do_editor_backup=0, uid_override=author)
             rev = page.current_rev()
-            path = page.getPagePath(check_create=0)
+            path = page.getPagePath(check_create=False)
             if not os.path.exists(target):
                 self._extractToFile(zipname, target)
                 if os.path.exists(target):
@@ -159,12 +159,12 @@ class ScriptEngine:
         if self.request.user.may.write(pagename):
             _ = self.request.getText
 
-            attachments = Page(self.request, pagename).getPagePath("attachments", check_create=1)
+            attachments = Page(self.request, pagename).getPagePath("attachments", check_create=True)
             filename = wikiutil.taintfilename(filename)
             target = os.path.join(attachments, filename)
             page = PageEditor(self.request, pagename, do_editor_backup=0, uid_override=author)
             rev = page.current_rev()
-            path = page.getPagePath(check_create=0)
+            path = page.getPagePath(check_create=False)
             if os.path.exists(target):
                 os.remove(target)
                 action = 'ATTDEL'
@@ -274,7 +274,7 @@ class ScriptEngine:
         """
         _ = self.request.getText
 
-        attachments = Page(self.request, pagename).getPagePath("attachments", check_create=0)
+        attachments = Page(self.request, pagename).getPagePath("attachments", check_create=False)
         package = ZipPackage(self.request, os.path.join(attachments, wikiutil.taintfilename(filename)))
 
         if package.isPackage():
@@ -357,7 +357,7 @@ class ScriptEngine:
             filename = wikiutil.taintfilename(filename)
             zipname = wikiutil.taintfilename(zipname)
             page = PageEditor(self.request, pagename, do_editor_backup=0, uid_override=author)
-            pagedir = page.getPagePath(use_underlay=1, check_create=1)
+            pagedir = page.getPagePath(use_underlay=1, check_create=True)
             attachments = os.path.join(pagedir, 'attachments')
             if not os.path.exists(attachments):
                 os.mkdir(attachments)
@@ -378,7 +378,7 @@ class ScriptEngine:
         """
         page = Page(self.request, pagename)
 
-        pagedir = page.getPagePath(use_underlay=1, check_create=1)
+        pagedir = page.getPagePath(use_underlay=1, check_create=True)
 
         revdir = os.path.join(pagedir, 'revisions')
         cfn = os.path.join(pagedir, 'current')

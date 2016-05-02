@@ -582,8 +582,8 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
         # Get old page text
         savetext = self.get_raw_body()
 
-        oldpath = self.getPagePath(check_create=0)
-        newpath = newpage.getPagePath(check_create=0)
+        oldpath = self.getPagePath(check_create=False)
+        newpath = newpage.getPagePath(check_create=False)
 
         # Copy page
         # NOTE: might fail if another process created newpagename just
@@ -641,8 +641,8 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
         # Get old page text
         savetext = self.get_raw_body()
 
-        oldpath = self.getPagePath(check_create=0)
-        newpath = newpage.getPagePath(check_create=0)
+        oldpath = self.getPagePath(check_create=False)
+        newpath = newpage.getPagePath(check_create=False)
 
         # Rename page
 
@@ -898,8 +898,8 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
     def copy_underlay_page(self):
         # renamed from copypage to avoid conflicts with copyPage
         """ Copy a page from underlay directory to page directory """
-        src = self.getPagePath(use_underlay=1, check_create=0)
-        dst = self.getPagePath(use_underlay=0, check_create=0)
+        src = self.getPagePath(use_underlay=1, check_create=False)
+        dst = self.getPagePath(use_underlay=0, check_create=False)
         if src and dst and src != dst and os.path.exists(src):
             try:
                 os.rmdir(dst) # simply remove empty dst dirs
@@ -936,7 +936,7 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
 
         # Write always on the standard directory, never change the
         # underlay directory copy!
-        pagedir = self.getPagePath(use_underlay=0, check_create=0)
+        pagedir = self.getPagePath(use_underlay=0, check_create=False)
 
         revdir = os.path.join(pagedir, 'revisions')
         cfn = os.path.join(pagedir, 'current')

@@ -390,7 +390,7 @@ class Page(object):
 
         # Figure out if we should use underlay or not, if needed.
         if use_underlay == -1:
-            underlay, pagedir = self.getPageStatus(check_create=0)
+            underlay, pagedir = self.getPageStatus(check_create=False)
         else:
             underlay, pagedir = use_underlay, self._pagepath[use_underlay]
 
@@ -470,15 +470,15 @@ class Page(object):
                                 -1 = automatically choose page dir
                                 1 = use underlay page dir
                                 0 = use standard page dir
-        @keyword check_create: if true, ensures that the path requested really exists
+        @keyword check_create: if True, ensures that the path requested really exists
                                (if it doesn't, create all directories automatically).
-                               (default true)
+                               (default True)
         @keyword isfile: is the last component in args a filename? (default is false)
         @rtype: string
         @return: (int underlay (1 if using underlay, 0 otherwise),
                   str the full path to the storage area )
         """
-        check_create = kw.get('check_create', 1)
+        check_create = kw.get('check_create', True)
         isfile = kw.get('isfile', 0)
         use_underlay = kw.get('use_underlay', -1)
         underlay, path = self.getPageBasePath(use_underlay)
@@ -655,7 +655,10 @@ class Page(object):
             else:
                 checklist = [domain == 'underlay']
             for use_underlay in checklist:
-                pagedir = self.getPagePath(use_underlay=use_underlay, check_create=0)
+                pagedir = self.getPagePath(
+                    use_underlay=use_underlay,
+                    check_create=False
+                )
                 if os.path.exists(pagedir):
                     return True
             return False
@@ -1480,7 +1483,7 @@ class Page(object):
     def loadCache(self, request):
         """ Return page content cache or raises 'CacheNeedsUpdate' """
         cache = caching.CacheEntry(request, self, self.getFormatterName(), scope='item')
-        attachmentsPath = self.getPagePath('attachments', check_create=0)
+        attachmentsPath = self.getPagePath('attachments', check_create=False)
         if cache.needsUpdate(self._text_filename(), attachmentsPath):
             raise Exception('CacheNeedsUpdate')
 
@@ -1559,7 +1562,7 @@ class Page(object):
         """
         revisions = []
         if self.page_name:
-            rev_dir = self.getPagePath('revisions', check_create=0)
+            rev_dir = self.getPagePath('revisions', check_create=False)
             if os.path.isdir(rev_dir):
                 for rev in os.listdir(rev_dir):
                     try:

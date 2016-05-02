@@ -103,7 +103,7 @@ def execute(pagename, request):
 
     if cancelled:
         pg.sendCancel(savetext or "", rev)
-        pagedir = pg.getPagePath(check_create=0)
+        pagedir = pg.getPagePath(check_create=False)
         import os
         if not os.listdir(pagedir):
             os.removedirs(pagedir)

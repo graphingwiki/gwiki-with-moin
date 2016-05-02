@@ -158,7 +158,7 @@ class TestExpandPrivateVariables(TestExpandUserName):
 
     def dictPagePath(self):
         page = Page(self.request, self.dictPage)
-        return page.getPagePath(use_underlay=0, check_create=0)
+        return page.getPagePath(use_underlay=0, check_create=False)
 
 
 class TestSave(object):
@@ -275,8 +275,8 @@ class TestCopyPage(object):
         to make it possible to create page without loging and notifying.
         """
         import os
-        path = Page(self.request, self.pagename).getPagePath(check_create=0)
-        copy_path = Page(self.request, self.copy_pagename).getPagePath(check_create=0)
+        path = Page(self.request, self.pagename).getPagePath(check_create=False)
+        copy_path = Page(self.request, self.copy_pagename).getPagePath(check_create=False)
 
         if os.path.exists(path) or os.path.exists(copy_path):
             self.shouldDeleteTestPage = False

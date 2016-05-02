@@ -97,7 +97,7 @@ def nuke_page(request, pagename):
     page = PageEditor(request, pagename, do_editor_backup=False)
     page.deletePage()
     # really get rid of everything there:
-    fpath = page.getPagePath(check_create=0)
+    fpath = page.getPagePath(check_create=False)
     shutil.rmtree(fpath, True)
 
 def create_random_string_list(length=14, count=10):

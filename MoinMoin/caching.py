@@ -27,7 +27,7 @@ class CacheError(Exception):
 def get_arena_dir(request, arena, scope):
     if scope == 'item': # arena is a Page instance
         # we could move cache out of the page directory and store it to cache_dir
-        return arena.getPagePath('cache', check_create=1)
+        return arena.getPagePath('cache', check_create=True)
     elif scope == 'wiki':
         return os.path.join(request.cfg.cache_dir, request.cfg.siteid, arena)
     elif scope == 'farm':

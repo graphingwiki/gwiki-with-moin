@@ -104,7 +104,7 @@ def graphdata_rename(page):
 
     # Rename might litter empty directories data/pagename and
     # data/pagename/cache, let's remove them
-    oldpath = page.getPagePath(check_create=0)
+    oldpath = page.getPagePath(check_create=False)
     for dirpath, dirs, files in os.walk(oldpath, topdown=False):
         # If there are files left, some backups etc information is
         # still there, so let's quit
