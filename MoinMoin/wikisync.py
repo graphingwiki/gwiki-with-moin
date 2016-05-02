@@ -483,8 +483,8 @@ class PickleTagStore(AbstractTagStore):
         """
 
         self.page = page
-        self.filename = page.getPagePath('synctags', use_underlay=0, check_create=True, isfile=True)
-        lock_dir = os.path.join(page.getPagePath('cache', use_underlay=0, check_create=True), '__taglock__')
+        self.filename = page.getPagePath('synctags', use_underlay=False, check_create=True, isfile=True)
+        lock_dir = os.path.join(page.getPagePath('cache', use_underlay=False, check_create=True), '__taglock__')
         self.rlock = lock.ReadLock(lock_dir, 60.0)
         self.wlock = lock.WriteLock(lock_dir, 60.0)
 

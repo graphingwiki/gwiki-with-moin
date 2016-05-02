@@ -55,7 +55,7 @@ def execute(pagename, request):
         # Underlay pages are in epoch 0, zipfile in python 2.7 does
         # not support this.
         if not timestamp:
-            pagefile, rev, exists = page.get_rev()
+            pagefile, rev, exists = page.get_rev(auto_underlay=True)
             if rev == 99999999:
                 # We should never get here
                 log.error("Page %s neither in pages or underlay, skipping." % 

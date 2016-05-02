@@ -898,8 +898,8 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
     def copy_underlay_page(self):
         # renamed from copypage to avoid conflicts with copyPage
         """ Copy a page from underlay directory to page directory """
-        src = self.getPagePath(use_underlay=1, check_create=False)
-        dst = self.getPagePath(use_underlay=0, check_create=False)
+        src = self.getPagePath(use_underlay=True, check_create=False)
+        dst = self.getPagePath(use_underlay=False, check_create=False)
         if src and dst and src != dst and os.path.exists(src):
             try:
                 os.rmdir(dst) # simply remove empty dst dirs
@@ -936,7 +936,7 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
 
         # Write always on the standard directory, never change the
         # underlay directory copy!
-        pagedir = self.getPagePath(use_underlay=0, check_create=False)
+        pagedir = self.getPagePath(use_underlay=False, check_create=False)
 
         revdir = os.path.join(pagedir, 'revisions')
         cfn = os.path.join(pagedir, 'current')
@@ -947,7 +947,7 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
 
         # The local log should be the standard edit log, not the
         # underlay copy log!
-        pagelog = self.getPagePath('edit-log', use_underlay=0, isfile=True)
+        pagelog = self.getPagePath('edit-log', use_underlay=False, isfile=True)
         llog = editlog.EditLog(request, filename=pagelog,
                                uid_override=self.uid_override)
         # Open the global log
@@ -1115,7 +1115,7 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
         elif rev != 0 and rev != self.current_rev():
             # check if we already saved that page
             other = False
-            pagelog = self.getPagePath('edit-log', use_underlay=0, isfile=True)
+            pagelog = self.getPagePath('edit-log', use_underlay=False, isfile=True)
             next_line = None
             for line in editlog.EditLog(request, pagelog).reverse():
                 if int(line.rev) == int(rev):

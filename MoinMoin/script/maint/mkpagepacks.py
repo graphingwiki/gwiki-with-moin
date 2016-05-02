@@ -140,7 +140,7 @@ General syntax: moin [options] maint mkpagepacks [mkpagepacks-options]
             pagename = pagename.strip()
             page = Page(request, pagename)
             try:
-                underlay, path = page.getPageBasePath(-1)
+                underlay, path = page.getPageBasePath(auto_underlay=True)
                 shutil.rmtree(path)
             except:
                 pass

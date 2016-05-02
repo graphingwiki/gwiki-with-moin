@@ -159,7 +159,8 @@ class PackagePages:
 
         titles = []
         for title in pagelist.hits:
-            if not wikiutil.isSystemPage(request, title.page_name) or not title.page.getPageStatus()[0]:
+            if not wikiutil.isSystemPage(request, title.page_name)
+            or not title.page.getPageIsUnderlay():
                 titles.append(title.page_name)
         return titles
 

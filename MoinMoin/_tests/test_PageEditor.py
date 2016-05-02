@@ -158,7 +158,7 @@ class TestExpandPrivateVariables(TestExpandUserName):
 
     def dictPagePath(self):
         page = Page(self.request, self.dictPage)
-        return page.getPagePath(use_underlay=0, check_create=False)
+        return page.getPagePath(use_underlay=False, check_create=False)
 
 
 class TestSave(object):

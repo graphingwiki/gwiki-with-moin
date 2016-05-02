@@ -358,29 +358,29 @@ class Page(object):
                 realPath = wikiutil.unquoteWikiname(realPath)
                 self.page_name = realPath[-len(self.page_name):]
 
-    def get_rev(self, use_underlay=-1, rev=0):
+    def get_rev(self, auto_underlay=False, use_underlay=False, rev=0):
         """ Get information about a revision.
 
         filename, number, and (existance test) of this page and revision.
 
-        @param use_underlay: -1 == auto, 0 == normal, 1 == underlay
+        @param auto_underlay: True = Automatically choose page dir, ignores use_underlay
+        @param use_underlay: False == normal, True == underlay
         @param rev: int revision to get (default is 0 and means the current
                     revision (in this case, the real revint is returned)
         @return: (str path to current revision of page,
                   int realrevint,
                   bool exists)
         """
-        def layername(underlay):
-            if underlay == -1:
-                return 'layer_auto'
-            elif underlay == 0:
-                return 'layer_normal'
-            else: # 1
-                return 'layer_underlay'
-
         request = self.request
         cache_name = self.page_name
-        cache_key = layername(use_underlay)
+
+        if auto_underlay:
+            cache_key = 'layer_auto'
+        elif use_underlay:
+            cache_key = 'layer_underlay'
+        else:
+            cache_key = 'layer_normal'
+
         if self._text_filename_force is None:
             cache_data = request.cfg.cache.meta.getItem(request, cache_name, cache_key)
             if cache_data and (rev == 0 or rev == cache_data[1]):
@@ -389,10 +389,12 @@ class Page(object):
                 return cache_data
 
         # Figure out if we should use underlay or not, if needed.
-        if use_underlay == -1:
-            underlay, pagedir = self.getPageStatus(check_create=False)
+        if auto_underlay:
+            pagedir = self.getPagePath(auto_underlay=True, check_create=False)
+        elif use_underlay:
+            pagedir = self._pagepath[1]
         else:
-            underlay, pagedir = use_underlay, self._pagepath[use_underlay]
+            pagedir = self._pagepath[0]
 
         # Find current revision, if automatic selection is requested.
         if rev == 0:
@@ -414,7 +416,7 @@ class Page(object):
 
         @return: int revision
         """
-        pagefile, rev, exists = self.get_rev()
+        pagefile, rev, exists = self.get_rev(auto_underlay=True)
         return rev
 
     def get_real_rev(self):
@@ -428,60 +430,67 @@ class Page(object):
             return self.current_rev()
         return self.rev
 
-    def getPageBasePath(self, use_underlay=-1):
+    def getPageBasePath(self, auto_underlay=False, use_underlay=False):
         """ Get full path to a page-specific storage area. `args` can
             contain additional path components that are added to the base path.
 
-        @param use_underlay: force using a specific pagedir, default -1
-                                -1 = automatically choose page dir
-                                1 = use underlay page dir
-                                0 = use standard page dir
-        @rtype: string
-        @return: int underlay,
-                 str the full path to the storage area
+        @param auto_underlay: True = Automatically choose page dir, ignores use_underlay
+        @param use_underlay: True = use underlay page dir
+                             False = use standard page dir
+        @rtype: (bool, string)
+        @return: (True if page is from underlay,
+                  str the full path to the storage area)
         """
         standardpath, underlaypath = self._pagepath
         if underlaypath is None:
-            use_underlay = 0
+            use_underlay = False
 
-        if use_underlay == -1: # automatic
-            if self._underlay is None:
-                underlay, path = 0, standardpath
-                pagefile, rev, exists = self.get_rev(use_underlay=0)
-                if not exists:
-                    pagefile, rev, exists = self.get_rev(use_underlay=1)
-                    if exists:
-                        underlay, path = 1, underlaypath
-                self._underlay = underlay
+        if not auto_underlay:
+            if use_underlay:
+                return True, underlaypath
             else:
-                underlay = self._underlay
-                path = self._pagepath[underlay]
-        else: # normal or underlay
-            underlay, path = use_underlay, self._pagepath[use_underlay]
+                return False, standardpath
 
-        return underlay, path
+        # Automatic underlay detection
+        if self._underlay is None:
+            _, _, exists = self.get_rev(use_underlay=False)
+            if exists:
+                # Standard page
+                self._underlay = 0
+                return False, standardpath
+
+            _, _, exists = self.get_rev(use_underlay=True)
+            if exists:
+                # Underlay page
+                self._underlay = 1
+                return True, underlaypath
+
+        if self._underlay == 1:
+            return True, underlaypath
+        else:
+            return False, standardpath
 
     def getPageStatus(self, *args, **kw):
         """ Get full path to a page-specific storage area. `args` can
             contain additional path components that are added to the base path.
 
         @param args: additional path components
-        @keyword use_underlay: force using a specific pagedir, default '-1'
-                                -1 = automatically choose page dir
-                                1 = use underlay page dir
-                                0 = use standard page dir
+        @keyword auto_underlay: True = Automatically choose page dir, ignores use_underlay
+        @keyword use_underlay: True = use underlay page dir
+                               False = use standard page dir
         @keyword check_create: if True, ensures that the path requested really exists
                                (if it doesn't, create all directories automatically).
                                (default True)
         @keyword isfile: is the last component in args a filename? (default is False)
-        @rtype: string
-        @return: (int underlay (1 if using underlay, 0 otherwise),
-                  str the full path to the storage area )
+        @rtype: (bool, string)
+        @return: (True if page is from underlay,
+                  str the full path to the storage area)
         """
         check_create = kw.get('check_create', True)
         isfile = kw.get('isfile', False)
-        use_underlay = kw.get('use_underlay', -1)
-        underlay, path = self.getPageBasePath(use_underlay)
+        auto_underlay = kw.get('auto_underlay', False)
+        use_underlay = kw.get('use_underlay', False)
+        underlay, path = self.getPageBasePath(auto_underlay, use_underlay)
         fullpath = os.path.join(*((path, ) + args))
         if check_create:
             if isfile:
@@ -494,6 +503,10 @@ class Page(object):
                 if not os.path.exists(dirname):
                     raise
         return underlay, fullpath
+
+    def getPageIsUnderlay(self, *args, **kw):
+        """ Return True if page is from underlay. """
+        return self.getPageStatus(*args, **kw)[0]
 
     def getPagePath(self, *args, **kw):
         """ Return path to the page storage area. """
@@ -511,7 +524,7 @@ class Page(object):
         rev = kw.get('rev', 0)
         if not rev and self.rev:
             rev = self.rev
-        fname, rev, exists = self.get_rev(-1, rev)
+        fname, _, _ = self.get_rev(auto_underlay=True, rev=rev)
         return fname
 
     def editlog_entry(self):
@@ -651,7 +664,7 @@ class Page(object):
         if includeDeleted:
             # Look for page directory, ignore page state
             if domain is None:
-                checklist = [0, 1]
+                checklist = [False, True]
             else:
                 checklist = [domain == 'underlay']
             for use_underlay in checklist:
@@ -674,10 +687,16 @@ class Page(object):
                 rev = self.rev
 
             if domain is None:
-                use_underlay = -1
+                auto_underlay = True
+                use_underlay = False
             else:
+                auto_underlay = False
                 use_underlay = domain == 'underlay'
-            d, d, exists = self.get_rev(use_underlay, rev)
+            _, _, exists = self.get_rev(
+                auto_underlay=auto_underlay,
+                use_underlay=use_underlay,
+                rev=rev
+            )
             return exists
 
     def size(self, rev=0):
@@ -1836,31 +1855,28 @@ class RootPage(Page):
         page_name = u''
         Page.__init__(self, request, page_name)
 
-    def getPageBasePath(self, use_underlay=0):
+    def getPageBasePath(self, auto_underlay=False, use_underlay=False):
         """ Get full path to a page-specific storage area. `args` can
             contain additional path components that are added to the base path.
 
-        @param use_underlay: force using a specific pagedir, default 0:
-                                1 = use underlay page dir
-                                0 = use standard page dir
-                                Note: we do NOT have special support for -1
-                                      here, that will just behave as 0!
-        @rtype: string
-        @return: int underlay,
-                 str the full path to the storage area
+        @param auto_underlay: Ignored in this implementation
+        @param use_underlay: force using a specific pagedir, default False:
+                                True = use underlay page dir
+                                False = use standard page dir
+        @rtype: (bool, string)
+        @return: (True if page is from underlay,
+                  str the full path to the storage area)
         """
         if self.cfg.data_underlay_dir is None:
-            use_underlay = 0
+            use_underlay = False
 
         # 'auto' doesn't make sense here. maybe not even 'underlay':
-        if use_underlay == 1:
-            underlay, path = 1, self.cfg.data_underlay_dir
+        if use_underlay:
+            return True, self.cfg.data_underlay_dir
         # no need to check 'standard' case, we just use path in that case!
         else:
             # this is the location of the virtual root page
-            underlay, path = 0, self.cfg.data_dir
-
-        return underlay, path
+            return False, self.cfg.data_dir
 
     def getPageList(self, user=None, exists=1, filter=None, include_underlay=True, return_objects=False, includeBackend=True):
         """ List user readable pages under current page
@@ -1927,7 +1943,7 @@ class RootPage(Page):
                 page = Page(request, name)
 
                 # Filter underlay pages
-                if not include_underlay and page.getPageStatus()[0]: # is an underlay page
+                if not include_underlay and page.getPageIsUnderlay(): # is an underlay page
                     continue
 
                 # Filter deleted pages
@@ -1982,7 +1998,7 @@ class RootPage(Page):
 
         if self.cfg.data_underlay_dir is not None:
             # Merge with pages from underlay
-            path = self.getPagePath('pages', use_underlay=1)
+            path = self.getPagePath('pages', use_underlay=True)
             underlay = self._listPageInPath(path)
             pages.update(underlay)
 

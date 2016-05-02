@@ -82,10 +82,10 @@ try:
         retain_shelve = True
 
         def filterStandard(name):
-            pageobj = Page(request, name)
-            return pageobj.getPageStatus()[0]
+            return Page(request, name).getPageIsUnderlay()
 
         filter = filterStandard
+
     if options.filename:
         retain_shelve = True
 

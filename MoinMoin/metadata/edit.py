@@ -27,7 +27,7 @@ def savegraphdata(pagename, request, text, pagedir, pageitem):
             # 2. Removing data when rehashing. 
             # New pages do not exist, but return a revision of 99999999 ->
             # Check these both to avoid deleting new pages.
-            pf, rev, exists = pageitem.get_rev() 
+            pf, rev, exists = pageitem.get_rev(auto_underlay=True)
             if rev != 99999999:
                 if not exists:
                     request.graphdata.clear_page(request, pagename)
