@@ -8,19 +8,18 @@
 """
 from MoinMoin.action import cache
 
-from graphingwiki import cairo_found
+from graphingwiki import have_cairo
 from graphingwiki.util import cache_key, cache_exists
 
-if cairo_found:
+if have_cairo():
     from ST import plot_box, CAIRO_BOLD
-
     DEFAULT = [('COMPANY CONFIDENTIAL', CAIRO_BOLD)]
 
 
 def execute(macro, args):
     request = macro.request
 
-    if not cairo_found:
+    if not have_cairo():
         return "Cairo not found."
 
     if not args:
