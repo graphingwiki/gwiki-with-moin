@@ -29,6 +29,8 @@
 """
 import os
 import re
+import math
+import colorsys
 
 try:
     from hashlib import md5
@@ -47,11 +49,10 @@ from MoinMoin.metadata.query import ordervalue
 from MoinMoin.metadata.util import nonguaranteeds_p, category_regex, \
     template_regex, encode_page, decode_page, url_escape
 
-from graphingwiki import gv_found, igraph_found, actionname, \
-    values_to_form, pil_found, pil_image
+from graphingwiki import actionname, values_to_form
 
 from graphingwiki.graph import Graph
-from graphingwiki.graphrepr import GraphRepr, Graphviz, IGraphRepr
+from graphingwiki.graphrepr import have_gv, have_igraph, GraphRepr, Graphviz, IGraphRepr
 
 from graphingwiki.util import attachment_file, attachment_url, \
     url_parameters, get_url_ns, load_parents, load_children, \
@@ -60,8 +61,10 @@ from graphingwiki.util import attachment_file, attachment_url, \
     geoip_get_coords, render_error, render_warning
 from graphingwiki.editing import verify_coordinates
 
-import math
-import colorsys
+try:
+    from PIL import Image as pil_image
+except ImportError:
+    pil_image = None
 
 # The selection form ending
 form_end = u"""<div class="showgraph-buttons">\n
@@ -85,7 +88,7 @@ form_end = u"""<div class="showgraph-buttons">\n
       tableElementStyle.display="none";
     }
   }
-</script>""" % (igraph_found and 
+</script>""" % (have_igraph() and
                 '<input type=submit name=overview value="%s">' or '')
 
 graphvizshapes = ["box", "polygon", "egg", "triangle",
@@ -735,7 +738,7 @@ class GraphShower(object):
 
                 # get attach file path, empty label
                 if exists:
-                    if pil_found:
+                    if pil_image:
                         ckey = cache_key(self.request, (page, value))
                         if cache_exists(self.request, ckey):
                             shapefile = cache._get_datafile(self.request, 
@@ -1203,7 +1206,7 @@ class GraphShower(object):
         request.write(u"<br>\n")
 
         # Igraph special - by default, 
-        if igraph_found:
+        if have_igraph():
             form_checkbox(request, 'no_overview', '0', self.no_overview,
                           _('No automatic overview'))
             request.write(u'<br>\n' + _("Overview node threshold") + u"<br>\n")
@@ -1471,7 +1474,7 @@ class GraphShower(object):
 
         request.write(u"</table>\n</div>\n</div>\n")
 
-        if igraph_found:
+        if have_igraph():
             request.write(form_writer(form_end, _('Create'), _('Overview'), _('Test'), _('Inline')))
         else:
             request.write(form_writer(form_end, _('Create'), _('Test'), _('Inline')))
@@ -1727,7 +1730,7 @@ class GraphShower(object):
         self.request.write(gvdata)
                                    
     def send_footer(self, formatter):
-        if self.format not in self.nonwrapped_formats or not gv_found:
+        if self.format not in self.nonwrapped_formats or not have_gv():
             # End content
             self.request.write(formatter.endContent()) # end content div
             # Footer
@@ -1743,7 +1746,7 @@ class GraphShower(object):
         if self.inline:
             return request.formatter
 
-        if self.format not in self.nonwrapped_formats or not gv_found:
+        if self.format not in self.nonwrapped_formats or not have_gv():
             # This action generate data using the user language
             request.setContentLanguage(request.lang)
   
@@ -1938,7 +1941,7 @@ class GraphShower(object):
         outgraph = self.gather_layout_data(outgraph)
 
         # Trigger automated overview of large graphs
-        if (igraph_found and 
+        if (have_igraph() and
             not self.no_overview and 
             len(outgraph.nodes) >= self.overview_threshold):
             self.format = 'igraph'
@@ -1949,12 +1952,12 @@ class GraphShower(object):
             self.cache_key = cache_key(self.request, [outgraph])
         # Perform layout if we have a layout engine and can use it for
         # the selected output
-        elif (gv_found or 
-              (igraph_found and 
+        elif (have_gv() or
+              (have_igraph() and
                (self.format == 'igraph' or self.help == 'test'))):
 
             if (self.format == 'igraph' or 
-                (igraph_found and self.help == 'test')):
+                (have_igraph() and self.help == 'test')):
 
                 gr = IGraphRepr(outgraph)
 
@@ -1987,7 +1990,7 @@ class GraphShower(object):
                                        encode_page(self.format))
 
             if (self.format == 'igraph' or 
-                (igraph_found and self.help == 'test')):
+                (have_igraph() and self.help == 'test')):
                 pass
             else:
                 # Do the layout
@@ -2011,7 +2014,7 @@ class GraphShower(object):
             self.send_kml(outgraph)
 
         elif self.format in self.available_formats:
-            if not gv_found:
+            if not have_gv():
                 self.request.write(formatter.text(_(\
                     "ERROR: Graphviz Python extensions not installed. " +\
                     "Not performing layout.")))
@@ -2034,7 +2037,7 @@ class GraphShower(object):
     def test_graph(self, gr, outgraph):
         formatter = self.request.formatter
         self.request.write('<div class="graph-info">')
-        if igraph_found:
+        if have_igraph():
             self.request.write(formatter.preformatted(1))
             self.request.write(gr.summary(verbosity=1))
             self.request.write(formatter.preformatted(0))
