@@ -85,7 +85,7 @@ def append_page(request, pagename, content, do_editor_backup=False):
 
 def nuke_eventlog(request):
     """ removes event-log file """
-    fpath = request.rootpage.getPagePath('event-log', isfile=1)
+    fpath = request.rootpage.getPagePath('event-log', isfile=True)
     if os.path.exists(fpath):
         os.remove(fpath)
 

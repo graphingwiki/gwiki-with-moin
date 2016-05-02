@@ -947,7 +947,7 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
 
         # The local log should be the standard edit log, not the
         # underlay copy log!
-        pagelog = self.getPagePath('edit-log', use_underlay=0, isfile=1)
+        pagelog = self.getPagePath('edit-log', use_underlay=0, isfile=True)
         llog = editlog.EditLog(request, filename=pagelog,
                                uid_override=self.uid_override)
         # Open the global log
@@ -1115,7 +1115,7 @@ Try a different name.""", wiki=True) % (wikiutil.escape(newpagename), )
         elif rev != 0 and rev != self.current_rev():
             # check if we already saved that page
             other = False
-            pagelog = self.getPagePath('edit-log', use_underlay=0, isfile=1)
+            pagelog = self.getPagePath('edit-log', use_underlay=0, isfile=True)
             next_line = None
             for line in editlog.EditLog(request, pagelog).reverse():
                 if int(line.rev) == int(rev):
@@ -1324,7 +1324,7 @@ To leave the editor, press the Cancel button.""", wiki=True) % {
 
     def _filename(self):
         """ Get path and filename for edit-lock file. """
-        return self.pageobj.getPagePath('edit-lock', isfile=1)
+        return self.pageobj.getPagePath('edit-lock', isfile=True)
 
 
     def _readLockFile(self):

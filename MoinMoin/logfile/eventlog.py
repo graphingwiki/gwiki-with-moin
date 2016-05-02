@@ -19,9 +19,9 @@ class EventLog(LogFile):
             rootpagename = kw.get('rootpagename', None)
             if rootpagename:
                 from MoinMoin.Page import Page
-                filename = Page(request, rootpagename).getPagePath('event-log', isfile=1)
+                filename = Page(request, rootpagename).getPagePath('event-log', isfile=True)
             else:
-                filename = request.rootpage.getPagePath('event-log', isfile=1)
+                filename = request.rootpage.getPagePath('event-log', isfile=True)
         LogFile.__init__(self, filename, buffer_size)
 
     def add(self, request, eventtype, values=None, add_http_info=1,

@@ -152,9 +152,9 @@ class EditLog(LogFile):
         if filename is None:
             rootpagename = kw.get('rootpagename', None)
             if rootpagename:
-                filename = Page(request, rootpagename).getPagePath('edit-log', isfile=1)
+                filename = Page(request, rootpagename).getPagePath('edit-log', isfile=True)
             else:
-                filename = request.rootpage.getPagePath('edit-log', isfile=1)
+                filename = request.rootpage.getPagePath('edit-log', isfile=True)
         LogFile.__init__(self, filename, buffer_size)
         self._NUM_FIELDS = 9
         self._usercache = {}

@@ -473,13 +473,13 @@ class Page(object):
         @keyword check_create: if True, ensures that the path requested really exists
                                (if it doesn't, create all directories automatically).
                                (default True)
-        @keyword isfile: is the last component in args a filename? (default is false)
+        @keyword isfile: is the last component in args a filename? (default is False)
         @rtype: string
         @return: (int underlay (1 if using underlay, 0 otherwise),
                   str the full path to the storage area )
         """
         check_create = kw.get('check_create', True)
-        isfile = kw.get('isfile', 0)
+        isfile = kw.get('isfile', False)
         use_underlay = kw.get('use_underlay', -1)
         underlay, path = self.getPageBasePath(use_underlay)
         fullpath = os.path.join(*((path, ) + args))

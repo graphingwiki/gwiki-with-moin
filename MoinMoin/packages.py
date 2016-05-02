@@ -50,7 +50,7 @@ def event_logfile(self, pagename, pagefile):
 
 def edit_logfile_append(self, pagename, pagefile, rev, action, logname='edit-log', comment=u'', author=u"Scripting Subsystem"):
     glog = editlog.EditLog(self.request, uid_override=author)
-    pagelog = Page(self.request, pagename).getPagePath(logname, use_underlay=0, isfile=1)
+    pagelog = Page(self.request, pagename).getPagePath(logname, use_underlay=0, isfile=True)
     llog = editlog.EditLog(self.request, filename=pagelog,
                                uid_override=author)
     mtime_usecs = wikiutil.timestamp2version(os.path.getmtime(pagefile))
