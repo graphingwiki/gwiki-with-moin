@@ -337,7 +337,7 @@ Topic :: Text Processing :: Markup""".splitlines(),
         'build_scripts': build_scripts_moin,
     },
 
-    'scripts': moin_scripts
+    'scripts': moin_scripts,
 
     # This copies the contents of wiki dir under sys.prefix/share/moin
     # Do not put files that should not be installed in the wiki dir, or
