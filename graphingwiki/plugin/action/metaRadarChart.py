@@ -31,7 +31,7 @@ import math
 
 from MoinMoin.metadata.constants import SPECIAL_ATTRS
 
-from graphingwiki import cairo, cairo_found, cairo_surface_to_png
+from graphingwiki import cairo, have_cairo, cairo_surface_to_png
 from MoinMoin.metadata.query import get_metas, metatable_parseargs, ordervalue
 
 def _calculate_textlen(text):
@@ -114,7 +114,7 @@ def spider_radius(ctx, center, radius, sectors):
     return ctx, endpoints
 
 def execute(pagename, request):
-    if not cairo_found:
+    if not have_cairo():
         error = request.getText(
             "ERROR: Cairo Python extensions not installed. " +
             "Not performing layout."

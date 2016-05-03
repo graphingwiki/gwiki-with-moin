@@ -33,8 +33,7 @@ from base64 import b64encode
 
 from MoinMoin import wikiutil
 
-from graphingwiki import gv_found
-from graphingwiki.graphrepr import Graphviz
+from graphingwiki.graphrepr import have_gv, Graphviz
 
 Dependencies = ['attachments']
 
@@ -67,7 +66,7 @@ class Parser(object):
     def format(self, formatter, **kw):
         _ = self.request.getText
 
-        if not gv_found:
+        if not have_gv():
             self.request.write(formatter.text(_(\
                         "ERROR: Graphviz Python extensions not installed. " +\
                         "Not performing layout.")))

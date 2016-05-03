@@ -34,8 +34,8 @@ from MoinMoin.action import AttachFile
 from MoinMoin.action import cache
 from MoinMoin.metadata.util import encode_page
 
-from graphingwiki import gv_found, actionname, values_to_form
-from graphingwiki.graphrepr import Graphviz
+from graphingwiki import actionname, values_to_form
+from graphingwiki.graphrepr import have_gv, Graphviz
 from graphingwiki.util import enter_page, exit_page, url_parameters, \
     cache_exists, cache_key, form_escape
 
@@ -203,7 +203,7 @@ class ViewDot(object):
             request.write(fault)
             return
 
-        if not gv_found:
+        if not have_gv():
             fault = _(u"ERROR: Graphviz Python extensions not installed. " +\
                       u"Not performing layout.")
             if self.inline:

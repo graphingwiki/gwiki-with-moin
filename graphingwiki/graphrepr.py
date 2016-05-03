@@ -35,9 +35,34 @@ from MoinMoin.metadata.query import ordervalue
 
 from graphingwiki.util import get_url_ns
 
-# Checking whether these exist and can be used should be done by
-# actions and macros using this library.
-from graphingwiki import gv, igraph
+try:
+    import gv
+    # gv needs libag to be initialised before using any read methods,
+    # making a graph here seems to ensure aginit() is called
+    gv.graph(' ')
+except ImportError:
+    gv = None
+
+try:
+    import igraph
+except ImportError:
+    igraph = None
+
+def have_gv():
+    '''Returns true if gv is imported successfully
+
+    Checking whether gv can be used should be done by actions and
+    macros using this library.
+    '''
+    return gv is not None
+
+def have_igraph():
+    '''Returns true if igraph is imported successfully
+
+    Checking whether igraph can be used should be done by actions and
+    macros using this library.
+    '''
+    return igraph is not None
 
 # Constructor for IGraph objects
 class IGraphRepr(object):

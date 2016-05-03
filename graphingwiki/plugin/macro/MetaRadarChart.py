@@ -29,7 +29,7 @@
 """
 from MoinMoin.Page import Page
 
-from graphingwiki import cairo_found
+from graphingwiki import have_cairo
 from graphingwiki.util import url_construct
 
 Dependencies = ['metadata']
@@ -62,7 +62,7 @@ def execute(macro, args):
     request = macro.request
     _ = request.getText
 
-    if not cairo_found:
+    if not have_cairo():
         return formatter.text(_(\
             "ERROR: Cairo Python extensions not installed. " +\
             "Not performing layout.")) + formatter.linebreak()

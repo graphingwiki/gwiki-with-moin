@@ -56,8 +56,14 @@ from MoinMoin.metadata.util import node_type, category_regex, template_regex, \
     nonguaranteeds_p
 from MoinMoin.metadata.wikitextutil import format_wikitext, filter_categories
 
-from graphingwiki import geoip_found, GeoIP, id_escape, actionname
+from graphingwiki import id_escape, actionname
 from graphingwiki.graph import Graph
+
+try:
+    import GeoIP
+except ImportError:
+    GeoIP = None
+
 
 MOIN_VERSION = float('.'.join(MoinVersion.release.split('.')[:2]))
 
@@ -92,7 +98,7 @@ def geoip_init(request):
     error = ''
     GEO_IP = None
 
-    if not geoip_found:
+    if not GeoIP:
         error = _("ERROR: GeoIP Python extensions not installed.")
 
     elif not GEO_IP_PATH:

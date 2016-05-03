@@ -8,7 +8,7 @@
 """
 from MoinMoin.action import cache
 
-from graphingwiki import cairo, cairo_found, cairo_surface_to_png
+from graphingwiki import cairo, have_cairo, cairo_surface_to_png
 from graphingwiki.util import cache_key, cache_exists
 
 LEVELS = {'2': 'SALAINEN',
@@ -19,7 +19,7 @@ LEVELSROMAN = {'4': 'IV', '3': 'III', '2': 'II'}
 
 LAW = u"JulkL (621/1999) 24.1 \xa7:n {0} k"
 
-if cairo_found:
+if have_cairo():
     CAIRO_BOLD = ("sans-serif", cairo.FONT_SLANT_NORMAL,
                                 cairo.FONT_WEIGHT_BOLD)
     CAIRO_NORMAL = ("sans-serif", cairo.FONT_SLANT_NORMAL,
@@ -109,7 +109,7 @@ def execute(macro, args):
 
     arglist = [x.strip() for x in args.split(',') if x]
 
-    if not cairo_found:
+    if not have_cairo():
         return "Cairo not found."
 
     key = cache_key(request, (macro.name, arglist))

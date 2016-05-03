@@ -32,8 +32,8 @@ import StringIO
 from MoinMoin.macro.Include import _sysmsg
 from MoinMoin.metadata.query import get_metas, metatable_parseargs, ordervalue
 
+from graphingwiki import have_cairo
 from graphingwiki.util import url_construct
-from graphingwiki import cairo_found
 
 from MetaRadarChart import radarchart_args
 
@@ -47,7 +47,7 @@ def execute(macro, args):
     request = macro.request
     _ = request.getText
 
-    if not cairo_found:
+    if not have_cairo():
         return _sysmsg % ('error', _(\
                 "ERROR: Cairo Python extensions not installed. " +\
                     "Not performing layout."))
