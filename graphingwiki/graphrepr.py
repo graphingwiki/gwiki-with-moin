@@ -37,23 +37,11 @@ from graphingwiki.util import get_url_ns
 
 try:
     import gv
-except ImportError:
-    try:
-        sys.path.append('/usr/lib/graphviz/python')
-        sys.path.append('/usr/local/lib/graphviz/python')  # OSX
-        sys.path.append('/usr/lib/pyshared/python2.6')  # Ubuntu 9.10
-        import gv
-    except ImportError:
-        sys.path[-1] = '/usr/lib64/graphviz/python'
-        try:
-            import gv
-        except ImportError:
-            gv = None
-
-if gv:
     # gv needs libag to be initialised before using any read methods,
     # making a graph here seems to ensure aginit() is called
     gv.graph(' ')
+except ImportError:
+    gv = None
 
 try:
     import igraph
