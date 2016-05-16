@@ -439,20 +439,10 @@ def _add_node(request, pagename, graph, urladd="", nodetype=""):
 
     if request.graphdata.is_saved(pagename):
         node.gwikiURL += urladd
-        # FIXME: Is this needed?
-        # node.gwikiURL = './' + node.gwikiURL
-    elif Page(request, pagename).isStandardPage():
+    else:
         # try to be helpful and add editlinks to non-underlay pages
         node.gwikiURL += u"?action=edit"
         node.gwikitooltip = request.getText('Add page')
-
-    if node.gwikiURL.startswith('attachment:'):
-        pagefile = node.gwikiURL.split(':')[1]
-        page, fname = attachment_pagefile(pagefile, pagename)
-
-        node.gwikilabel = encode(fname)
-        node.gwikiURL = encode(actionname(request, page) + \
-            '?action=AttachFile&do=get&target=' + fname)
 
     return graph
 
@@ -533,7 +523,7 @@ def load_graph(request, pagename, urladd, load_origin=True):
                     tooltip = request.getText('View attachment')
                 # For non-existing, have a link to upload it
                 else:
-                    gwikiurl = "./%s?action=AttachFile&rename=%s" % \
+                    gwikiurl = "./%s?action=AttachFile&target=%s" % \
                         (att_page, att_file)
                     tooltip = request.getText('Add attachment')
 
