@@ -1,5 +1,5 @@
 --- ./MoinMoin/config/multiconfig.py.orig	2014-10-17 22:45:32.000000000 +0300
-+++ ./MoinMoin/config/multiconfig.py	2016-08-15 20:40:10.791108505 +0300
++++ ./MoinMoin/config/multiconfig.py	2016-08-15 22:34:12.813289705 +0300
 @@ -12,6 +12,7 @@ import re
  import os
  import sys
@@ -15,7 +15,7 @@
 +def _findConfigModule(name):
 +    """ Try to find config module or raise ImportError
 +
-+    Return first module found in a file, skipping packages with
++    Return first module that is a single file, skipping packages with
 +    colliding names.
 +    """
 +    for path in sys.path:
