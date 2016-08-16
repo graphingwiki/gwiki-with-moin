@@ -21,14 +21,6 @@ else
   myerr "No ${CFG}"
 fi
 
-if [ -z "${chatlogdir}" ]; then
-    myerr "Missing chatlogdir in ${CFG}"
-fi
-
-if [ ! -d "${chatlogdir}" ]; then
-    myerr "Missing chatlogdir ${chatlogdir}"
-fi
-
 if [ $# -ne 1 ]; then
   myerr "Usage: $0 <collabname>"
 fi
@@ -62,12 +54,14 @@ else
   echo "ERR: No ${MYCOLLABHTMLDIR}"
 fi
 
-CHATLOGDIRS=`cd ${chatlogdir} && ls -d ${MYCOLLAB}@* ${MYCOLLAB}.*@* 2>/dev/null`
-if [ "$?blah" = "0blah" ]; then
-  cd "${chatlogdir}"
-  tar jcvf ${archivedir}/${MYCOLLAB}-chatlogs-${MYDATE}.tar.bz2 ${CHATLOGDIRS}
-  echo "To remove CollabChat logs, run the following commands:"
-  for dir in ${CHATLOGDIRS}; do
-      echo " rm -rf ${chatlogdir}/${dir}"
-  done
+if [ -n "${chatlogdir}" -a -d "${chatlogdir}" ]; then
+  CHATLOGDIRS=`cd ${chatlogdir} && ls -d ${MYCOLLAB}@* ${MYCOLLAB}.*@* 2>/dev/null`
+  if [ "$?blah" = "0blah" ]; then
+    cd "${chatlogdir}"
+    tar jcvf ${archivedir}/${MYCOLLAB}-chatlogs-${MYDATE}.tar.bz2 ${CHATLOGDIRS}
+    echo "To remove CollabChat logs, run the following commands:"
+    for dir in ${CHATLOGDIRS}; do
+        echo " rm -rf ${chatlogdir}/${dir}"
+    done
+  fi
 fi
