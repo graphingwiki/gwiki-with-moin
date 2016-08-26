@@ -176,6 +176,29 @@ Topic :: Text Processing :: Markup""".splitlines(),
         ]
     },
 
+    'scripts': [
+        'scripts/gwiki-editpage',
+        'scripts/gwiki-get-tgz',
+        'scripts/gwiki-rehash',
+        'scripts/gwiki-showgraph',
+        'scripts/gwiki-showpage',
+        'scripts/collab-account-collablist',
+        'scripts/collab-account-create',
+        'scripts/collab-account-notify',
+        'scripts/collab-account-password',
+        'scripts/collab-account-remove',
+        'scripts/collab-account-rename',
+        'scripts/collab-archive',
+        'scripts/collab-auth-ejabberd',
+        'scripts/collab-check',
+        'scripts/collab-create',
+        'scripts/collab-group-edit',
+        'scripts/collab-group-list',
+        'scripts/collab-htaccess',
+        'scripts/collab-htpasswd-sync',
+        'scripts/collab-mail-aliases'
+    ],
+
     # This copies the contents of wiki dir under sys.prefix/share/moin
     # Do not put files that should not be installed in the wiki dir, or
     # clean the dir before you make the distribution tarball.
