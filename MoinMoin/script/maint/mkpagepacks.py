@@ -93,7 +93,7 @@ General syntax: moin [options] maint mkpagepacks [mkpagepacks-options]
         except OSError:
             pass
         # page LanguageSetup needs no packing!
-        existing_pages = [pagename for pagename in pagelist if Page(request, pagename).exists() and pagename != 'LanguageSetup']
+        existing_pages = [pagename for pagename in pagelist if Page(request, pagename).exists(includeBackend=False) and pagename != 'LanguageSetup']
         if not existing_pages:
             return
 
