@@ -10,9 +10,7 @@
 
 import os, sys, glob
 
-import distutils
-from distutils.core import setup
-from distutils.command.build_scripts import build_scripts
+from setuptools import setup
 
 from MoinMoin.version import release, revision
 
@@ -109,94 +107,6 @@ def make_filelist(dir, strip_prefix=''):
     os.path.walk(dir, _visit, (found, strip_prefix))
     return found
 
-#############################################################################
-### Build script files
-#############################################################################
-
-class build_scripts_create(build_scripts):
-    """ Overload the build_scripts command and create the scripts
-        from scratch, depending on the target platform.
-
-        You have to define the name of your package in an inherited
-        class (due to the delayed instantiation of command classes
-        in distutils, this cannot be passed to __init__).
-
-        The scripts are created in an uniform scheme: they start the
-        run() function in the module
-
-            <packagename>.script.<mangled_scriptname>
-
-        The mangling of script names replaces '-' and '/' characters
-        with '-' and '.', so that they are valid module paths.
-    """
-    package_name = None
-
-    def copy_scripts(self):
-        """ Create each script listed in 'self.scripts'
-        """
-        if not self.package_name:
-            raise Exception("You have to inherit build_scripts_create and"
-                " provide a package name")
-
-        self.mkpath(self.build_dir)
-        for script in self.scripts:
-            outfile = os.path.join(self.build_dir, os.path.basename(script))
-
-            #if not self.force and not newer(script, outfile):
-            #    self.announce("not copying %s (up-to-date)" % script)
-            #    continue
-
-            if self.dry_run:
-                self.announce("would create %s" % outfile)
-                continue
-
-            module = os.path.splitext(os.path.basename(script))[0]
-            module = module.replace('-', '_').replace('/', '.')
-            script_vars = {
-                'python': os.path.normpath(sys.executable),
-                'package': self.package_name,
-                'module': module,
-                'package_location': '/usr/lib/python/site-packages', # FIXME: we need to know the correct path
-            }
-
-            self.announce("creating %s" % outfile)
-            file = open(outfile, 'w')
-
-            try:
-                if sys.platform == "win32":
-                    file.write('@echo off\n'
-                        'if NOT "%%_4ver%%" == "" %(python)s -c "from %(package)s.script.%(module)s import run; run()" %%$\n'
-                        'if     "%%_4ver%%" == "" %(python)s -c "from %(package)s.script.%(module)s import run; run()" %%*\n'
-                        % script_vars)
-                else:
-                    file.write("#! %(python)s\n"
-                        "#Fix and uncomment those 2 lines if your moin command doesn't find the MoinMoin package:\n"
-                        "#import sys\n"
-                        "#sys.path.insert(0, '%(package_location)s')\n"
-                        "from %(package)s.script.%(module)s import run\n"
-                        "run()\n"
-                        % script_vars)
-            finally:
-                file.close()
-                os.chmod(outfile, 0755)
-
-
-class build_scripts_moin(build_scripts_create):
-    package_name = 'MoinMoin'
-
-
-def scriptname(path):
-    """ Helper for building a list of script names from a list of
-        module files.
-    """
-    script = os.path.splitext(os.path.basename(path))[0]
-    script = script.replace('_', '-')
-    if sys.platform == "win32":
-        script = script + ".bat"
-    return script
-
-# build list of scripts from their implementation modules
-moin_scripts = [scriptname(fn) for fn in glob.glob('MoinMoin/script/[!_]*.py')]
 
 #############################################################################
 ### Call setup()
@@ -332,12 +242,11 @@ Topic :: Text Processing :: Markup""".splitlines(),
                                                           strip_prefix='MoinMoin/web/static/'),
                     },
 
-    # Override certain command classes with our own ones
-    'cmdclass': {
-        'build_scripts': build_scripts_moin,
+    'entry_points': {
+        'console_scripts': [
+            'moin=MoinMoin.script.moin:run'
+        ]
     },
-
-    'scripts': moin_scripts,
 
     # This copies the contents of wiki dir under sys.prefix/share/moin
     # Do not put files that should not be installed in the wiki dir, or
@@ -345,28 +254,6 @@ Topic :: Text Processing :: Markup""".splitlines(),
     'data_files': makeDataFiles('share/moin', 'wiki')
 }
 
-if hasattr(distutils.dist.DistributionMetadata, 'get_keywords'):
-    setup_args['keywords'] = "wiki web"
-
-if hasattr(distutils.dist.DistributionMetadata, 'get_platforms'):
-    setup_args['platforms'] = "any"
-
 
 if __name__ == '__main__':
-    try:
-        setup(**setup_args)
-    except distutils.errors.DistutilsPlatformError, ex:
-        print
-        print str(ex)
-
-        print """
-POSSIBLE CAUSE
-
-"distutils" often needs developer support installed to work
-correctly, which is usually located in a separate package
-called "python%d.%d-dev(el)".
-
-Please contact the system administrator to have it installed.
-""" % sys.version_info[:2]
-        sys.exit(1)
-
+    setup(**setup_args)
