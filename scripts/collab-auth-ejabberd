@@ -123,6 +123,8 @@ def checkAccess(user, wiki):
 
     isgroup = r.cfg.cache.page_group_regexact.search
     members = [m for m in r.groups.get("AccessGroup") if not isgroup(m)]
+    # call finish to release graphdata read lock
+    r.finish()
     return user in members
 
 
