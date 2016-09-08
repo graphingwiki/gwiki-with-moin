@@ -21,6 +21,11 @@ else
   myerr "No ${CFG}"
 fi
 
+if [ "x$1" = "x-y" ]; then
+  ASSUME_YES=true
+  shift
+fi
+
 if [ $# -ne 1 ]; then
   myerr "Usage: $0 <collabname>"
 fi
@@ -34,9 +39,13 @@ mkdir -p ${archivedir}
 
 if [ -d ${MYCOLLABWIKIDIR} ]; then
   cd ${wikidir}
-  tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2  ${MYCOLLAB}
-  echo "Remove ${MYCOLLABWIKIDIR}? (y/N)"
-  read sure
+  tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2 ${MYCOLLAB}
+  if [ "${ASSUME_YES}" = "true" ]; then
+    sure=y
+  else
+    echo -n "Remove ${MYCOLLABWIKIDIR}? (y/N) "
+    read sure
+  fi
   if [ "${sure}blah" = "yblah" ]; then
     rm -rf ${MYCOLLABWIKIDIR}
   fi
@@ -45,8 +54,12 @@ else
 fi
 
 if [ -d ${MYCOLLABHTMLDIR} ]; then
-  echo "Remove ${MYCOLLABHTMLDIR}? (y/N)"
-  read sure
+  if [ "${ASSUME_YES}" = "true" ]; then
+    sure=y
+  else
+    echo -n "Remove ${MYCOLLABHTMLDIR}? (y/N) "
+    read sure
+  fi
   if [ "${sure}blah" = "yblah" ]; then
     rm -rf ${MYCOLLABHTMLDIR}
   fi
