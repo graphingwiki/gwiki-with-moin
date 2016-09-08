@@ -40,7 +40,9 @@ mkdir -p ${archivedir}
 if [ -d ${MYCOLLABWIKIDIR} ]; then
   cd ${wikidir}
   tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2 ${MYCOLLAB}
+  [ $? -eq 0 ] || exit 1
   if [ "${ASSUME_YES}" = "true" ]; then
+    echo "Removing ${MYCOLLABWIKIDIR}"
     sure=y
   else
     echo -n "Remove ${MYCOLLABWIKIDIR}? (y/N) "
@@ -55,6 +57,7 @@ fi
 
 if [ -d ${MYCOLLABHTMLDIR} ]; then
   if [ "${ASSUME_YES}" = "true" ]; then
+    echo "Removing ${MYCOLLABHTMLDIR}"
     sure=y
   else
     echo -n "Remove ${MYCOLLABHTMLDIR}? (y/N) "
