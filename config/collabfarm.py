@@ -44,7 +44,10 @@ class FarmConfig(DefaultConfig):
     from MoinMoin.auth import GivenAuth
     auth = [GivenAuth(autocreate=False)]
     auth_methods_trusted = ['given', 'xmlrpc_applytoken']
-    password_scheme = '{SHA}'
+
+    password_scheme = '{PASSLIB}'
+    passlib_crypt_context = { 'schemes': ['sha512_crypt'],
+                              'all__default_rounds': 5000 }
 
     cookie_path = '/collab/'
     cookie_httponly = True
