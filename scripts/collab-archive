@@ -21,10 +21,14 @@ else
   myerr "No ${CFG}"
 fi
 
-if [ "x$1" = "x-y" ]; then
-  ASSUME_YES=true
-  shift
-fi
+while getopts "e:y" OPT; do
+  case ${OPT} in
+    e) ENCRYPT_KEY=${OPTARG} ;;
+    y) ASSUME_YES=true ;;
+  esac
+done
+
+shift $((${OPTIND}-1))
 
 if [ $# -ne 1 ]; then
   myerr "Usage: $0 <collabname>"
@@ -39,7 +43,13 @@ mkdir -p ${archivedir}
 
 if [ -d ${MYCOLLABWIKIDIR} ]; then
   cd ${wikidir}
-  tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2 ${MYCOLLAB}
+  if [ "x${ENCRYPT_KEY}" != "x" ]; then
+    which gpg >/dev/null || exit 1
+    tar jcvf - ${MYCOLLAB} | gpg -q -e -r ${ENCRYPT_KEY} \
+      -o ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2.gpg
+  else
+    tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2 ${MYCOLLAB}
+  fi
   [ $? -eq 0 ] || exit 1
   if [ "${ASSUME_YES}" = "true" ]; then
     echo "Removing ${MYCOLLABWIKIDIR}"
