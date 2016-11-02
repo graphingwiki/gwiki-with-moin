@@ -45,7 +45,8 @@ if [ -d ${MYCOLLABWIKIDIR} ]; then
   cd ${wikidir}
   if [ "x${ENCRYPT_KEY}" != "x" ]; then
     which gpg >/dev/null || exit 1
-    tar jcvf - ${MYCOLLAB} | gpg -q -e -r ${ENCRYPT_KEY} \
+    gpg --list-public-keys "${ENCRYPT_KEY}" >/dev/null || exit 1
+    tar jcvf - ${MYCOLLAB} | gpg -q -e -r "${ENCRYPT_KEY}" \
       -o ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2.gpg
   else
     tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2 ${MYCOLLAB}
