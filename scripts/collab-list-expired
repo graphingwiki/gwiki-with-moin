@@ -7,8 +7,8 @@
 
 import os
 import sys
-import time
 import optparse
+from datetime import datetime
 
 from collabbackend.clitools import CollabRequest, listAllCollabs
 from graphingwiki.editing import get_metas
@@ -32,13 +32,13 @@ def main():
         expires = metas["expires"][0]
 
         try:
-            expires_time = time.mktime(time.strptime(expires, "%Y-%m-%d"))
+            expires_time = datetime.strptime(expires, "%Y-%m-%d")
         except ValueError:
             print >> sys.stderr, \
                 "{0}: Invalid expiry date: {1}".format(collab, expires)
             continue
 
-        if expires_time < time.time():
+        if expires_time < datetime.now():
             if opts.verbose:
                 print "{0}: Expired on {1}".format(collab, expires)
             else:
