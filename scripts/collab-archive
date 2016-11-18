@@ -21,6 +21,15 @@ else
   myerr "No ${CFG}"
 fi
 
+while getopts "e:y" OPT; do
+  case ${OPT} in
+    e) ENCRYPT_KEY=${OPTARG} ;;
+    y) ASSUME_YES=true ;;
+  esac
+done
+
+shift $((${OPTIND}-1))
+
 if [ $# -ne 1 ]; then
   myerr "Usage: $0 <collabname>"
 fi
@@ -34,9 +43,22 @@ mkdir -p ${archivedir}
 
 if [ -d ${MYCOLLABWIKIDIR} ]; then
   cd ${wikidir}
-  tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2  ${MYCOLLAB}
-  echo "Remove ${MYCOLLABWIKIDIR}? (y/N)"
-  read sure
+  if [ "x${ENCRYPT_KEY}" != "x" ]; then
+    which gpg >/dev/null || exit 1
+    gpg --list-public-keys "${ENCRYPT_KEY}" >/dev/null || exit 1
+    tar jcvf - ${MYCOLLAB} | gpg -q -e -r "${ENCRYPT_KEY}" \
+      -o ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2.gpg
+  else
+    tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2 ${MYCOLLAB}
+  fi
+  [ $? -eq 0 ] || exit 1
+  if [ "${ASSUME_YES}" = "true" ]; then
+    echo "Removing ${MYCOLLABWIKIDIR}"
+    sure=y
+  else
+    echo -n "Remove ${MYCOLLABWIKIDIR}? (y/N) "
+    read sure
+  fi
   if [ "${sure}blah" = "yblah" ]; then
     rm -rf ${MYCOLLABWIKIDIR}
   fi
@@ -45,8 +67,13 @@ else
 fi
 
 if [ -d ${MYCOLLABHTMLDIR} ]; then
-  echo "Remove ${MYCOLLABHTMLDIR}? (y/N)"
-  read sure
+  if [ "${ASSUME_YES}" = "true" ]; then
+    echo "Removing ${MYCOLLABHTMLDIR}"
+    sure=y
+  else
+    echo -n "Remove ${MYCOLLABHTMLDIR}? (y/N) "
+    read sure
+  fi
   if [ "${sure}blah" = "yblah" ]; then
     rm -rf ${MYCOLLABHTMLDIR}
   fi
