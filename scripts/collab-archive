@@ -34,6 +34,8 @@ if [ $# -ne 1 ]; then
   myerr "Usage: $0 <collabname>"
 fi
 
+umask 007
+
 MYCOLLAB=$1
 MYCOLLABWIKIDIR=${wikidir}/${MYCOLLAB}
 MYCOLLABHTMLDIR=${htmldir}/${MYCOLLAB}
