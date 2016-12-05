@@ -197,7 +197,9 @@ Topic :: Text Processing :: Markup""".splitlines(),
         'scripts/collab-group-list',
         'scripts/collab-htaccess',
         'scripts/collab-htpasswd-sync',
-        'scripts/collab-mail-aliases'
+        'scripts/collab-list-expired',
+        'scripts/collab-mail-aliases',
+        'scripts/collab-mail-archive'
     ],
 
     # This copies the contents of wiki dir under sys.prefix/share/moin
