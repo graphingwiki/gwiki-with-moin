@@ -67,4 +67,4 @@ if __name__ == '__main__':
         savetext(req, pagename, mytext)
 
     # Must finish the request to ensure that metadata is saved
-    graphdata_close(req)
+    req.finish()
