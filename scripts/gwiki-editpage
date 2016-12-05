@@ -9,8 +9,6 @@ from MoinMoin.script import MinimalMoinScript
 from MoinMoin.Page import Page
 from MoinMoin.PageEditor import PageEditor
 
-from MoinMoin.metadata.edit import graphdata_close
-
 def savetext(request, pagename, newtext, **kw):
     page = PageEditor(request, pagename)
 
