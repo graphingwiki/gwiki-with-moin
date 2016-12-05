@@ -21,17 +21,20 @@ else
   myerr "No ${CFG}"
 fi
 
-if [ -z "${chatlogdir}" ]; then
-    myerr "Missing chatlogdir in ${CFG}"
-fi
+while getopts "e:y" OPT; do
+  case ${OPT} in
+    e) ENCRYPT_KEY=${OPTARG} ;;
+    y) ASSUME_YES=true ;;
+  esac
+done
 
-if [ ! -d "${chatlogdir}" ]; then
-    myerr "Missing chatlogdir ${chatlogdir}"
-fi
+shift $((${OPTIND}-1))
 
 if [ $# -ne 1 ]; then
   myerr "Usage: $0 <collabname>"
 fi
+
+umask 007
 
 MYCOLLAB=$1
 MYCOLLABWIKIDIR=${wikidir}/${MYCOLLAB}
@@ -42,9 +45,22 @@ mkdir -p ${archivedir}
 
 if [ -d ${MYCOLLABWIKIDIR} ]; then
   cd ${wikidir}
-  tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2  ${MYCOLLAB}
-  echo "Remove ${MYCOLLABWIKIDIR}? (y/N)"
-  read sure
+  if [ "x${ENCRYPT_KEY}" != "x" ]; then
+    which gpg >/dev/null || exit 1
+    gpg --list-public-keys "${ENCRYPT_KEY}" >/dev/null || exit 1
+    tar jcvf - ${MYCOLLAB} | gpg -q -e -r "${ENCRYPT_KEY}" \
+      -o ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2.gpg
+  else
+    tar jcvf ${archivedir}/${MYCOLLAB}-${MYDATE}.tar.bz2 ${MYCOLLAB}
+  fi
+  [ $? -eq 0 ] || exit 1
+  if [ "${ASSUME_YES}" = "true" ]; then
+    echo "Removing ${MYCOLLABWIKIDIR}"
+    sure=y
+  else
+    echo -n "Remove ${MYCOLLABWIKIDIR}? (y/N) "
+    read sure
+  fi
   if [ "${sure}blah" = "yblah" ]; then
     rm -rf ${MYCOLLABWIKIDIR}
   fi
@@ -53,8 +69,13 @@ else
 fi
 
 if [ -d ${MYCOLLABHTMLDIR} ]; then
-  echo "Remove ${MYCOLLABHTMLDIR}? (y/N)"
-  read sure
+  if [ "${ASSUME_YES}" = "true" ]; then
+    echo "Removing ${MYCOLLABHTMLDIR}"
+    sure=y
+  else
+    echo -n "Remove ${MYCOLLABHTMLDIR}? (y/N) "
+    read sure
+  fi
   if [ "${sure}blah" = "yblah" ]; then
     rm -rf ${MYCOLLABHTMLDIR}
   fi
@@ -62,12 +83,14 @@ else
   echo "ERR: No ${MYCOLLABHTMLDIR}"
 fi
 
-CHATLOGDIRS=`cd ${chatlogdir} && ls -d ${MYCOLLAB}@* ${MYCOLLAB}.*@* 2>/dev/null`
-if [ "$?blah" = "0blah" ]; then
-  cd "${chatlogdir}"
-  tar jcvf ${archivedir}/${MYCOLLAB}-chatlogs-${MYDATE}.tar.bz2 ${CHATLOGDIRS}
-  echo "To remove CollabChat logs, run the following commands:"
-  for dir in ${CHATLOGDIRS}; do
-      echo " rm -rf ${chatlogdir}/${dir}"
-  done
+if [ -n "${chatlogdir}" -a -d "${chatlogdir}" ]; then
+  CHATLOGDIRS=`cd ${chatlogdir} && ls -d ${MYCOLLAB}@* ${MYCOLLAB}.*@* 2>/dev/null`
+  if [ "$?blah" = "0blah" ]; then
+    cd "${chatlogdir}"
+    tar jcvf ${archivedir}/${MYCOLLAB}-chatlogs-${MYDATE}.tar.bz2 ${CHATLOGDIRS}
+    echo "To remove CollabChat logs, run the following commands:"
+    for dir in ${CHATLOGDIRS}; do
+        echo " rm -rf ${chatlogdir}/${dir}"
+    done
+  fi
 fi

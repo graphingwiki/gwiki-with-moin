@@ -119,7 +119,9 @@ setup(
         'scripts/collab-group-list',
         'scripts/collab-htaccess',
         'scripts/collab-htpasswd-sync',
+        'scripts/collab-list-expired',
         'scripts/collab-mail-aliases',
+        'scripts/collab-mail-archive',
     ],
     cmdclass={
         "build": RemovingBuild,

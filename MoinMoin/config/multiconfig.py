@@ -12,6 +12,7 @@ import re
 import os
 import sys
 import time
+import imp
 
 from MoinMoin import log
 logging = log.getLogger(__name__)
@@ -34,6 +35,25 @@ _farmconfig_mtime = None
 _config_cache = {}
 
 
+def _findConfigModule(name):
+    """ Try to find config module or raise ImportError
+
+    Return first module that is a single file, skipping packages with
+    colliding names.
+    """
+    for path in sys.path:
+        if not path:
+            continue
+        try:
+            fp, pathname, description = imp.find_module(name, [path])
+            if not fp:
+                continue
+            return fp, pathname, description
+        except ImportError:
+            continue
+    raise ImportError('No module named %s' % name)
+
+
 def _importConfigModule(name):
     """ Import and return configuration module and its modification time
 
@@ -45,7 +65,8 @@ def _importConfigModule(name):
     @return: module, modification time
     """
     try:
-        module = __import__(name, globals(), {})
+        fp, pathname, description = _findConfigModule(name)
+        module = imp.load_module(name, fp, pathname, description)
         mtime = os.path.getmtime(module.__file__)
     except ImportError:
         raise

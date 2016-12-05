@@ -9,6 +9,9 @@ Some facts about this collaboration instance. These are used to build the Collab
 
 ## if URL is left empty then default URL is used
   URL:: 
+
+## date (as YYYY-MM-DD) when collab is marked as expired
+##  expires:: 
 ----
 
 {i} Allow up to one minute for the CollabList to update after changing these facts.
