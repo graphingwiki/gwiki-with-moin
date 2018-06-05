@@ -21,14 +21,14 @@ from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re, random
 from timeit import default_timer as timer
 
-class basicFunctionsTestCase(unittest.TestCase):
+class MetaTablePerformanceTestCase(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(30)
         self.verificationErrors = []
         self.accept_next_alert = True
     
-    def test_basicFuntionsTest_test_case(self):
+    def test_MetaTablePerformance_test_case(self):
         driver = self.driver
 		
 	r = random.randint(1,100000)
