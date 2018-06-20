@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''This is a Python 2.7 script for testing Collab wiki table generation performance. Modules needed for usage: Selenium webdriver and geckodriver. The script measures the performance of generating tables with function MetaTable to the wiki. Change variables site, password and user to match your setup. Variables n, n_p and n_v can be modified to change how many times the test will be run, how many pages the table will contain and how many columns the table will have.
+'''This is a Python 2.7 script for testing Collab wiki table generation performance. Modules needed for usage: Selenium webdriver and geckodriver. The script measures the performance of generating tables with function MetaTable to the wiki. Change variables site, password and user from test_config.ini to match your setup. Variables n, n_p and n_v can be modified to change how many times the test will be run, how many pages the table will contain and how many columns the table will have.
 
 Step-by-step install guide:
 
@@ -7,7 +7,7 @@ Step-by-step install guide:
 2. Fetch geckodriver from Mozilla Github: wget https://github.com/mozilla/geckodriver/releases/download/v0.20.1/geckodriver-v0.20.1-linux64.tar.gz
 3. Unpack: tar -xvzf geckodriver-v0.20.1-linux64.tar.gz
 4. Add geckodriver to PATH or copy it to /usr/local/bin: cp geckodriver /usr/local/bin
-5. Modify variables site, password and user in this file to match your setup.
+5. Modify variables site, password and user from test_config.ini to match your setup.
 6. The test can now be executed by command: python pMetaTableTest.py
 
 '''
@@ -18,8 +18,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re, random
+import unittest, time, re, random, ConfigParser
 from timeit import default_timer as timer
+
+config = ConfigParser.ConfigParser()
+config.read('test_config.ini')
+site = config.get('Site_variables','site').strip("'")
+user = config.get('Site_variables','user').strip("'")
+password = config.get('Site_variables','password').strip("'")
 
 class MetaTablePerformanceTestCase(unittest.TestCase):
     def setUp(self):
@@ -32,12 +38,9 @@ class MetaTablePerformanceTestCase(unittest.TestCase):
         driver = self.driver
 		
 	r = random.randint(1,100000)
-	site = "https://172.17.0.2/collab" #FIXME: Insert the collab site root e.g. https://172.17.0.2/collab 
-	user = "collab" #FIXME: Insert a valid username that is used for the tests.
-	password = "hunter2" #FIXME: Insert the users password.
-	n = 5 # How many times the table will be generated.
-	n_p = 5 # How many pages will be created.
-	n_v = 20 # How many columns the table will have.
+	n = int(config.get('pMetaTableTest_settings', 'number_of_tests'))
+	n_p = int(config.get('pMetaTableTest_settings', 'number_of_pages'))
+	n_v = int(config.get('pMetaTableTest_settings', 'number_of_columns'))
 
 	driver.get(site)
 	driver.switch_to_alert().send_keys(user + Keys.TAB + password)

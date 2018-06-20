@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''This is a Python 2.7 script for testing the performance of generating subpages to the Collab wiki. Modules needed for usage: Selenium webdriver and geckodriver. If the test is succesful the script outputs the arithmetic mean of the time it took to generate a page. The time is measured from how long it took to save the page to the wiki. Change variables site, password and user to match your setup. Variable n can be changed to modify how many pages the test creates.
+'''This is a Python 2.7 script for testing the performance of generating subpages to the Collab wiki. Modules needed for usage: Selenium webdriver and geckodriver. If the test is succesful the script outputs the arithmetic mean of the time it took to generate a page. The time is measured from how long it took to save the page to the wiki. Change variables site, password and user from test_config.ini to match your setup. Variable n can be changed to modify how many pages the test creates.
 
 Step-by-step install guide:
 
@@ -17,9 +17,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re, random
-
+import unittest, time, re, random, ConfigParser
 from timeit import default_timer as timer
+
+config = ConfigParser.ConfigParser()
+config.read('test_config.ini')
+site = config.get('Site_variables','site').strip("'")
+user = config.get('Site_variables','user').strip("'")
+password = config.get('Site_variables','password').strip("'")
 
 class newPageGenerationCase(unittest.TestCase):
     def setUp(self):
@@ -30,9 +35,6 @@ class newPageGenerationCase(unittest.TestCase):
     
     def test_newPageGeneration_test_case(self):
 
-	site = "https://172.17.0.2/collab" #FIXME: Insert the collab site root e.g. https://172.17.0.2/collab
-	user = "collab" #FIXME: Insert a valid username that is used for the tests.
-	password = "hunter2" #FIXME: Insert the users password.
 	n = 10 #How many subpages are generated.
 
         driver = self.driver

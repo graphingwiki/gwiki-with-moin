@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''This is a Python 2.7 script for testing Collab wiki graph generation function graphingwiki. Modules needed for usage: Selenium webdriver and geckodriver. Change variables site, password and user to match your setup. The script creates a test page to the wiki with a graph of the Collab wiki front page. If the test is succesful the script outputs the arithmetic mean of the time it took to generate the graph five times. The time is measured from when the page is saved to when the graph is first displayed. Change variables site, password and user to match your setup. 
+'''This is a Python 2.7 script for testing Collab wiki graph generation function graphingwiki. Modules needed for usage: Selenium webdriver and geckodriver. Change variables site, password and user to match your setup. The script creates a test page to the wiki with a graph of the Collab wiki front page. If the test is succesful the script outputs the arithmetic mean of the time it took to generate the graph five times. The time is measured from when the page is saved to when the graph is first displayed. Change variables site, password and user from test_config.ini to match your setup. 
 
 Step-by-step install guide:
 
@@ -7,7 +7,7 @@ Step-by-step install guide:
 2. Fetch geckodriver from Mozilla Github: wget https://github.com/mozilla/geckodriver/releases/download/v0.20.1/geckodriver-v0.20.1-linux64.tar.gz
 3. Unpack: tar -xvzf geckodriver-v0.20.1-linux64.tar.gz
 4. Add geckodriver to PATH or copy it to /usr/local/bin: cp geckodriver /usr/local/bin
-5. Modify variables site, password and user in this file to match your setup.
+5. Modify variables site, password and user from test_config.ini to match your setup.
 6. The test can now be executed by command: python pGraphTest.py
 
 '''
@@ -18,9 +18,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re, random
-
+import unittest, time, re, random, ConfigParser
 from timeit import default_timer as timer
+
+config = ConfigParser.ConfigParser()
+config.read('test_config.ini')
+site = config.get('Site_variables','site').strip("'")
+user = config.get('Site_variables','user').strip("'")
+password = config.get('Site_variables','password').strip("'")
 
 class GeneratingTestCase(unittest.TestCase):
     def setUp(self):
@@ -32,10 +37,7 @@ class GeneratingTestCase(unittest.TestCase):
     def test_untitled_test_case(self):
 	'''Generates a test page five times with a graph and then deletes it. Outputs the mean of the time it took to generate a graph if the test did not generate any errors.'''
 
-	site = "https://172.17.0.2/collab" #FIXME: Insert the collab site root e.g. https://172.17.0.2/collab 
-	user = "collab" #FIXME: Insert a valid username that is used for the tests.
-	password = "hunter2" #FIXME: Insert the users password.
-	n=5 #How many times the test will be run.
+	n=int(config.get('pGraphTest_settings','number_of_tests'))
 
         driver = self.driver
         driver.get(site)
